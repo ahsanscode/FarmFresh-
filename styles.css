@@ -264,6 +264,58 @@ img {
 }
 
 /* ===================================
+   Page Header (for internal pages)
+   =================================== */
+.page-header {
+    position: relative;
+    background: linear-gradient(135deg, #1a5f2e 0%, #2ecc71 50%, #a8e6cf 100%);
+    padding: 120px 0 60px;
+    text-align: center;
+    color: white;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    margin-top: 15px;
+}
+
+.breadcrumb-link {
+    color: white;
+    opacity: 0.9;
+    transition: opacity var(--transition-fast);
+}
+
+.breadcrumb-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.breadcrumb-separator {
+    opacity: 0.7;
+}
+
+.breadcrumb-current {
+    font-weight: 600;
+}
+
+/* ===================================
    Hero Section
    =================================== */
 .hero {
