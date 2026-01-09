@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - FarmFresh Marketplace</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation & Global Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav-brand">
+                <i class="fas fa-leaf brand-icon"></i>
+                <span class="brand-text">FarmFresh Marketplace</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="index.html#marketplace" class="nav-link">Marketplace</a></li>
+                <li><a href="index.html#auctions" class="nav-link hot-feature">Live Auctions <span class="badge-hot">Hot</span></a></li>
+                <li><a href="index.html#farmers" class="nav-link">Farmers</a></li>
+                <li><a href="index.html#track" class="nav-link">Track Order</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-text">Login</a>
+                <a href="register.html" class="btn btn-outline">Register</a>
+                <a href="cart.html" class="btn btn-icon" aria-label="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="seller.html" class="btn btn-primary">Become a Seller</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title"><i class="fas fa-user-plus"></i> Create Your Account</h1>
+            <p class="page-subtitle">Join the FarmFresh community today</p>
+            <nav class="breadcrumb">
+                <a href="index.html" class="breadcrumb-link">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Register</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Register Section -->
+    <section class="auth-page">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-card register-card">
+                    <h2 class="auth-title">Get Started</h2>
+                    <p class="auth-subtitle">Create an account to access fresh farm produce</p>
+
+                    <!-- User Type Selection -->
+                    <div class="user-type-selector">
+                        <button type="button" class="user-type-btn active" onclick="selectUserType('buyer')">
+                            <i class="fas fa-shopping-basket"></i>
+                            <span>I want to Buy</span>
+                        </button>
+                        <button type="button" class="user-type-btn" onclick="selectUserType('seller')">
+                            <i class="fas fa-store"></i>
+                            <span>I want to Sell</span>
+                        </button>
+                    </div>
+
+                    <form class="auth-form" onsubmit="handleRegister(event)">
+                        <input type="hidden" id="userType" value="buyer">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" id="phone" name="phone" placeholder="+880 1XXX-XXXXXX" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="password" name="password" placeholder="Create a password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                    <i class="fas fa-eye" id="toggleIcon1"></i>
+                                </button>
+                            </div>
+                            <small class="form-hint">Must be at least 8 characters with letters and numbers</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye" id="toggleIcon2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="terms" required>
+                                <span>I agree to the <a href="#" class="link-text">Terms of Service</a> and <a href="#" class="link-text">Privacy Policy</a></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="newsletter">
+                                <span>Send me updates and special offers</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button class="btn-social btn-google">
+                            <i class="fab fa-google"></i> Sign up with Google
+                        </button>
+                        <button class="btn-social btn-facebook">
+                            <i class="fab fa-facebook-f"></i> Sign up with Facebook
+                        </button>
+                    </div>
+
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="login.html" class="link-primary">Login Here</a></p>
+                    </div>
+                </div>
+
+                <!-- Benefits Section -->
+                <div class="auth-benefits">
+                    <h3>Join Thousands of Happy Customers</h3>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Growing Community</h4>
+                            <p>Over 50,000+ users trust FarmFresh</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Support Farmers</h4>
+                            <p>Your purchase directly helps local farmers</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Quality Guaranteed</h4>
+                            <p>100% satisfaction or money-back guarantee</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Exclusive Deals</h4>
+                            <p>Get access to member-only discounts</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand">
+                        <i class="fas fa-leaf brand-icon"></i>
+                        <span class="brand-text">FarmFresh</span>
+                    </div>
+                    <p class="footer-tagline">Connecting farmers directly to consumers, ensuring fair prices and fresh produce.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Fair Trade Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Technology</h4>
+                    <ul>
+                        <li><a href="#">Cold Chain Technology</a></li>
+                        <li><a href="#">Quality Verification</a></li>
+                        <li><a href="#">Live Auction System</a></li>
+                        <li><a href="#">Supply Chain</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FarmFresh Marketplace. All rights reserved.</p>
+                <p>Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for farmers and consumers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const navActions = document.querySelector('.nav-actions');
+        
+        if (navToggle && navMenu && navActions) {
+            navToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                navActions.classList.toggle('active');
+            });
+        }
+
+        // Select user type
+        function selectUserType(type) {
+            document.getElementById('userType').value = type;
+            const buttons = document.querySelectorAll('.user-type-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.user-type-btn').classList.add('active');
+        }
+
+        // Toggle password visibility
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const iconNumber = fieldId === 'password' ? '1' : '2';
+            const toggleIcon = document.getElementById('toggleIcon' + iconNumber);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Handle registration form submission
+        function handleRegister(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            const userType = document.getElementById('userType').value;
+            const email = document.getElementById('email').value;
+            alert('Registration functionality would be implemented here.\nUser Type: ' + userType + '\nEmail: ' + email);
+            // In a real application, this would send data to a backend
+        }
+    </script>
+</body>
+</html>
