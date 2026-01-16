@@ -1,0 +1,155 @@
+<%- include("partials/header.ejs") %>  <!-- Include header from partials -->
+
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title"><i class="fas fa-shipping-fast"></i> Track Your Order</h1>
+            <p class="page-subtitle">Real-time tracking from farm to your doorstep</p>
+            <nav class="breadcrumb">
+                <a href="/" class="breadcrumb-link">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Track Order</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Track Order Section -->
+    <section class="track-order-page">
+        <div class="container">
+            <div class="track-form-card">
+                <h2 class="section-title">Enter Your Order ID</h2>
+                <p class="section-subtitle">Track your order status in real-time</p>
+                <div class="track-form">
+                    <input type="text" id="orderIdInput" class="track-input" placeholder="Enter your order ID (e.g., FF-2024-12345)">
+                    <button class="btn btn-primary" onclick="trackOrder()">Track Order</button>
+                </div>
+            </div>
+
+            <!-- Order Tracking Results (Hidden by default) -->
+            <div id="trackingResults" class="tracking-results" style="display: none;">
+                <div class="order-info-card">
+                    <div class="order-header">
+                        <div>
+                            <h3>Order <span id="displayOrderId"></span></h3>
+                            <p class="order-date">Placed on <span id="orderDate"></span></p>
+                        </div>
+                        <div class="order-status-badge" id="statusBadge">
+                            <i class="fas fa-check-circle"></i> <span id="statusText"></span>
+                        </div>
+                    </div>
+
+                    <!-- Tracking Timeline -->
+                    <div class="tracking-timeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Order Confirmed</h4>
+                                <p>Your order has been confirmed</p>
+                                <span class="timeline-date">Jan 7, 2026 - 10:30 AM</span>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Cold Hub Verified</h4>
+                                <p>Products verified for freshness and quality</p>
+                                <span class="timeline-date">Jan 7, 2026 - 2:15 PM</span>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Out for Delivery</h4>
+                                <p>Your order is on its way</p>
+                                <span class="timeline-date">Jan 8, 2026 - 9:00 AM</span>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item active">
+                            <div class="timeline-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Arriving Today</h4>
+                                <p>Expected delivery by 5:00 PM</p>
+                                <span class="timeline-date">Jan 9, 2026 - Estimated</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Items -->
+                    <div class="order-items">
+                        <h4>Order Items</h4>
+                        <div class="order-item">
+                            <img src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=80&h=80&fit=crop" alt="Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2780%27 height=%2780%27%3E%3Crect fill=%27%23e8f5e9%27 width=%2780%27 height=%2780%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2730%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍅%3C/text%3E%3C/svg%3E'">
+                            <div class="item-details">
+                                <h5>Organic Tomatoes</h5>
+                                <p>2 kg × ৳45/kg</p>
+                            </div>
+                            <div class="item-price">৳90</div>
+                        </div>
+                        <div class="order-item">
+                            <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=80&h=80&fit=crop" alt="Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2780%27 height=%2780%27%3E%3Crect fill=%27%23fff3e0%27 width=%2780%27 height=%2780%27/%3E%3Ctext fill=%27%23ff9800%27 font-family=%27Arial%27 font-size=%2730%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥭%3C/text%3E%3C/svg%3E'">
+                            <div class="item-details">
+                                <h5>Himsagar Mangoes</h5>
+                                <p>1 kg × ৳120/kg</p>
+                            </div>
+                            <div class="item-price">৳120</div>
+                        </div>
+                        <div class="order-item">
+                            <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=80&h=80&fit=crop" alt="Milk" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2780%27 height=%2780%27%3E%3Crect fill=%27%23e1f5fe%27 width=%2780%27 height=%2780%27/%3E%3Ctext fill=%27%230288d1%27 font-family=%27Arial%27 font-size=%2730%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥛%3C/text%3E%3C/svg%3E'">
+                            <div class="item-details">
+                                <h5>Farm Fresh Milk</h5>
+                                <p>2 L × ৳65/L</p>
+                            </div>
+                            <div class="item-price">৳130</div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Information -->
+                    <div class="delivery-info">
+                        <div class="info-section">
+                            <h4><i class="fas fa-map-marker-alt"></i> Delivery Address</h4>
+                            <p>Mohammad Rahman<br>
+                            House 45, Road 12, Dhanmondi<br>
+                            Dhaka 1209, Bangladesh<br>
+                            Phone: +880 1712-345678</p>
+                        </div>
+                        <div class="info-section">
+                            <h4><i class="fas fa-user"></i> Farmer</h4>
+                            <p>Ahmed's Organic Farm<br>
+                            Rangpur, Bangladesh<br>
+                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified Seller</span></p>
+                        </div>
+                        <div class="info-section">
+                            <h4><i class="fas fa-receipt"></i> Order Summary</h4>
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span>৳340</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Delivery Fee</span>
+                                <span>৳50</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span>৳390</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->

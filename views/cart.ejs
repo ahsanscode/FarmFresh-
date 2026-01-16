@@ -1,0 +1,186 @@
+<%- include('partials/header') %> <!-- Include the header partial -->
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title"><i class="fas fa-shopping-cart"></i> Shopping Cart</h1>
+            <p class="page-subtitle">Review your items and proceed to checkout</p>
+            <nav class="breadcrumb">
+                <a href="/" class="breadcrumb-link">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Cart</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section class="cart-page">
+        <div class="container">
+            <div class="cart-layout">
+                <!-- Cart Items -->
+                <div class="cart-items-section">
+                    <h2 class="section-title">Cart Items (3)</h2>
+                    
+                    <div class="cart-item">
+                        <img src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=120&h=120&fit=crop" alt="Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27120%27 height=%27120%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍅%3C/text%3E%3C/svg%3E'">
+                        <div class="cart-item-details">
+                            <h3>Organic Tomatoes</h3>
+                            <p class="item-farmer">by Ahmed Khan</p>
+                            <p class="item-price">৳45/kg</p>
+                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Cold Hub Verified</span>
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="updateQuantity(1, -1)"><i class="fas fa-minus"></i></button>
+                                <input type="number" class="qty-input" value="2" min="1" id="qty-1">
+                                <button class="qty-btn" onclick="updateQuantity(1, 1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="item-total">৳90</div>
+                            <button class="btn-remove" onclick="removeItem(1)"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=120&h=120&fit=crop" alt="Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Crect fill=%27%23fff3e0%27 width=%27120%27 height=%27120%27/%3E%3Ctext fill=%27%23ff9800%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥭%3C/text%3E%3C/svg%3E'">
+                        <div class="cart-item-details">
+                            <h3>Himsagar Mangoes</h3>
+                            <p class="item-farmer">by Rahim Uddin</p>
+                            <p class="item-price">৳120/kg</p>
+                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Cold Hub Verified</span>
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="updateQuantity(2, -1)"><i class="fas fa-minus"></i></button>
+                                <input type="number" class="qty-input" value="1" min="1" id="qty-2">
+                                <button class="qty-btn" onclick="updateQuantity(2, 1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="item-total">৳120</div>
+                            <button class="btn-remove" onclick="removeItem(2)"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=120&h=120&fit=crop" alt="Milk" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Crect fill=%27%23e1f5fe%27 width=%27120%27 height=%27120%27/%3E%3Ctext fill=%27%230288d1%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥛%3C/text%3E%3C/svg%3E'">
+                        <div class="cart-item-details">
+                            <h3>Farm Fresh Milk</h3>
+                            <p class="item-farmer">by Rafiq Ahmed</p>
+                            <p class="item-price">৳65/L</p>
+                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Cold Hub Verified</span>
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="updateQuantity(3, -1)"><i class="fas fa-minus"></i></button>
+                                <input type="number" class="qty-input" value="2" min="1" id="qty-3">
+                                <button class="qty-btn" onclick="updateQuantity(3, 1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="item-total">৳130</div>
+                            <button class="btn-remove" onclick="removeItem(3)"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary & Checkout -->
+                <div class="cart-summary-section">
+                    <div class="order-summary">
+                        <h3>Order Summary</h3>
+                        <div class="summary-row">
+                            <span>Subtotal (3 items)</span>
+                            <span>৳340</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Fee</span>
+                            <span>৳50</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Cold Hub Verification</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span>৳390</span>
+                        </div>
+
+                        <!-- Payment Options -->
+                        <div class="payment-section">
+                            <h4>Select Payment Method</h4>
+                            
+                            <div class="payment-option">
+                                <input type="radio" id="cod" name="payment" value="cod" checked>
+                                <label for="cod">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <div>
+                                        <strong>Cash on Delivery</strong>
+                                        <p>Pay when you receive</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="payment-option">
+                                <input type="radio" id="bkash" name="payment" value="bkash">
+                                <label for="bkash">
+                                    <i class="fas fa-mobile-alt" style="color: #E2136E;"></i>
+                                    <div>
+                                        <strong>bKash</strong>
+                                        <p>Mobile payment</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="payment-option">
+                                <input type="radio" id="nagad" name="payment" value="nagad">
+                                <label for="nagad">
+                                    <i class="fas fa-mobile-alt" style="color: #EC1C24;"></i>
+                                    <div>
+                                        <strong>Nagad</strong>
+                                        <p>Mobile payment</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="payment-option">
+                                <input type="radio" id="card" name="payment" value="card">
+                                <label for="card">
+                                    <i class="fas fa-credit-card"></i>
+                                    <div>
+                                        <strong>Credit/Debit Card</strong>
+                                        <p>Visa, Mastercard, Amex</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="payment-option">
+                                <input type="radio" id="bank" name="payment" value="bank">
+                                <label for="bank">
+                                    <i class="fas fa-university"></i>
+                                    <div>
+                                        <strong>Bank Transfer</strong>
+                                        <p>Direct bank transfer</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block btn-checkout">
+                            <i class="fas fa-lock"></i> Proceed to Checkout
+                        </button>
+
+                        <div class="secure-checkout">
+                            <i class="fas fa-shield-alt"></i> Secure checkout with SSL encryption
+                        </div>
+                    </div>
+
+                    <!-- Promo Code -->
+                    <div class="promo-code">
+                        <h4>Have a promo code?</h4>
+                        <div class="promo-input-group">
+                            <input type="text" placeholder="Enter code">
+                            <button class="btn btn-outline">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<%- include('partials/footer') %> <!-- Include the footer partial -->

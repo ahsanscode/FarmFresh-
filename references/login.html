@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FarmFresh Marketplace</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation & Global Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav-brand">
+                <i class="fas fa-leaf brand-icon"></i>
+                <span class="brand-text">FarmFresh Marketplace</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="index.html#marketplace" class="nav-link">Marketplace</a></li>
+                <li><a href="index.html#auctions" class="nav-link hot-feature">Live Auctions <span class="badge-hot">Hot</span></a></li>
+                <li><a href="index.html#farmers" class="nav-link">Farmers</a></li>
+                <li><a href="index.html#track" class="nav-link">Track Order</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-text">Login</a>
+                <a href="register.html" class="btn btn-outline">Register</a>
+                <a href="cart.html" class="btn btn-icon" aria-label="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="seller.html" class="btn btn-primary">Become a Seller</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title"><i class="fas fa-sign-in-alt"></i> Login to Your Account</h1>
+            <p class="page-subtitle">Access your farm-fresh marketplace</p>
+            <nav class="breadcrumb">
+                <a href="index.html" class="breadcrumb-link">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Login</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section class="auth-page">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2 class="auth-title">Welcome Back!</h2>
+                    <p class="auth-subtitle">Login to continue shopping fresh produce</p>
+
+                    <form class="auth-form" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword()">
+                                    <i class="fas fa-eye" id="toggleIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="remember">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="#" class="link-text">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button class="btn-social btn-google">
+                            <i class="fab fa-google"></i> Continue with Google
+                        </button>
+                        <button class="btn-social btn-facebook">
+                            <i class="fab fa-facebook-f"></i> Continue with Facebook
+                        </button>
+                    </div>
+
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="register.html" class="link-primary">Register Now</a></p>
+                    </div>
+                </div>
+
+                <!-- Benefits Section -->
+                <div class="auth-benefits">
+                    <h3>Why Shop with FarmFresh?</h3>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Fresh from Farm</h4>
+                            <p>Direct access to farm-fresh produce</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Cold Hub Verified</h4>
+                            <p>Quality guaranteed with cold chain technology</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Fast Delivery</h4>
+                            <p>Same-day delivery in major cities</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Fair Prices</h4>
+                            <p>Save up to 40% vs market prices</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand">
+                        <i class="fas fa-leaf brand-icon"></i>
+                        <span class="brand-text">FarmFresh</span>
+                    </div>
+                    <p class="footer-tagline">Connecting farmers directly to consumers, ensuring fair prices and fresh produce.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Fair Trade Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Technology</h4>
+                    <ul>
+                        <li><a href="#">Cold Chain Technology</a></li>
+                        <li><a href="#">Quality Verification</a></li>
+                        <li><a href="#">Live Auction System</a></li>
+                        <li><a href="#">Supply Chain</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FarmFresh Marketplace. All rights reserved.</p>
+                <p>Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for farmers and consumers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const navActions = document.querySelector('.nav-actions');
+        
+        if (navToggle && navMenu && navActions) {
+            navToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                navActions.classList.toggle('active');
+            });
+        }
+
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Handle login form submission
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            alert('Login functionality would be implemented here.\nEmail: ' + email);
+            // In a real application, this would send credentials to a backend
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmFresh Marketplace - Fresh from Farm to Door</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation & Global Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav-brand">
+                <i class="fas fa-leaf brand-icon"></i>
+                <span class="brand-text">FarmFresh Marketplace</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#marketplace" class="nav-link">Marketplace</a></li>
+                <li><a href="#auctions" class="nav-link hot-feature">Live Auctions <span class="badge-hot">Hot</span></a></li>
+                <li><a href="#farmers" class="nav-link">Farmers</a></li>
+                <li><a href="#track" class="nav-link">Track Order</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-text">Login</a>
+                <a href="register.html" class="btn btn-outline">Register</a>
+                <a href="cart.html" class="btn btn-icon" aria-label="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="seller.html" class="btn btn-primary">Become a Seller</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content container">
+            <h1 class="hero-title">Fresh from the Farm, Straight to Your Door</h1>
+            <p class="hero-subtitle">Eliminating intermediaries to bring you verified quality and fair prices for farmers.</p>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search for fresh vegetables, fruits, dairy...">
+                <button class="btn btn-primary search-btn">Search</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Local Farmers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Products</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">50K+</span>
+                    <span class="stat-label">Happy Customers</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Our Direct-to-Customer ecosystem ensures freshness and fair pricing</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Farmer Lists Product</h3>
+                    <p class="step-description">Farmers directly list their fresh produce from the source, cutting out middlemen.</p>
+                </div>
+                <div class="step-connector">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="step-card cold-hub">
+                    <div class="step-icon">
+                        <i class="fas fa-snowflake"></i>
+                    </div>
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Cold Hub Verification</h3>
+                    <p class="step-description">Products pass through our Physical Hybrid Cold Hub for quality verification and freshness check.</p>
+                    <span class="verified-badge"><i class="fas fa-check-circle"></i> Quality Assured</span>
+                </div>
+                <div class="step-connector">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Direct Delivery</h3>
+                    <p class="step-description">Fresh products are delivered directly to your doorstep with full traceability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section id="marketplace" class="marketplace">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Fresh Marketplace</h2>
+                    <p class="section-subtitle">Farm-fresh produce at honest prices</p>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Vegetables</button>
+                    <button class="filter-btn">Fruits</button>
+                    <button class="filter-btn">Dairy</button>
+                    <button class="filter-btn">Grains</button>
+                </div>
+            </div>
+            <div class="product-grid">
+                <!-- Product Card 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=300&h=200&fit=crop" alt="Organic Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍅 Tomatoes%3C/text%3E%3C/svg%3E'">
+                        <div class="product-badges">
+                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
+                        </div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Organic Tomatoes</h3>
+                        <p class="product-origin">Grown by <a href="#farmers" class="farmer-link">Ahmed Khan</a></p>
+                        <div class="product-pricing">
+                            <span class="farm-price">৳45/kg</span>
+                            <span class="market-price">৳70/kg</span>
+                            <span class="savings">Save 36%</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&h=200&fit=crop" alt="Fresh Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff3e0%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23ff9800%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥭 Mangoes%3C/text%3E%3C/svg%3E'">
+                        <div class="product-badges">
+                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                        </div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Himsagar Mangoes</h3>
+                        <p class="product-origin">Grown by <a href="#farmers" class="farmer-link">Rahim Uddin</a></p>
+                        <div class="product-pricing">
+                            <span class="farm-price">৳120/kg</span>
+                            <span class="market-price">৳180/kg</span>
+                            <span class="savings">Save 33%</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=300&h=200&fit=crop" alt="Fresh Potatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23efebe9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%238d6e63%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥔 Potatoes%3C/text%3E%3C/svg%3E'">
+                        <div class="product-badges">
+                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
+                        </div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Diamond Potatoes</h3>
+                        <p class="product-origin">Grown by <a href="#farmers" class="farmer-link">Karim Mia</a></p>
+                        <div class="product-pricing">
+                            <span class="farm-price">৳25/kg</span>
+                            <span class="market-price">৳40/kg</span>
+                            <span class="savings">Save 38%</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&h=200&fit=crop" alt="Fresh Onions" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fce4ec%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23c2185b%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🧅 Onions%3C/text%3E%3C/svg%3E'">
+                        <div class="product-badges">
+                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                        </div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Red Onions</h3>
+                        <p class="product-origin">Grown by <a href="#farmers" class="farmer-link">Jamal Hossain</a></p>
+                        <div class="product-pricing">
+                            <span class="farm-price">৳35/kg</span>
+                            <span class="market-price">৳55/kg</span>
+                            <span class="savings">Save 36%</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product Card 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=300&h=200&fit=crop" alt="Fresh Pineapple" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff8e1%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23f9a825%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍍 Pineapple%3C/text%3E%3C/svg%3E'">
+                        <div class="product-badges">
+                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
+                        </div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Sylhet Pineapple</h3>
+                        <p class="product-origin">Grown by <a href="#farmers" class="farmer-link">Sumon Rahman</a></p>
+                        <div class="product-pricing">
+                            <span class="farm-price">৳60/piece</span>
+                            <span class="market-price">৳90/piece</span>
+                            <span class="savings">Save 33%</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product Card 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=300&h=200&fit=crop" alt="Fresh Milk" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e3f2fd%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%231976d2%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥛 Fresh Milk%3C/text%3E%3C/svg%3E'">
+                        <div class="product-badges">
+                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                        </div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Farm Fresh Milk</h3>
+                        <p class="product-origin">Grown by <a href="#farmers" class="farmer-link">Rafiq Ahmed</a></p>
+                        <div class="product-pricing">
+                            <span class="farm-price">৳65/L</span>
+                            <span class="market-price">৳90/L</span>
+                            <span class="savings">Save 28%</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="view-more">
+                <a href="products.html" class="btn btn-outline btn-lg">View All Products <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Auction Section -->
+    <section id="auctions" class="live-auctions">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title"><i class="fas fa-gavel"></i> Live Auctions</h2>
+                    <p class="section-subtitle">Bid on bulk produce directly from farmers</p>
+                </div>
+                <div class="auction-indicator">
+                    <span class="live-dot"></span>
+                    <span>3 Auctions Live Now</span>
+                </div>
+            </div>
+            
+            <div class="auction-grid">
+                <!-- Auction Card 1 - Featured -->
+                <div class="auction-card featured">
+                    <div class="auction-header">
+                        <span class="auction-badge live"><i class="fas fa-circle"></i> LIVE</span>
+                        <span class="auction-id">Batch #402</span>
+                    </div>
+                    <div class="auction-image">
+                        <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&h=250&fit=crop" alt="Organic Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27250%27%3E%3Crect fill=%27%23fff3e0%27 width=%27400%27 height=%27250%27/%3E%3Ctext fill=%27%23ff9800%27 font-family=%27Arial%27 font-size=%2720%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥭 Organic Mangoes%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="auction-content">
+                        <h3 class="auction-title">100kg Organic Mangoes</h3>
+                        <p class="auction-seller">by <a href="#farmers">Rahman Farms</a> • Rajshahi</p>
+                        
+                        <div class="auction-timer">
+                            <i class="fas fa-clock"></i>
+                            <div class="timer-display">
+                                <span class="time-unit"><span class="time-value">02</span>hrs</span>
+                                <span class="time-separator">:</span>
+                                <span class="time-unit"><span class="time-value">34</span>min</span>
+                                <span class="time-separator">:</span>
+                                <span class="time-unit"><span class="time-value">56</span>sec</span>
+                            </div>
+                        </div>
+
+                        <div class="auction-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Current High Bid</span>
+                                <span class="stat-value highlight">৳8,500</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Bids</span>
+                                <span class="stat-value">24</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Min Increment</span>
+                                <span class="stat-value">৳100</span>
+                            </div>
+                        </div>
+
+                        <div class="bid-input-group">
+                            <input type="number" class="bid-input" placeholder="Enter bid amount" value="8600">
+                            <button class="btn btn-primary">Place Bid</button>
+                        </div>
+
+                        <div class="auction-chat">
+                            <h4><i class="fas fa-comments"></i> Live Chat</h4>
+                            <div class="chat-messages">
+                                <div class="chat-message">
+                                    <span class="chat-user">@buyer_dhaka:</span>
+                                    <span class="chat-text">Great quality mangoes! 🥭</span>
+                                </div>
+                                <div class="chat-message">
+                                    <span class="chat-user">@seller_rahman:</span>
+                                    <span class="chat-text">All Cold Hub verified, premium grade</span>
+                                </div>
+                                <div class="chat-message">
+                                    <span class="chat-user">@fresh_buyer:</span>
+                                    <span class="chat-text">Bidding 8500! 💪</span>
+                                </div>
+                                <div class="chat-message system">
+                                    <span class="chat-text">New bid: ৳8,500 by @fresh_buyer</span>
+                                </div>
+                            </div>
+                            <div class="chat-input-group">
+                                <input type="text" class="chat-input" placeholder="Type a message...">
+                                <button class="btn btn-icon"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auction Card 2 -->
+                <div class="auction-card">
+                    <div class="auction-header">
+                        <span class="auction-badge live"><i class="fas fa-circle"></i> LIVE</span>
+                        <span class="auction-id">Batch #398</span>
+                    </div>
+                    <div class="auction-image">
+                        <img src="https://images.unsplash.com/photo-1594282486756-576b93f4c866?w=400&h=200&fit=crop" alt="Rice" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27200%27%3E%3Crect fill=%27%23f5f5dc%27 width=%27400%27 height=%27200%27/%3E%3Ctext fill=%27%238b4513%27 font-family=%27Arial%27 font-size=%2718%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾 Premium Rice%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="auction-content">
+                        <h3 class="auction-title">500kg Miniket Rice</h3>
+                        <p class="auction-seller">by <a href="#farmers">Karim Agro</a> • Dinajpur</p>
+                        
+                        <div class="auction-timer">
+                            <i class="fas fa-clock"></i>
+                            <div class="timer-display">
+                                <span class="time-unit"><span class="time-value">05</span>hrs</span>
+                                <span class="time-separator">:</span>
+                                <span class="time-unit"><span class="time-value">12</span>min</span>
+                                <span class="time-separator">:</span>
+                                <span class="time-unit"><span class="time-value">08</span>sec</span>
+                            </div>
+                        </div>
+
+                        <div class="auction-stats compact">
+                            <div class="stat-item">
+                                <span class="stat-label">Current Bid</span>
+                                <span class="stat-value highlight">৳32,000</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Bids</span>
+                                <span class="stat-value">18</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block">Join Auction</button>
+                    </div>
+                </div>
+
+                <!-- Auction Card 3 -->
+                <div class="auction-card">
+                    <div class="auction-header">
+                        <span class="auction-badge upcoming"><i class="fas fa-clock"></i> UPCOMING</span>
+                        <span class="auction-id">Batch #410</span>
+                    </div>
+                    <div class="auction-image">
+                        <img src="https://images.unsplash.com/photo-1447175008436-054170c2e979?w=400&h=200&fit=crop" alt="Potatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27200%27%3E%3Crect fill=%27%23efebe9%27 width=%27400%27 height=%27200%27/%3E%3Ctext fill=%27%238d6e63%27 font-family=%27Arial%27 font-size=%2718%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥔 Fresh Potatoes%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="auction-content">
+                        <h3 class="auction-title">1000kg Fresh Potatoes</h3>
+                        <p class="auction-seller">by <a href="#farmers">Bogra Farmers Co-op</a></p>
+                        
+                        <div class="auction-timer upcoming">
+                            <i class="fas fa-calendar"></i>
+                            <span>Starts in 2 days</span>
+                        </div>
+
+                        <div class="auction-stats compact">
+                            <div class="stat-item">
+                                <span class="stat-label">Starting Price</span>
+                                <span class="stat-value">৳25,000</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Interested</span>
+                                <span class="stat-value">45</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-outline btn-block"><i class="fas fa-bell"></i> Set Reminder</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="view-more">
+                <a href="auctions.html" class="btn btn-outline btn-lg">View All Auctions <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Farmer Micro-Store Section -->
+    <section id="farmers" class="farmer-store">
+        <div class="container">
+            <h2 class="section-title">Featured Farmer Store</h2>
+            <p class="section-subtitle">Multi-vendor storefronts where farmers build their brand</p>
+
+            <div class="store-profile">
+                <div class="store-header">
+                    <div class="store-avatar">
+                        <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=150&h=150&fit=crop" alt="Farmer Ahmed" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%232ecc71%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27white%27 font-family=%27Arial%27 font-size=%2760%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E👨‍🌾%3C/text%3E%3C/svg%3E'">
+                        <span class="verified-seller"><i class="fas fa-check-circle"></i></span>
+                    </div>
+                    <div class="store-info">
+                        <h3 class="store-name">Ahmed's Organic Farm</h3>
+                        <p class="store-location"><i class="fas fa-map-marker-alt"></i> Rangpur, Bangladesh</p>
+                        <p class="store-member"><i class="fas fa-calendar-alt"></i> Member since 2021</p>
+                        <div class="store-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-text">4.8 (324 reviews)</span>
+                        </div>
+                    </div>
+                    <div class="store-actions">
+                        <button class="btn btn-outline"><i class="fas fa-heart"></i> Follow</button>
+                        <button class="btn btn-primary"><i class="fas fa-comment"></i> Contact</button>
+                    </div>
+                </div>
+
+                <div class="store-metrics">
+                    <div class="metric">
+                        <i class="fas fa-box"></i>
+                        <div class="metric-info">
+                            <span class="metric-value">1,234</span>
+                            <span class="metric-label">Products Sold</span>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <i class="fas fa-reply"></i>
+                        <div class="metric-info">
+                            <span class="metric-value">98%</span>
+                            <span class="metric-label">Response Rate</span>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <i class="fas fa-truck"></i>
+                        <div class="metric-info">
+                            <span class="metric-value">24hrs</span>
+                            <span class="metric-label">Avg. Ship Time</span>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <i class="fas fa-redo"></i>
+                        <div class="metric-info">
+                            <span class="metric-value">2%</span>
+                            <span class="metric-label">Return Rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="store-inventory">
+                    <h4>Products from this Farmer</h4>
+                    <div class="inventory-grid">
+                        <div class="inventory-item">
+                            <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=150&h=150&fit=crop" alt="Carrots" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23ffcc80%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%23e65100%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥕%3C/text%3E%3C/svg%3E'">
+                            <span class="item-name">Organic Carrots</span>
+                            <span class="item-price">৳40/kg</span>
+                        </div>
+                        <div class="inventory-item">
+                            <img src="https://images.unsplash.com/photo-1518977676601-b53f82ber7a0?w=150&h=150&fit=crop" alt="Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23ffcdd2%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%23c62828%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍅%3C/text%3E%3C/svg%3E'">
+                            <span class="item-name">Fresh Tomatoes</span>
+                            <span class="item-price">৳45/kg</span>
+                        </div>
+                        <div class="inventory-item">
+                            <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=150&h=150&fit=crop" alt="Onions" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23f3e5f5%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%237b1fa2%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🧅%3C/text%3E%3C/svg%3E'">
+                            <span class="item-name">Red Onions</span>
+                            <span class="item-price">৳35/kg</span>
+                        </div>
+                        <div class="inventory-item">
+                            <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=150&h=150&fit=crop" alt="Spinach" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23c8e6c9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232e7d32%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥬%3C/text%3E%3C/svg%3E'">
+                            <span class="item-name">Fresh Spinach</span>
+                            <span class="item-price">৳30/bunch</span>
+                        </div>
+                        <div class="inventory-item">
+                            <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=150&h=150&fit=crop" alt="Milk" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e1f5fe%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%230288d1%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥛%3C/text%3E%3C/svg%3E'">
+                            <span class="item-name">Fresh Milk</span>
+                            <span class="item-price">৳65/L</span>
+                        </div>
+                        <div class="inventory-item view-all">
+                            <span class="view-all-text">View All<br>Products</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="view-more">
+                <a href="farmers.html" class="btn btn-outline btn-lg">View All Farmers <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Track Order Section -->
+    <section id="track" class="track-order">
+        <div class="container">
+            <h2 class="section-title">Track Your Order</h2>
+            <p class="section-subtitle">Real-time tracking from farm to your doorstep</p>
+            <div class="track-form">
+                <input type="text" class="track-input" placeholder="Enter your order ID (e.g., FF-2024-12345)">
+                <a href="track.html" class="btn btn-primary">Track Order</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand">
+                        <i class="fas fa-leaf brand-icon"></i>
+                        <span class="brand-text">FarmFresh</span>
+                    </div>
+                    <p class="footer-tagline">Connecting farmers directly to consumers, ensuring fair prices and fresh produce.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Fair Trade Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Technology</h4>
+                    <ul>
+                        <li><a href="#">Cold Chain Technology</a></li>
+                        <li><a href="#">Quality Verification</a></li>
+                        <li><a href="#">Live Auction System</a></li>
+                        <li><a href="#">Supply Chain</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FarmFresh Marketplace. All rights reserved.</p>
+                <p>Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for farmers and consumers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const navActions = document.querySelector('.nav-actions');
+        
+        if (navToggle && navMenu && navActions) {
+            navToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                navActions.classList.toggle('active');
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

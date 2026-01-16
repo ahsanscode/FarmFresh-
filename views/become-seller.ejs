@@ -1,0 +1,276 @@
+<%- include("partials/header.ejs") %>  <!-- Include header from partials -->
+
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title"><i class="fas fa-store"></i> Become a Seller</h1>
+            <p class="page-subtitle">Start selling your farm-fresh produce directly to customers</p>
+            <nav class="breadcrumb">
+                <a href="/" class="breadcrumb-link">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Become a Seller</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Seller Benefits Section -->
+    <section class="seller-benefits">
+        <div class="container">
+            <h2 class="section-title">Why Sell on FarmFresh?</h2>
+            <p class="section-subtitle">Join our thriving community of farmers and reach thousands of customers</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon-large">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Higher Profits</h3>
+                    <p>Sell directly to customers and earn up to 40% more than traditional wholesale</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-large">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Wide Reach</h3>
+                    <p>Access to 50,000+ active buyers across Bangladesh</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-large">
+                        <i class="fas fa-snowflake"></i>
+                    </div>
+                    <h3>Cold Chain Support</h3>
+                    <p>Free Cold Hub verification for quality assurance</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-large">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Easy Management</h3>
+                    <p>Simple dashboard to manage orders and inventory</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-large">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Logistics Support</h3>
+                    <p>We handle delivery and customer service</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon-large">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Fast Payments</h3>
+                    <p>Weekly payouts directly to your bank account</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seller Application Form Section -->
+    <section class="seller-application">
+        <div class="container">
+            <div class="application-container">
+                <div class="application-form-card">
+                    <h2 class="auth-title">Seller Application</h2>
+                    <p class="auth-subtitle">Fill out this form to start your journey with FarmFresh</p>
+
+                    <form class="auth-form seller-form" onsubmit="handleSellerApplication(event)">
+                        <h3 class="form-section-title">Personal Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+880 1XXX-XXXXXX" required>
+                            </div>
+                        </div>
+
+                        <h3 class="form-section-title">Farm Information</h3>
+
+                        <div class="form-group">
+                            <label for="farmName">Farm/Business Name *</label>
+                            <input type="text" id="farmName" name="farmName" placeholder="e.g., Green Valley Organic Farm" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Farm Address *</label>
+                            <textarea id="address" name="address" rows="3" placeholder="Full address including village, upazila, district" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="district">District *</label>
+                                <select id="district" name="district" required>
+                                    <option value="">Select District</option>
+                                    <option value="dhaka">Dhaka</option>
+                                    <option value="chittagong">Chittagong</option>
+                                    <option value="rajshahi">Rajshahi</option>
+                                    <option value="khulna">Khulna</option>
+                                    <option value="barisal">Barisal</option>
+                                    <option value="sylhet">Sylhet</option>
+                                    <option value="rangpur">Rangpur</option>
+                                    <option value="mymensingh">Mymensingh</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="farmSize">Farm Size (acres) *</label>
+                                <input type="number" id="farmSize" name="farmSize" min="0" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="products">What products do you grow? *</label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="products" value="vegetables">
+                                    <span>Vegetables</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="products" value="fruits">
+                                    <span>Fruits</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="products" value="dairy">
+                                    <span>Dairy Products</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="products" value="grains">
+                                    <span>Grains & Cereals</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="products" value="poultry">
+                                    <span>Poultry</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="products" value="meat">
+                                    <span>Meat</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience">Years of Farming Experience *</label>
+                            <select id="experience" name="experience" required>
+                                <option value="">Select Experience</option>
+                                <option value="0-2">0-2 years</option>
+                                <option value="3-5">3-5 years</option>
+                                <option value="6-10">6-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+
+                        <h3 class="form-section-title">Banking Information</h3>
+
+                        <div class="form-group">
+                            <label for="bankName">Bank Name *</label>
+                            <input type="text" id="bankName" name="bankName" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="accountNumber">Account Number *</label>
+                                <input type="text" id="accountNumber" name="accountNumber" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="accountName">Account Holder Name *</label>
+                                <input type="text" id="accountName" name="accountName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobileBanking">Mobile Banking (Optional)</label>
+                            <select id="mobileBanking" name="mobileBanking">
+                                <option value="">Select Provider</option>
+                                <option value="bkash">bKash</option>
+                                <option value="nagad">Nagad</option>
+                                <option value="rocket">Rocket</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobileNumber">Mobile Banking Number</label>
+                            <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="+880 1XXX-XXXXXX">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="terms" required>
+                                <span>I agree to the <a href="#" class="link-text">Seller Terms & Conditions</a> and <a href="#" class="link-text">Privacy Policy</a></span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-paper-plane"></i> Submit Application
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Application Info Sidebar -->
+                <div class="application-info">
+                    <div class="info-card">
+                        <h3>Application Process</h3>
+                        <div class="process-steps">
+                            <div class="process-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Submit Application</h4>
+                                    <p>Fill out the form with your details</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Verification</h4>
+                                    <p>We'll verify your information (1-2 days)</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Training</h4>
+                                    <p>Quick onboarding session via video call</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Start Selling</h4>
+                                    <p>List your products and start earning</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Need Help?</h3>
+                        <p>Our team is here to support you throughout the process.</p>
+                        <div class="contact-info">
+                            <p><i class="fas fa-phone"></i> +880 1XXX-XXXXXX</p>
+                            <p><i class="fas fa-envelope"></i> sellers@farmfresh.com</p>
+                            <p><i class="fas fa-clock"></i> Mon-Fri, 9AM-6PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+<%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->
