@@ -183,4 +183,35 @@
         </div>
     </section>
 
+<script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navActions = document.querySelector('.nav-actions');
+    
+    if (navToggle && navMenu && navActions) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navActions.classList.toggle('active');
+        });
+    }
+
+    // Update quantity
+    function updateQuantity(itemId, change) {
+        const qtyInput = document.getElementById('qty-' + itemId);
+        let currentQty = parseInt(qtyInput.value);
+        currentQty = Math.max(1, currentQty + change);
+        qtyInput.value = currentQty;
+        // In a real app, update the totals here
+    }
+
+    // Remove item
+    function removeItem(itemId) {
+        if (confirm('Remove this item from cart?')) {
+            // In a real app, remove the item from cart
+            alert('Item removed from cart');
+        }
+    }
+</script>
+
 <%- include('partials/footer') %> <!-- Include the footer partial -->

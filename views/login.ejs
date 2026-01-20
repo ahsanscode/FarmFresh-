@@ -118,7 +118,42 @@
         </div>
     </section>
 
+<script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navActions = document.querySelector('.nav-actions');
+    
+    if (navToggle && navMenu && navActions) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navActions.classList.toggle('active');
+        });
+    }
 
+    // Toggle password visibility
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
 
+    // Handle login form submission
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        alert('Login functionality would be implemented here.\nEmail: ' + email);
+        // In a real application, this would send credentials to a backend
+    }
+</script>
 
 <%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->

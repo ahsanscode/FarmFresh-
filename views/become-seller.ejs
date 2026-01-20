@@ -273,4 +273,31 @@
 
 
 
+<script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navActions = document.querySelector('.nav-actions');
+    
+    if (navToggle && navMenu && navActions) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navActions.classList.toggle('active');
+        });
+    }
+
+    // Handle seller application form submission
+    function handleSellerApplication(event) {
+        event.preventDefault();
+
+        const farmName = document.getElementById('farmName').value;
+        
+        // Show confirmation
+        alert(`Thank you for your application! We've received your submission for "${farmName}". Our team will review your application within 1-2 business days and contact you via email or phone.`);
+
+        // Reset form
+        document.querySelector('.seller-form').reset();
+    }
+</script>
+
 <%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->

@@ -1,0 +1,520 @@
+<%- include("partials/header.ejs") %>  <!-- Include header from partials -->
+
+    <!-- Breadcrumb -->
+    <section class="page-header" style="padding: 30px 0;">
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="/" class="breadcrumb-link">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <a href="/auction" class="breadcrumb-link">Auctions</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">100kg Organic Mangoes - Batch #402</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Auction Detail Section -->
+    <section class="auction-detail-section">
+        <div class="container">
+            <div class="auction-detail-grid">
+                <!-- Auction Images & Info -->
+                <div class="auction-main-content">
+                    <!-- Live Status Banner -->
+                    <div class="auction-status-banner live">
+                        <div class="status-indicator">
+                            <span class="live-pulse"></span>
+                            <span class="status-text">AUCTION LIVE NOW</span>
+                        </div>
+                        <div class="auction-meta">
+                            <span class="auction-batch">Batch #402</span>
+                            <span class="auction-watchers"><i class="fas fa-eye"></i> 47 watching</span>
+                        </div>
+                    </div>
+
+                    <!-- Image Gallery -->
+                    <div class="auction-images">
+                        <div class="main-auction-image">
+                            <img id="mainAuctionImage" src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=700&h=500&fit=crop" alt="Organic Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27700%27 height=%27500%27%3E%3Crect fill=%27%23fff3e0%27 width=%27700%27 height=%27500%27/%3E%3Ctext fill=%27%23ff9800%27 font-family=%27Arial%27 font-size=%2732%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥭 Organic Mangoes%3C/text%3E%3C/svg%3E'">
+                            <div class="auction-image-badges">
+                                <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                                <span class="badge badge-fresh"><i class="fas fa-certificate"></i> Grade A Quality</span>
+                            </div>
+                        </div>
+                        <div class="auction-thumbnails">
+                            <img class="auction-thumb active" src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=150&h=100&fit=crop" alt="View 1" onclick="changeAuctionImage(this.src.replace('150', '700').replace('100', '500'))">
+                            <img class="auction-thumb" src="https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=150&h=100&fit=crop" alt="View 2" onclick="changeAuctionImage(this.src.replace('150', '700').replace('100', '500'))">
+                            <img class="auction-thumb" src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=150&h=100&fit=crop" alt="View 3" onclick="changeAuctionImage(this.src.replace('150', '700').replace('100', '500'))">
+                            <img class="auction-thumb" src="https://images.unsplash.com/photo-1605635380312-69e2dcad8cff?w=150&h=100&fit=crop" alt="View 4" onclick="changeAuctionImage(this.src.replace('150', '700').replace('100', '500'))">
+                        </div>
+                    </div>
+
+                    <!-- Auction Details -->
+                    <div class="auction-info-detail">
+                        <h1 class="auction-detail-title">100kg Premium Organic Mangoes</h1>
+                        
+                        <div class="auction-seller-card">
+                            <div class="seller-avatar">
+                                <img src="https://ui-avatars.com/api/?name=Rahman+Farms&background=2ecc71&color=fff&size=60" alt="Rahman Farms">
+                                <span class="verified-badge"><i class="fas fa-check-circle"></i></span>
+                            </div>
+                            <div class="seller-info">
+                                <h3><a href="/farmers">Rahman Farms</a></h3>
+                                <p><i class="fas fa-map-marker-alt"></i> Rajshahi Division, Bangladesh</p>
+                                <div class="seller-rating">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span>4.8 (156 auctions completed)</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-sm">Follow Seller</button>
+                        </div>
+
+                        <div class="auction-description-box">
+                            <h3>Lot Description</h3>
+                            <p>Premium Grade A Himsagar mangoes, freshly harvested from our certified organic orchards in Rajshahi. This bulk lot consists of 100kg of carefully selected, uniformly sized mangoes perfect for wholesale buyers, retailers, or bulk consumers.</p>
+                            
+                            <div class="lot-specifications">
+                                <div class="spec-item">
+                                    <i class="fas fa-weight-hanging"></i>
+                                    <div>
+                                        <strong>Total Weight</strong>
+                                        <span>100 kg</span>
+                                    </div>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-box"></i>
+                                    <div>
+                                        <strong>Packaging</strong>
+                                        <span>10 boxes × 10kg each</span>
+                                    </div>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-leaf"></i>
+                                    <div>
+                                        <strong>Quality Grade</strong>
+                                        <span>Premium Grade A</span>
+                                    </div>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <div>
+                                        <strong>Harvest Date</strong>
+                                        <span>January 19, 2026</span>
+                                    </div>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-truck"></i>
+                                    <div>
+                                        <strong>Delivery</strong>
+                                        <span>Cold chain logistics included</span>
+                                    </div>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <div>
+                                        <strong>Certification</strong>
+                                        <span>Organic & Cold Hub Verified</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quality-features">
+                                <h4>Quality Assurance</h4>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> 100% Organic - BOPMA Certified</li>
+                                    <li><i class="fas fa-check-circle"></i> No artificial ripening agents used</li>
+                                    <li><i class="fas fa-check-circle"></i> Cold Hub storage maintained at 12-15°C</li>
+                                    <li><i class="fas fa-check-circle"></i> Uniform size and color selection</li>
+                                    <li><i class="fas fa-check-circle"></i> Quality guarantee - 100% refund if unsatisfied</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bidding Panel -->
+                <div class="bidding-panel">
+                    <!-- Timer Card -->
+                    <div class="timer-card">
+                        <h3><i class="fas fa-clock"></i> Time Remaining</h3>
+                        <div class="countdown-timer">
+                            <div class="time-block">
+                                <span class="time-number" id="hours">02</span>
+                                <span class="time-label">Hours</span>
+                            </div>
+                            <span class="time-colon">:</span>
+                            <div class="time-block">
+                                <span class="time-number" id="minutes">34</span>
+                                <span class="time-label">Minutes</span>
+                            </div>
+                            <span class="time-colon">:</span>
+                            <div class="time-block">
+                                <span class="time-number" id="seconds">56</span>
+                                <span class="time-label">Seconds</span>
+                            </div>
+                        </div>
+                        <p class="auction-end-time">Ends on Jan 20, 2026 at 6:30 PM</p>
+                    </div>
+
+                    <!-- Current Bid Card -->
+                    <div class="current-bid-card">
+                        <div class="bid-info-row">
+                            <div class="bid-info-item">
+                                <span class="bid-label">Current Bid</span>
+                                <span class="bid-amount-large">৳8,500</span>
+                                <span class="bid-per-kg">৳85/kg</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bid-stats-row">
+                            <div class="bid-stat">
+                                <span class="stat-number">24</span>
+                                <span class="stat-text">Total Bids</span>
+                            </div>
+                            <div class="bid-stat">
+                                <span class="stat-number">12</span>
+                                <span class="stat-text">Bidders</span>
+                            </div>
+                        </div>
+
+                        <div class="bid-increment-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Minimum bid increment: <strong>৳100</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Place Bid Card -->
+                    <div class="place-bid-card">
+                        <h3>Place Your Bid</h3>
+                        <div class="bid-input-container">
+                            <span class="currency-symbol">৳</span>
+                            <input type="number" id="bidAmount" class="bid-amount-input" value="8600" min="8600" step="100">
+                        </div>
+                        <div class="quick-bid-buttons">
+                            <button class="quick-bid-btn" onclick="quickBid(100)">+৳100</button>
+                            <button class="quick-bid-btn" onclick="quickBid(500)">+৳500</button>
+                            <button class="quick-bid-btn" onclick="quickBid(1000)">+৳1000</button>
+                        </div>
+                        <button class="btn btn-primary btn-large btn-block">
+                            <i class="fas fa-gavel"></i>
+                            Place Bid
+                        </button>
+                        <p class="bid-notice">
+                            <i class="fas fa-shield-alt"></i>
+                            By bidding, you agree to our auction <a href="#">terms and conditions</a>
+                        </p>
+                    </div>
+
+                    <!-- Auction Terms -->
+                    <div class="auction-terms-card">
+                        <h4><i class="fas fa-file-contract"></i> Auction Terms</h4>
+                        <ul>
+                            <li><strong>Starting Price:</strong> ৳7,000</li>
+                            <li><strong>Reserve Price:</strong> Not disclosed</li>
+                            <li><strong>Buyer Premium:</strong> 5% of winning bid</li>
+                            <li><strong>Payment:</strong> Within 24 hours</li>
+                            <li><strong>Pickup/Delivery:</strong> Within 48 hours</li>
+                            <li><strong>Inspection:</strong> Available before pickup</li>
+                        </ul>
+                    </div>
+
+                    <!-- Delivery Options -->
+                    <div class="delivery-options-card">
+                        <h4><i class="fas fa-shipping-fast"></i> Delivery Options</h4>
+                        <div class="delivery-option">
+                            <input type="radio" id="delivery1" name="delivery" checked>
+                            <label for="delivery1">
+                                <strong>Cold Chain Delivery</strong>
+                                <span>৳500 - 2-3 days (Dhaka division)</span>
+                            </label>
+                        </div>
+                        <div class="delivery-option">
+                            <input type="radio" id="delivery2" name="delivery">
+                            <label for="delivery2">
+                                <strong>Self Pickup</strong>
+                                <span>Free - From Rajshahi warehouse</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Bid History -->
+            <div class="bid-history-section">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i> Live Bid History
+                    <span class="live-indicator"><span class="pulse-dot"></span> Live Updates</span>
+                </h2>
+                <div class="bid-history-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Bidder</th>
+                                <th>Bid Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="winning-bid">
+                                <td>2 minutes ago</td>
+                                <td>
+                                    <img src="https://ui-avatars.com/api/?name=FB&background=e74c3c&color=fff&size=30" alt="Bidder">
+                                    @fresh_buyer
+                                </td>
+                                <td class="bid-amount-cell">৳8,500</td>
+                                <td><span class="status-badge winning">Winning Bid</span></td>
+                            </tr>
+                            <tr>
+                                <td>5 minutes ago</td>
+                                <td>
+                                    <img src="https://ui-avatars.com/api/?name=BD&background=3498db&color=fff&size=30" alt="Bidder">
+                                    @buyer_dhaka
+                                </td>
+                                <td class="bid-amount-cell">৳8,400</td>
+                                <td><span class="status-badge outbid">Outbid</span></td>
+                            </tr>
+                            <tr>
+                                <td>8 minutes ago</td>
+                                <td>
+                                    <img src="https://ui-avatars.com/api/?name=WB&background=9b59b6&color=fff&size=30" alt="Bidder">
+                                    @wholesale_bd
+                                </td>
+                                <td class="bid-amount-cell">৳8,300</td>
+                                <td><span class="status-badge outbid">Outbid</span></td>
+                            </tr>
+                            <tr>
+                                <td>12 minutes ago</td>
+                                <td>
+                                    <img src="https://ui-avatars.com/api/?name=FB&background=e74c3c&color=fff&size=30" alt="Bidder">
+                                    @fresh_buyer
+                                </td>
+                                <td class="bid-amount-cell">৳8,200</td>
+                                <td><span class="status-badge outbid">Outbid</span></td>
+                            </tr>
+                            <tr>
+                                <td>15 minutes ago</td>
+                                <td>
+                                    <img src="https://ui-avatars.com/api/?name=MB&background=f39c12&color=fff&size=30" alt="Bidder">
+                                    @mango_trader
+                                </td>
+                                <td class="bid-amount-cell">৳8,100</td>
+                                <td><span class="status-badge outbid">Outbid</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Live Chat Section -->
+            <div class="auction-chat-section">
+                <h2 class="section-title">
+                    <i class="fas fa-comments"></i> Live Auction Chat
+                    <span class="chat-info">23 participants</span>
+                </h2>
+                <div class="chat-container">
+                    <div class="chat-messages-area">
+                        <div class="chat-msg">
+                            <img src="https://ui-avatars.com/api/?name=BD&background=3498db&color=fff&size=40" alt="User">
+                            <div class="msg-content">
+                                <div class="msg-header">
+                                    <span class="msg-user">@buyer_dhaka</span>
+                                    <span class="msg-time">3 min ago</span>
+                                </div>
+                                <p class="msg-text">Great quality mangoes! The pictures look amazing 🥭</p>
+                            </div>
+                        </div>
+                        <div class="chat-msg">
+                            <img src="https://ui-avatars.com/api/?name=RF&background=2ecc71&color=fff&size=40" alt="Seller">
+                            <div class="msg-content">
+                                <div class="msg-header">
+                                    <span class="msg-user seller-badge">@rahman_farms <i class="fas fa-check-circle"></i></span>
+                                    <span class="msg-time">2 min ago</span>
+                                </div>
+                                <p class="msg-text">Thank you! All Cold Hub verified, premium grade. Available for inspection before pickup.</p>
+                            </div>
+                        </div>
+                        <div class="chat-msg">
+                            <img src="https://ui-avatars.com/api/?name=WB&background=9b59b6&color=fff&size=40" alt="User">
+                            <div class="msg-content">
+                                <div class="msg-header">
+                                    <span class="msg-user">@wholesale_bd</span>
+                                    <span class="msg-time">2 min ago</span>
+                                </div>
+                                <p class="msg-text">What's the average weight per mango?</p>
+                            </div>
+                        </div>
+                        <div class="chat-msg">
+                            <img src="https://ui-avatars.com/api/?name=RF&background=2ecc71&color=fff&size=40" alt="Seller">
+                            <div class="msg-content">
+                                <div class="msg-header">
+                                    <span class="msg-user seller-badge">@rahman_farms <i class="fas fa-check-circle"></i></span>
+                                    <span class="msg-time">1 min ago</span>
+                                </div>
+                                <p class="msg-text">Average 300-350g per mango. Very uniform sizing in this lot!</p>
+                            </div>
+                        </div>
+                        <div class="chat-msg system-msg">
+                            <i class="fas fa-gavel"></i>
+                            <p>New bid placed: <strong>৳8,500</strong> by @fresh_buyer</p>
+                        </div>
+                        <div class="chat-msg">
+                            <img src="https://ui-avatars.com/api/?name=FB&background=e74c3c&color=fff&size=40" alt="User">
+                            <div class="msg-content">
+                                <div class="msg-header">
+                                    <span class="msg-user">@fresh_buyer</span>
+                                    <span class="msg-time">Just now</span>
+                                </div>
+                                <p class="msg-text">Bidding 8500! These are perfect for my restaurant chain 💪</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-message-input" placeholder="Type your message...">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Similar Auctions -->
+            <div class="similar-auctions">
+                <h2 class="section-title">Similar Live Auctions</h2>
+                <div class="auction-grid-small">
+                    <!-- Auction Card 1 -->
+                    <div class="auction-card-small">
+                        <div class="auction-card-header">
+                            <span class="badge-live"><i class="fas fa-circle"></i> LIVE</span>
+                            <span class="batch-number">Batch #398</span>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1594282486756-576b93f4c866?w=300&h=180&fit=crop" alt="Rice">
+                        <div class="auction-card-content">
+                            <h3>500kg Miniket Rice</h3>
+                            <p class="seller-name">by <a href="/farmers">Karim Agro</a></p>
+                            <div class="auction-card-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Current Bid</span>
+                                    <span class="stat-value">৳32,000</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Time Left</span>
+                                    <span class="stat-value">1h 45m</span>
+                                </div>
+                            </div>
+                            <a href="/auction/2" class="btn btn-outline btn-block btn-sm">View Auction</a>
+                        </div>
+                    </div>
+
+                    <!-- Auction Card 2 -->
+                    <div class="auction-card-small">
+                        <div class="auction-card-header">
+                            <span class="badge-live"><i class="fas fa-circle"></i> LIVE</span>
+                            <span class="batch-number">Batch #405</span>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=300&h=180&fit=crop" alt="Tomatoes">
+                        <div class="auction-card-content">
+                            <h3>200kg Fresh Tomatoes</h3>
+                            <p class="seller-name">by <a href="/farmers">Ahmed Khan</a></p>
+                            <div class="auction-card-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Current Bid</span>
+                                    <span class="stat-value">৳9,200</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Time Left</span>
+                                    <span class="stat-value">3h 12m</span>
+                                </div>
+                            </div>
+                            <a href="/auction/3" class="btn btn-outline btn-block btn-sm">View Auction</a>
+                        </div>
+                    </div>
+
+                    <!-- Auction Card 3 -->
+                    <div class="auction-card-small">
+                        <div class="auction-card-header">
+                            <span class="badge-live"><i class="fas fa-circle"></i> LIVE</span>
+                            <span class="batch-number">Batch #407</span>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=300&h=180&fit=crop" alt="Potatoes">
+                        <div class="auction-card-content">
+                            <h3>1000kg Diamond Potatoes</h3>
+                            <p class="seller-name">by <a href="/farmers">Karim Mia</a></p>
+                            <div class="auction-card-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Current Bid</span>
+                                    <span class="stat-value">৳25,500</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Time Left</span>
+                                    <span class="stat-value">4h 28m</span>
+                                </div>
+                            </div>
+                            <a href="/auction/4" class="btn btn-outline btn-block btn-sm">View Auction</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Image Gallery
+        function changeAuctionImage(src) {
+            document.getElementById('mainAuctionImage').src = src;
+            
+            // Update active thumbnail
+            const thumbnails = document.querySelectorAll('.auction-thumb');
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Quick Bid
+        function quickBid(amount) {
+            const input = document.getElementById('bidAmount');
+            const currentValue = parseInt(input.value);
+            input.value = currentValue + amount;
+        }
+
+        // Countdown Timer (Demo)
+        function updateCountdown() {
+            let hours = parseInt(document.getElementById('hours').textContent);
+            let minutes = parseInt(document.getElementById('minutes').textContent);
+            let seconds = parseInt(document.getElementById('seconds').textContent);
+
+            seconds--;
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--;
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                    if (hours < 0) {
+                        hours = 0;
+                        minutes = 0;
+                        seconds = 0;
+                    }
+                }
+            }
+
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+
+        // Auto-scroll chat to bottom
+        const chatMessages = document.querySelector('.chat-messages-area');
+        if (chatMessages) {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+
+<%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->

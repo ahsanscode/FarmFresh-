@@ -152,4 +152,52 @@
     </section>
 
 
+<script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navActions = document.querySelector('.nav-actions');
+    
+    if (navToggle && navMenu && navActions) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navActions.classList.toggle('active');
+        });
+    }
+
+    // Track order function
+    function trackOrder() {
+        const orderIdInput = document.getElementById('orderIdInput');
+        const trackingResults = document.getElementById('trackingResults');
+        const displayOrderId = document.getElementById('displayOrderId');
+        const orderDate = document.getElementById('orderDate');
+        const statusText = document.getElementById('statusText');
+
+        const orderId = orderIdInput.value.trim();
+
+        if (!orderId) {
+            alert('Please enter an order ID');
+            return;
+        }
+
+        // Display results
+        displayOrderId.textContent = orderId;
+        orderDate.textContent = 'Jan 7, 2026 at 10:30 AM';
+        statusText.textContent = 'Out for Delivery';
+
+        trackingResults.style.display = 'block';
+        trackingResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Track on Enter key
+    const orderIdInput = document.getElementById('orderIdInput');
+    if (orderIdInput) {
+        orderIdInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                trackOrder();
+            }
+        });
+    }
+</script>
+
 <%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->

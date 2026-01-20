@@ -180,4 +180,60 @@
         </div>
     </section>
 
-    <%- include("partials/footer.ejs") %> <!-- Include footer from partials -->
+<script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navActions = document.querySelector('.nav-actions');
+    
+    if (navToggle && navMenu && navActions) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navActions.classList.toggle('active');
+        });
+    }
+
+    // Select user type
+    function selectUserType(type) {
+        document.getElementById('userType').value = type;
+        const buttons = document.querySelectorAll('.user-type-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.closest('.user-type-btn').classList.add('active');
+    }
+
+    // Toggle password visibility
+    function togglePassword(fieldId) {
+        const passwordInput = document.getElementById(fieldId);
+        const iconNumber = fieldId === 'password' ? '1' : '2';
+        const toggleIcon = document.getElementById('toggleIcon' + iconNumber);
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+
+    // Handle registration form submission
+    function handleRegister(event) {
+        event.preventDefault();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+        
+        const userType = document.getElementById('userType').value;
+        const email = document.getElementById('email').value;
+        alert('Registration functionality would be implemented here.\nUser Type: ' + userType + '\nEmail: ' + email);
+        // In a real application, this would send data to a backend
+    }
+</script>
+
+<%- include("partials/footer.ejs") %> <!-- Include footer from partials -->
