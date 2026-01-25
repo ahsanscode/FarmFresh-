@@ -83,7 +83,7 @@
                             <div class="form-group">
                                 <label for="firstName">First Name *</label>
                                 <input type="text" id="firstName" name="firstName" required>
-                                    <input type="email" id="email" name="email" required>
+                            </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name *</label>
                                 <input type="text" id="lastName" name="lastName" required>
@@ -150,27 +150,27 @@
                             <label for="products">What products do you grow? *</label>
                             <div class="checkbox-grid">
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="products" value="vegetables">
+                                    <input type="checkbox" name="products[]" value="vegetables">
                                     <span>Vegetables</span>
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="products" value="fruits">
+                                    <input type="checkbox" name="products[]" value="fruits">
                                     <span>Fruits</span>
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="products" value="dairy">
+                                    <input type="checkbox" name="products[]" value="dairy">
                                     <span>Dairy Products</span>
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="products" value="grains">
+                                    <input type="checkbox" name="products[]" value="grains">
                                     <span>Grains & Cereals</span>
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="products" value="poultry">
+                                    <input type="checkbox" name="products[]" value="poultry">
                                     <span>Poultry</span>
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="products" value="meat">
+                                    <input type="checkbox" name="products[]" value="meat">
                                     <span>Meat</span>
                                 </label>
                             </div>
@@ -228,7 +228,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-paper-plane"></i> Submit Application
+                            <i class="fas fa-paper-plane"></i> Create Shop
                         </button>
                     </form>
                 </div>
@@ -241,7 +241,7 @@
                             <div class="process-step">
                                 <div class="step-number">1</div>
                                 <div class="step-content">
-                                    <h4>Submit Application</h4>
+                                    <h4>Create Shop</h4>
                                     <p>Fill out the form with your details</p>
                                 </div>
                             </div>

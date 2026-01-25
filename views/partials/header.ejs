@@ -26,7 +26,7 @@
                 <% if (!user) { %>
                     <a href="/login" class="btn btn-text">Login</a>
                     <a href="/register" class="btn btn-outline">Register</a>
-                    <a href="/become-seller" class="btn btn-primary">Become a Seller</a>
+                    <a href="/register?userType=seller" class="btn btn-primary">Become a Seller</a>
                 <% } else { %>
                     <% if (user.role === 'seller') { %>
                         <a href="/add-product" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</a>
@@ -36,6 +36,11 @@
                             <i class="fas fa-user"></i> <%= user.name %> <i class="fas fa-caret-down" style="margin-left:6px;"></i>
                         </summary>
                         <div class="dropdown-menu" style="position:absolute; right:0; background:#fff; border:1px solid #e5e7eb; box-shadow:0 4px 12px rgba(0,0,0,0.08); border-radius:8px; margin-top:8px; min-width:180px; z-index:1000;">
+                            <% if (user.role === 'seller' && !hasShop) { %>
+                                <a href="/create-shop" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">
+                                    <i class="fas fa-store" style="margin-right:6px;"></i> Create Shop
+                                </a>
+                            <% } %>
                             <a href="/profile" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Profile</a>
                             <a href="/profile/edit" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">Edit Profile</a>
                             <a href="/my-orders" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Orders</a>

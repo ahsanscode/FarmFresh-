@@ -31,6 +31,22 @@ app.use((req, res, next) => {
     next();
 });
 
+// Check if logged-in seller already has a shop (farmer profile)
+app.use(async (req, res, next) => {
+    try {
+        if (req.session.user && req.session.user.role === 'seller') {
+            const check = await pool.query('SELECT 1 FROM farmers WHERE user_id = $1 LIMIT 1', [req.session.user.id]);
+            res.locals.hasShop = check.rowCount > 0;
+        } else {
+            res.locals.hasShop = false;
+        }
+    } catch (e) {
+        console.error('Shop check middleware error', e);
+        res.locals.hasShop = false;
+    }
+    next();
+});
+
 // Passport serialize/deserialize
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -119,24 +135,40 @@ app.get("/products", (req, res) => {
 app.get("/product/:id", (req, res) => {
     res.render("product-detail.ejs");
 });
-app.get("/become-seller", (req, res) => {
-    res.render("become-seller.ejs");
+app.get("/create-shop", async (req, res) => {
+    // If not logged in or not a seller, route to registration with seller selected
+    if (!req.session.user || req.session.user.role !== 'seller') {
+        return res.redirect('/register?userType=seller');
+    }
+    // If logged-in seller, render create shop form
+    res.render("create-shop.ejs");
 });
 
 // Google OAuth routes (only if configured)
 if (googleConfigured) {
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-    app.get('/auth/google/farmfresh',
+        app.get('/auth/google/farmfresh',
             passport.authenticate('google', { failureRedirect: '/login' }),
-            (req, res) => {
-                    // Sync passport user into our session shape used by templates
-                    if (req.user) {
-                            req.session.user = { id: req.user.id, name: req.user.name, email: req.user.email, role: req.user.role };
+            async (req, res) => {
+                // Sync passport user into our session shape used by templates
+                if (req.user) {
+                    req.session.user = { id: req.user.id, name: req.user.name, email: req.user.email, role: req.user.role };
+                    // If seller and no farmer profile yet, send to create shop
+                    if (req.user.role === 'seller') {
+                    try {
+                        const farmerRes = await pool.query('SELECT id FROM farmers WHERE user_id = $1', [req.user.id]);
+                        if (farmerRes.rowCount === 0) {
+                        return res.redirect('/create-shop');
+                        }
+                    } catch (e) {
+                        console.error('Post-Google farmer check failed', e);
                     }
-                    res.redirect('/');
+                    }
+                }
+                res.redirect('/');
             }
-    );
+        );
 } else {
     app.get('/auth/google', (req, res) => {
         res.status(503).send('Google login not configured');
@@ -233,20 +265,21 @@ app.post('/profile/edit', requireAuth, async (req, res) => {
 
 // Register buyer
 app.post("/register", async (req, res) => {
-    const { firstName, lastName, email, phone, password, confirmPassword } = req.body;
+    const { firstName, lastName, email, phone, password, confirmPassword, userType } = req.body;
 
     if (password !== confirmPassword) {
         return res.status(400).send("Passwords do not match");
     }
 
     const name = `${firstName ?? ""} ${lastName ?? ""}`.trim();
+    const role = userType === 'seller' ? 'seller' : 'buyer';
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         await pool.query(
             `INSERT INTO users (name, email, password, phone, role, is_verified)
              VALUES ($1, $2, $3, $4, $5, $6)`,
-            [name, email, hashedPassword, phone, "buyer", false]
+            [name, email, hashedPassword, phone, role, false]
         );
         res.redirect("/login");
     } catch (error) {
@@ -259,56 +292,50 @@ app.post("/register", async (req, res) => {
 });
 
 // Register seller & create farmer profile
-app.post("/become-seller", async (req, res) => {
+app.post("/create-shop", requireSeller, async (req, res) => {
     const {
-        firstName,
-        lastName,
-        email,
-        phone,
-        password,
-        confirmPassword,
         farmName,
         address,
         district,
-        farmSize
+        farmSize,
+        products,
+        experience,
+        bankName,
+        accountNumber,
+        accountName,
+        mobileBanking,
+        mobileNumber
     } = req.body;
-
-    if (password !== confirmPassword) {
-        return res.status(400).send("Passwords do not match");
-    }
-
-    const name = `${firstName ?? ""} ${lastName ?? ""}`.trim();
     const sizeNumber = farmSize ? parseFloat(farmSize) : null;
+    
+    // Handle multiple product selections (checkboxes use products[])
+    const productValues = products ?? req.body['products[]'];
+    const productsString = Array.isArray(productValues) ? productValues.join(', ') : productValues || null;
 
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
+        const userId = req.session.user.id;
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const userResult = await client.query(
-            `INSERT INTO users (name, email, password, phone, role, is_verified)
-             VALUES ($1, $2, $3, $4, $5, $6)
-             RETURNING id`,
-            [name, email, hashedPassword, phone, "seller", false]
-        );
-
-        const userId = userResult.rows[0].id;
+        // Prevent duplicate shop creation for the same seller
+        const exists = await client.query('SELECT 1 FROM farmers WHERE user_id = $1 LIMIT 1', [userId]);
+        if (exists.rowCount > 0) {
+            await client.query('ROLLBACK');
+            return res.redirect('/');
+        }
 
         await client.query(
-            `INSERT INTO farmers (user_id, farm_name, location, district, address, farm_size, is_verified)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-            [userId, farmName, district, district, address, sizeNumber, false]
+            `INSERT INTO farmers (user_id, farm_name, location, district, address, farm_size, products, experience, bank_name, account_number, account_holder_name, mobile_banking_provider, mobile_banking_number, is_verified)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
+            [userId, farmName, district, district, address, sizeNumber, productsString, experience, bankName, accountNumber, accountName, mobileBanking, mobileNumber, false]
         );
 
         await client.query('COMMIT');
-        res.redirect("/login");
+        res.redirect("/profile");
     } catch (error) {
         await client.query('ROLLBACK');
-        if (error.code === '23505') {
-            return res.status(400).send("Email already registered");
-        }
-        console.error("Seller registration error", error);
-        res.status(500).send("Seller registration failed");
+        console.error("Create shop error", error);
+        res.status(500).send("Create shop failed");
     } finally {
         client.release();
     }
@@ -329,6 +356,13 @@ app.post('/login', async (req, res) => {
         }
         // Save minimal user in session
         req.session.user = { id: user.id, name: user.name, email: user.email, role: user.role };
+        // If seller and no farmer profile yet, send to create shop
+        if (user.role === 'seller') {
+            const farmerRes = await pool.query('SELECT id FROM farmers WHERE user_id = $1', [user.id]);
+            if (farmerRes.rowCount === 0) {
+                return res.redirect('/create-shop');
+            }
+        }
         res.redirect('/');
     } catch (err) {
         console.error('Login error', err);

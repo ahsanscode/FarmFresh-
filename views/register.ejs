@@ -23,11 +23,11 @@
 
                     <!-- User Type Selection -->
                     <div class="user-type-selector">
-                        <button type="button" class="user-type-btn active">
+                        <button type="button" class="user-type-btn active" data-role="buyer" onclick="selectUserType(this)">
                             <i class="fas fa-shopping-basket"></i>
                             <span>I want to Buy</span>
                         </button>
-                        <button type="button" class="user-type-btn" onclick="window.location.href='/become-seller'">
+                        <button type="button" class="user-type-btn" data-role="seller" onclick="selectUserType(this)">
                             <i class="fas fa-store"></i>
                             <span>I want to Sell</span>
                         </button>
@@ -193,6 +193,32 @@
         });
     }
 
+    function selectUserType(button) {
+        const buttons = document.querySelectorAll('.user-type-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        const role = button.getAttribute('data-role') || 'buyer';
+        const input = document.getElementById('userType');
+        if (input) {
+            input.value = role;
+        }
+    }
+
+    // Preselect role from query string ?userType=seller
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const type = params.get('userType');
+            if (type === 'seller') {
+                const sellerBtn = document.querySelector('.user-type-btn[data-role="seller"]');
+                if (sellerBtn) selectUserType(sellerBtn);
+            } else {
+                const buyerBtn = document.querySelector('.user-type-btn[data-role="buyer"]');
+                if (buyerBtn) selectUserType(buyerBtn);
+            }
+        } catch {}
+    });
+
     // Toggle password visibility
     function togglePassword(fieldId) {
         const passwordInput = document.getElementById(fieldId);
@@ -223,5 +249,6 @@
         return true;
     }
 </script>
+
 
 <%- include("partials/footer.ejs") %> <!-- Include footer from partials -->
