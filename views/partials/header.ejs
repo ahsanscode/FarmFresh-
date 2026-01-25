@@ -23,13 +23,30 @@
                 <li><a href="#track" class="nav-link">Track Order</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="/login" class="btn btn-text">Login</a>
-                <a href="/register" class="btn btn-outline">Register</a>
+                <% if (!user) { %>
+                    <a href="/login" class="btn btn-text">Login</a>
+                    <a href="/register" class="btn btn-outline">Register</a>
+                    <a href="/become-seller" class="btn btn-primary">Become a Seller</a>
+                <% } else { %>
+                    <% if (user.role === 'seller') { %>
+                        <a href="/add-product" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</a>
+                    <% } %>
+                    <details class="profile-dropdown" style="position:relative; display:inline-block;">
+                        <summary class="btn btn-outline" style="list-style:none; cursor:pointer;">
+                            <i class="fas fa-user"></i> <%= user.name %> <i class="fas fa-caret-down" style="margin-left:6px;"></i>
+                        </summary>
+                        <div class="dropdown-menu" style="position:absolute; right:0; background:#fff; border:1px solid #e5e7eb; box-shadow:0 4px 12px rgba(0,0,0,0.08); border-radius:8px; margin-top:8px; min-width:180px; z-index:1000;">
+                            <a href="/profile" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Profile</a>
+                            <a href="/profile/edit" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">Edit Profile</a>
+                            <a href="/my-orders" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Orders</a>
+                            <a href="/logout" class="dropdown-item" style="display:block; padding:10px 12px; color:#c00; text-decoration:none;">Logout</a>
+                        </div>
+                    </details>
+                <% } %>
                 <a href="/cart" class="btn btn-icon" aria-label="Cart">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">3</span>
                 </a>
-                <a href="/become-seller" class="btn btn-primary">Become a Seller</a>
             </div>
             <button class="nav-toggle" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>

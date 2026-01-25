@@ -1,0 +1,58 @@
+<%- include("partials/header.ejs") %>
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-user"></i> Your Profile</h1>
+    <p class="page-subtitle">Welcome, <%= user.name %> (<%= user.role %>)</p>
+  </div>
+  </section>
+
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-card" style="max-width: 520px;">
+        <h2 class="auth-title">Account Details</h2>
+        <div class="profile-header" style="display:flex; gap:16px; align-items:center; margin-bottom:16px;">
+          <div class="avatar" style="width:84px; height:84px; border-radius:50%; background:#e8f5e9; display:flex; align-items:center; justify-content:center; font-size:32px; color:#2ecc71; overflow:hidden;">
+            <img id="avatarPreview" src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user.name) %>&background=e8f5e9&color=2ecc71&size=128" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+          <div>
+            <div style="font-weight:600; font-size:18px;"><%= fullUser?.name || user.name %></div>
+            <div style="color:#666;">Role: <%= fullUser?.role || user.role %></div>
+            <div style="color:#666;">Member since: <%= fullUser?.created_at ? new Date(fullUser.created_at).toLocaleDateString() : '—' %></div>
+          </div>
+        </div>
+
+        <ul class="detail-list">
+          <li><strong>Email:</strong> <%= fullUser?.email || user.email %></li>
+          <li><strong>Phone:</strong> <%= fullUser?.phone || '—' %></li>
+          <li><strong>Verified:</strong> <%= fullUser?.is_verified ? 'Yes' : 'No' %></li>
+        </ul>
+
+        <% if (farmer) { %>
+          <div style="margin-top:24px;">
+            <h3 class="auth-title" style="font-size:20px;">Farm Profile</h3>
+            <ul class="detail-list">
+              <li><strong>Farm Name:</strong> <%= farmer.farm_name %></li>
+              <li><strong>District:</strong> <%= farmer.district || '—' %></li>
+              <li><strong>Address:</strong> <%= farmer.address || '—' %></li>
+              <li><strong>Farm Size:</strong> <%= farmer.farm_size ? farmer.farm_size + ' acres' : '—' %></li>
+              <li><strong>Verified:</strong> <%= farmer.is_verified ? 'Yes' : 'No' %></li>
+              <li><strong>Rating:</strong> <%= farmer.rating || 0 %> (<%= farmer.total_reviews || 0 %> reviews)</li>
+              <li><strong>Updated:</strong> <%= farmer.updated_at ? new Date(farmer.updated_at).toLocaleDateString() : '—' %></li>
+            </ul>
+            <div class="actions" style="display:flex; gap:8px;">
+              <a href="/add-product" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</a>
+              <a href="/products" class="btn btn-outline">View Products</a>
+            </div>
+          </div>
+        <% } %>
+
+        <div class="actions" style="margin-top:24px; display:flex; gap:8px;"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<%- include("partials/footer.ejs") %>

@@ -23,7 +23,7 @@
                     <h2 class="auth-title">Welcome Back!</h2>
                     <p class="auth-subtitle">Login to continue shopping fresh produce</p>
 
-                    <form class="auth-form" onsubmit="handleLogin(event)">
+                    <form class="auth-form" action="/login" method="post">
                         <div class="form-group">
                             <label for="email">Email Address</label>
                             <div class="input-with-icon">
@@ -61,16 +61,16 @@
                     </div>
 
                     <div class="social-login">
-                        <button class="btn-social btn-google">
+                        <a href="/auth/google" class="btn-social btn-google">
                             <i class="fab fa-google"></i> Continue with Google
-                        </button>
-                        <button class="btn-social btn-facebook">
+                        </a>
+                        <button class="btn-social btn-facebook" type="button">
                             <i class="fab fa-facebook-f"></i> Continue with Facebook
                         </button>
                     </div>
 
                     <div class="auth-footer">
-                        <p>Don't have an account? <a href="register.html" class="link-primary">Register Now</a></p>
+                        <p>Don't have an account? <a href="/register" class="link-primary">Register Now</a></p>
                     </div>
                 </div>
 
@@ -147,13 +147,7 @@
         }
     }
 
-    // Handle login form submission
-    function handleLogin(event) {
-        event.preventDefault();
-        const email = document.getElementById('email').value;
-        alert('Login functionality would be implemented here.\nEmail: ' + email);
-        // In a real application, this would send credentials to a backend
-    }
+    // Form posts to /login; backend handles authentication
 </script>
 
 <%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->

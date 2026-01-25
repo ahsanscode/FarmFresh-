@@ -23,18 +23,18 @@
 
                     <!-- User Type Selection -->
                     <div class="user-type-selector">
-                        <button type="button" class="user-type-btn active" onclick="selectUserType('buyer')">
+                        <button type="button" class="user-type-btn active">
                             <i class="fas fa-shopping-basket"></i>
                             <span>I want to Buy</span>
                         </button>
-                        <button type="button" class="user-type-btn" onclick="selectUserType('seller')">
+                        <button type="button" class="user-type-btn" onclick="window.location.href='/become-seller'">
                             <i class="fas fa-store"></i>
                             <span>I want to Sell</span>
                         </button>
                     </div>
 
-                    <form class="auth-form" onsubmit="handleRegister(event)">
-                        <input type="hidden" id="userType" value="buyer">
+                    <form class="auth-form" action="/register" method="post" onsubmit="return validateRegister(event)">
+                        <input type="hidden" id="userType" name="userType" value="buyer">
 
                         <div class="form-row">
                             <div class="form-group">
@@ -123,16 +123,16 @@
                     </div>
 
                     <div class="social-login">
-                        <button class="btn-social btn-google">
+                        <a href="/auth/google" class="btn-social btn-google">
                             <i class="fab fa-google"></i> Sign up with Google
-                        </button>
+                        </a>
                         <button class="btn-social btn-facebook">
                             <i class="fab fa-facebook-f"></i> Sign up with Facebook
                         </button>
                     </div>
 
                     <div class="auth-footer">
-                        <p>Already have an account? <a href="login.html" class="link-primary">Login Here</a></p>
+                        <p>Already have an account? <a href="/login" class="link-primary">Login Here</a></p>
                     </div>
                 </div>
 
@@ -193,14 +193,6 @@
         });
     }
 
-    // Select user type
-    function selectUserType(type) {
-        document.getElementById('userType').value = type;
-        const buttons = document.querySelectorAll('.user-type-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.closest('.user-type-btn').classList.add('active');
-    }
-
     // Toggle password visibility
     function togglePassword(fieldId) {
         const passwordInput = document.getElementById(fieldId);
@@ -218,21 +210,17 @@
         }
     }
 
-    // Handle registration form submission
-    function handleRegister(event) {
-        event.preventDefault();
+    // Client-side validation for registration
+    function validateRegister(event) {
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         
         if (password !== confirmPassword) {
+            event.preventDefault();
             alert('Passwords do not match!');
-            return;
+            return false;
         }
-        
-        const userType = document.getElementById('userType').value;
-        const email = document.getElementById('email').value;
-        alert('Registration functionality would be implemented here.\nUser Type: ' + userType + '\nEmail: ' + email);
-        // In a real application, this would send data to a backend
+        return true;
     }
 </script>
 

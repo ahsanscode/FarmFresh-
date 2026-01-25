@@ -1,0 +1,73 @@
+<%- include("partials/header.ejs") %>
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-receipt"></i> My Orders</h1>
+    <p class="page-subtitle">View your recent orders and their status</p>
+  </div>
+</section>
+
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-card" style="max-width: 960px;">
+        <% if (!orders || !orders.length) { %>
+          <p>You have no orders yet.</p>
+          <div class="actions" style="margin-top:12px;">
+            <a href="/products" class="btn btn-primary">Shop Products</a>
+          </div>
+        <% } else { %>
+          <div class="orders-list">
+            <% orders.forEach(order => { %>
+              <div class="order-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:16px; margin-bottom:16px; background:#fff;">
+                <div class="order-header" style="display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <strong>Order #<%= order.id %></strong>
+                    <div style="color:#666;">Placed: <%= new Date(order.order_date).toLocaleString() %></div>
+                    <% if (order.delivery_date) { %>
+                      <div style="color:#666;">Delivery: <%= new Date(order.delivery_date).toLocaleString() %></div>
+                    <% } %>
+                  </div>
+                  <div style="text-align:right;">
+                    <div><span class="badge" style="background:#e8f5e9; color:#2ecc71; padding:6px 10px; border-radius:999px;">Status: <%= order.status %></span></div>
+                    <div style="margin-top:8px; font-weight:600;">Total: ৳<%= Number(order.total_price).toFixed(2) %></div>
+                  </div>
+                </div>
+                <div class="order-body" style="margin-top:12px;">
+                  <table class="bid-history-table" style="width:100%;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left;">Item</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% (itemsByOrder[order.id] || []).forEach(item => { %>
+                        <tr>
+                          <td style="text-align:left;"><%= item.product_name || 'Product #' + item.product_id %></td>
+                          <td><%= item.quantity %></td>
+                          <td><%= item.unit || '-' %></td>
+                          <td>৳<%= Number(item.price).toFixed(2) %></td>
+                          <td>৳<%= Number(item.subtotal).toFixed(2) %></td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="order-footer" style="margin-top:12px; display:flex; gap:8px;">
+                  <a href="/track" class="btn btn-outline"><i class="fas fa-truck"></i> Track</a>
+                  <a href="/products" class="btn btn-text">Shop More</a>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include("partials/footer.ejs") %>
