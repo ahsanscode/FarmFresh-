@@ -1,0 +1,199 @@
+<%- include("partials/header.ejs") %>
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Contact <%= farmer.farm_name %></h1>
+        <p class="page-subtitle">Get in touch with our verified farmer</p>
+        <nav class="breadcrumb">
+            <a href="/" class="breadcrumb-link">Home</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/farmers" class="breadcrumb-link">Farmers</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/farmer/<%= farmer.id %>" class="breadcrumb-link"><%= farmer.farm_name %></a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Contact</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Contact Details Section -->
+<section class="contact-details" style="padding: 60px 0; background-color: #f8f9fa;">
+    <div class="container" style="max-width: 900px;">
+        <div class="contact-card" style="background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden;">
+            <!-- Farm Header -->
+            <div class="contact-header" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); padding: 40px; text-align: center; color: white;">
+                <div style="width: 100px; height: 100px; background: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 48px;">
+                    🌾
+                </div>
+                <h2 style="margin: 0 0 10px; font-size: 2rem;"><%= farmer.farm_name %></h2>
+                <% if (farmer.is_verified) { %>
+                    <span style="background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem;">
+                        <i class="fas fa-check-circle"></i> Verified Farmer
+                    </span>
+                <% } %>
+                <div style="margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <div class="stars">
+                        <% const rating = Number(farmer.rating) || 0; %>
+                        <% for(let i = 1; i <= 5; i++) { %>
+                            <% if (i <= Math.floor(rating)) { %>
+                                <i class="fas fa-star" style="color: #ffd700;"></i>
+                            <% } else if (i === Math.ceil(rating) && rating % 1 !== 0) { %>
+                                <i class="fas fa-star-half-alt" style="color: #ffd700;"></i>
+                            <% } else { %>
+                                <i class="far fa-star" style="color: #ffd700;"></i>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <span style="font-size: 0.9rem;"><%= rating.toFixed(1) %> (<%= farmer.total_reviews %> reviews)</span>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-body" style="padding: 40px;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 25px; color: #2c3e50; border-bottom: 2px solid #2ecc71; padding-bottom: 10px;">
+                    <i class="fas fa-address-book" style="color: #2ecc71; margin-right: 8px;"></i>
+                    Contact Information
+                </h3>
+
+                <div style="display: grid; gap: 20px;">
+                    <!-- Owner Name -->
+                    <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="width: 40px; height: 40px; background: #2ecc71; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div style="margin-left: 15px; flex: 1;">
+                            <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">Owner Name</div>
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #2c3e50;"><%= farmer.owner_name %></div>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="width: 40px; height: 40px; background: #3498db; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div style="margin-left: 15px; flex: 1;">
+                            <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">Email Address</div>
+                            <a href="mailto:<%= farmer.email %>" style="font-size: 1.1rem; font-weight: 600; color: #3498db; text-decoration: none;">
+                                <%= farmer.email %>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <% if (farmer.phone) { %>
+                        <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 40px; height: 40px; background: #e67e22; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div style="margin-left: 15px; flex: 1;">
+                                <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">Phone Number</div>
+                                <a href="tel:<%= farmer.phone %>" style="font-size: 1.1rem; font-weight: 600; color: #e67e22; text-decoration: none;">
+                                    <%= farmer.phone %>
+                                </a>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Mobile Banking -->
+                    <% if (farmer.mobile_banking_number) { %>
+                        <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 40px; height: 40px; background: #9b59b6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div style="margin-left: 15px; flex: 1;">
+                                <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">
+                                    Mobile Banking (<%= farmer.mobile_banking_provider || 'N/A' %>)
+                                </div>
+                                <div style="font-size: 1.1rem; font-weight: 600; color: #9b59b6;">
+                                    <%= farmer.mobile_banking_number %>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Farm Location -->
+                    <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="width: 40px; height: 40px; background: #e74c3c; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div style="margin-left: 15px; flex: 1;">
+                            <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">Farm Location</div>
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #2c3e50;">
+                                <%= farmer.address || 'N/A' %><br>
+                                <%= farmer.district || 'N/A' %>, Bangladesh
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Farm Size -->
+                    <% if (farmer.farm_size) { %>
+                        <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 40px; height: 40px; background: #1abc9c; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                                <i class="fas fa-ruler-combined"></i>
+                            </div>
+                            <div style="margin-left: 15px; flex: 1;">
+                                <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">Farm Size</div>
+                                <div style="font-size: 1.1rem; font-weight: 600; color: #2c3e50;">
+                                    <%= farmer.farm_size %> acres
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Products/Specialties -->
+                    <% if (farmer.products) { %>
+                        <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 40px; height: 40px; background: #f39c12; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                            <div style="margin-left: 15px; flex: 1;">
+                                <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">Specialties</div>
+                                <div style="font-size: 1.1rem; font-weight: 600; color: #2c3e50;">
+                                    <%= farmer.products %>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Experience -->
+                    <% if (farmer.experience) { %>
+                        <div class="contact-item" style="display: flex; align-items: flex-start; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 40px; height: 40px; background: #34495e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div style="margin-left: 15px; flex: 1;">
+                                <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 4px;">Farming Experience</div>
+                                <div style="font-size: 1.1rem; font-weight: 600; color: #2c3e50;">
+                                    <%= farmer.experience %> years
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="margin-top: 40px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="/farmer/<%= farmer.id %>" class="btn btn-primary" style="flex: 1; min-width: 200px; text-align: center;">
+                        <i class="fas fa-store"></i> View Products
+                    </a>
+                    <% if (farmer.phone) { %>
+                        <a href="tel:<%= farmer.phone %>" class="btn btn-outline" style="flex: 1; min-width: 200px; text-align: center;">
+                            <i class="fas fa-phone"></i> Call Now
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Farmers List -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/farmers" class="btn btn-text">
+                <i class="fas fa-arrow-left"></i> Back to All Farmers
+            </a>
+        </div>
+    </div>
+</section>
+
+<%- include("partials/footer.ejs") %>

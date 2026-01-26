@@ -556,6 +556,17 @@ section {
     background-color: var(--color-bg-section);
 }
 
+/* Make marketplace section breathe on wide screens */
+.marketplace .container {
+    max-width: 1400px;
+}
+
+@media (min-width: 1600px) {
+    .marketplace .container {
+        max-width: 1600px;
+    }
+}
+
 .filter-tabs {
     display: flex;
     gap: 10px;
@@ -584,6 +595,11 @@ section {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
+}
+
+/* Ensure cards don’t collapse or center-squeeze */
+.marketplace .product-grid {
+    align-items: stretch;
 }
 
 .product-card {
@@ -2215,24 +2231,48 @@ section {
 
 .input-with-icon {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .input-with-icon i {
     position: absolute;
-    left: 15px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--color-text-light);
+    z-index: 1;
+    pointer-events: none;
+    font-size: 1rem;
+    width: 24px;
+    text-align: center;
+    line-height: 1;
 }
 
 .input-with-icon input,
 .input-with-icon select {
     width: 100%;
-    padding: 12px 15px 12px 45px;
+    padding: 12px 15px 12px 60px;
     border: 1px solid #e0e0e0;
     border-radius: var(--radius-md);
     font-size: 1rem;
     transition: var(--transition-fast);
+    background-color: white;
+    line-height: 1.2;
+}
+
+.input-with-icon.no-icon input,
+.input-with-icon.no-icon select {
+    padding-left: 15px;
+}
+
+.input-with-icon input[type="password"],
+.input-with-icon input[type="text"]:has(~ .toggle-password) {
+    padding-right: 45px;
+}
+
+.input-with-icon:has(.toggle-password) input {
+    padding-right: 45px;
 }
 
 .form-group input,
@@ -2256,18 +2296,29 @@ section {
 
 .toggle-password {
     position: absolute;
-    right: 15px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
     color: var(--color-text-light);
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: var(--transition-fast);
 }
 
 .toggle-password:hover {
     color: var(--color-primary);
+}
+
+.toggle-password i {
+    position: static;
+    transform: none;
+    pointer-events: auto;
 }
 
 .form-hint {

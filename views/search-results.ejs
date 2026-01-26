@@ -1,0 +1,204 @@
+<%- include("partials/header.ejs") %>
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Search Results</h1>
+        <p class="page-subtitle">
+            <% if (query) { %>
+                Found <%= totalResults %> result<%= totalResults !== 1 ? 's' : '' %> for "<%= query %>"
+            <% } else { %>
+                Enter a search query to get started
+            <% } %>
+        </p>
+        <nav class="breadcrumb">
+            <a href="/" class="breadcrumb-link">Home</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Search Results</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Search Bar -->
+<section style="padding: 30px 0; background-color: #f8f9fa; border-bottom: 1px solid #e5e7eb;">
+    <div class="container">
+        <form onsubmit="performSearch(event)" style="display: flex; gap: 10px;">
+            <div style="flex: 1; position: relative;">
+                <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                <input type="text" id="searchQueryInput" value="<%= query %>" placeholder="Search for products, farms, categories..." 
+                       style="width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</section>
+
+<!-- Results Section -->
+<section style="padding: 40px 0;">
+    <div class="container">
+        <% if (!query) { %>
+            <!-- Empty State -->
+            <div style="text-align: center; padding: 60px 20px;">
+                <i class="fas fa-search" style="font-size: 48px; color: #cbd5e0; margin-bottom: 20px; display: block;"></i>
+                <p style="font-size: 1.2rem; color: #666; margin-bottom: 10px;">Start searching to find products and farms</p>
+                <p style="color: #999;">Use the search bar above to find vegetables, fruits, farms, and more</p>
+            </div>
+
+        <% } else if (totalResults === 0) { %>
+            <!-- No Results -->
+            <div style="text-align: center; padding: 60px 20px;">
+                <i class="fas fa-inbox" style="font-size: 48px; color: #cbd5e0; margin-bottom: 20px; display: block;"></i>
+                <p style="font-size: 1.2rem; color: #666; margin-bottom: 10px;">No results found for "<%= query %>"</p>
+                <p style="color: #999;">Try searching with different keywords or browse our <a href="/products" style="color: #2ecc71; text-decoration: none;">full product catalog</a></p>
+            </div>
+
+        <% } else { %>
+            <!-- Products Results -->
+            <% if (products && products.length > 0) { %>
+                <div style="margin-bottom: 50px;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 2px solid #2ecc71;">
+                        <i class="fas fa-shopping-basket"></i> Products (<%= products.length %>)
+                    </h2>
+                    <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+                        <% products.forEach(product => { 
+                            const price = Number(product.price) || 0;
+                            const marketPrice = Number(product.market_price) || null;
+                            const savings = marketPrice && price ? Math.round((1 - price / marketPrice) * 100) : 0;
+                        %>
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="<%= product.image_url ? product.image_url : '/uploads/default-product.png' %>" alt="<%= product.name %>"
+                                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E%F0%9F%8D%85%3C/text%3E%3C/svg%3E'">
+                                    <div class="product-badges">
+                                        <% if (product.is_verified) { %>
+                                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                                        <% } %>
+                                        <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
+                                    </div>
+                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-name"><a href="/product/<%= product.id %>" style="text-decoration: none; color: inherit;"><%= product.name %></a></h3>
+                                    <p class="product-origin">Grown by <a href="/farmer/<%= product.farmer_id %>" class="farmer-link"><%= product.farm_name || 'Local Farm' %></a></p>
+                                    <div class="product-pricing">
+                                        <span class="farm-price">৳<%= price %>/<%= product.unit || 'kg' %></span>
+                                        <% if (marketPrice) { %>
+                                            <span class="market-price">৳<%= marketPrice %>/<%= product.unit || 'kg' %></span>
+                                            <span class="savings">Save <%= savings %>%</span>
+                                        <% } %>
+                                    </div>
+                                    <button class="btn btn-primary btn-block" onclick="addToCartFromGrid(<%= product.id %>)">Add to Cart</button>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+
+            <!-- Farmers Results -->
+            <% if (farmers && farmers.length > 0) { %>
+                <div style="margin-bottom: 50px;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 2px solid #2ecc71;">
+                        <i class="fas fa-users"></i> Farmers (<%= farmers.length %>)
+                    </h2>
+                    <div style="display: grid; gap: 20px;">
+                        <% farmers.forEach(farmer => { %>
+                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 25px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;">
+                                <!-- Avatar -->
+                                <div style="text-align: center;">
+                                    <img src="https://ui-avatars.com/api/?name=<%= farmer.farm_name %>&background=2ecc71&color=fff&size=100" 
+                                         alt="<%= farmer.farm_name %>"
+                                         style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid #2ecc71;">
+                                    <% if (farmer.is_verified) { %>
+                                        <div style="margin-top: 8px;">
+                                            <span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px;">
+                                                <i class="fas fa-check-circle"></i> Verified
+                                            </span>
+                                        </div>
+                                    <% } %>
+                                </div>
+
+                                <!-- Info -->
+                                <div>
+                                    <h3 style="margin: 0 0 8px; font-size: 1.3rem;"><a href="/farmer/<%= farmer.id %>" style="color: inherit; text-decoration: none;"><%= farmer.farm_name %></a></h3>
+                                    <p style="margin: 0 0 8px; color: #6b7280;">
+                                        <i class="fas fa-map-marker-alt"></i> <%= farmer.district || farmer.location || 'Bangladesh' %>
+                                    </p>
+                                    <p style="margin: 0 0 8px; color: #6b7280;">
+                                        <i class="fas fa-box"></i> <%= farmer.product_count %> products
+                                    </p>
+                                    <div style="display: flex; gap: 20px; align-items: center;">
+                                        <div>
+                                            <span style="font-weight: 600; color: #111;"><%= (parseFloat(farmer.rating) || 4).toFixed(1) %>/5</span>
+                                            <% for (let i = 0; i < Math.floor(parseFloat(farmer.rating) || 4); i++) { %>
+                                                <i class="fas fa-star" style="color: #ffd700; font-size: 12px;"></i>
+                                            <% } %>
+                                        </div>
+                                        <span style="color: #6b7280; font-size: 0.9rem;">(<%= farmer.total_reviews || 0 %> reviews)</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <a href="/farmer/<%= farmer.id %>" class="btn btn-primary" style="text-decoration: none; text-align: center;">View Farm</a>
+                                    <a href="/farmer/<%= farmer.id %>/contact" class="btn btn-outline" style="text-decoration: none; text-align: center;">Contact</a>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+</section>
+
+<script>
+    function performSearch(event) {
+        event.preventDefault();
+        const query = document.getElementById('searchQueryInput').value.trim();
+        if (query) {
+            window.location.href = `/search?q=${encodeURIComponent(query)}`;
+        }
+    }
+
+    async function addToCartFromGrid(productId) {
+        try {
+            const response = await fetch('/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId, quantity: 1 })
+            });
+            const data = await response.json();
+            if (data.success) {
+                updateCartBadge();
+                alert('Product added to cart!');
+            } else {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                } else {
+                    alert(data.message || 'Failed to add to cart');
+                }
+            }
+        } catch (err) {
+            console.error('Error adding to cart:', err);
+            alert('Error adding to cart');
+        }
+    }
+
+    function updateCartBadge() {
+        const cartBtn = document.querySelector('.btn.btn-icon[aria-label="Cart"]');
+        if (!cartBtn) return;
+        let badge = cartBtn.querySelector('.cart-count');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'cart-count';
+            badge.textContent = '1';
+            cartBtn.appendChild(badge);
+            return;
+        }
+        const current = parseInt(badge.textContent || '0', 10);
+        badge.textContent = isNaN(current) ? '1' : String(current + 1);
+    }
+</script>
+
+<%- include("partials/footer.ejs") %>

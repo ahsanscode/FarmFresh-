@@ -32,391 +32,54 @@
                 </div>
             </div>
             <div class="product-grid">
-                <!-- Product Card 1 -->
-                <div class="product-card">
-                    <a href="/product/1">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=300&h=200&fit=crop" alt="Organic Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍅 Tomatoes%3C/text%3E%3C/svg%3E'">
-                            <div class="product-badges">
-                                <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                                <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
+                <% if (products && products.length > 0) { %>
+                    <% products.forEach(product => { %>
+                        <% 
+                            const price = Number(product.price) || 0;
+                            const marketPrice = Number(product.market_price) || null;
+                            const savings = marketPrice && price
+                                ? Math.round((1 - price / marketPrice) * 100)
+                                : 0;
+                            const stockQty = Number(product.stock_quantity) || 0;
+                            const firstLetter = (product.name || 'P').toString().charAt(0).toUpperCase();
+                            const category = (product.category || 'Other').toString();
+                        %>
+                        <div class="product-card" data-category="<%= category %>">
+                            <a href="/product/<%= product.id %>">
+                                <div class="product-image">
+                                     <img src="<%= product.image_url ? product.image_url : '/uploads/default-product.png' %>" 
+                                         alt="<%= product.name %>" 
+                                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E<%= firstLetter %>%3C/text%3E%3C/svg%3E'">
+                                    <div class="product-badges">
+                                        <% if (product.is_verified) { %>
+                                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Verified</span>
+                                        <% } %>
+                                        <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
+                                    </div>
+                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                            </a>
+                            <div class="product-info">
+                                <h3 class="product-name"><a href="/product/<%= product.id %>"><%= product.name %></a></h3>
+                                <p class="product-origin">Grown by <a href="/farmer/<%= product.farmer_id %>" class="farmer-link"><%= product.farm_name || 'Local Farm' %></a></p>
+                                <div class="product-pricing">
+                                    <span class="farm-price">৳<%= price %>/<%= product.unit || 'kg' %></span>
+                                    <% if (marketPrice) { %>
+                                        <span class="market-price">৳<%= marketPrice %>/<%= product.unit || 'kg' %></span>
+                                        <span class="savings">Save <%= savings %>%</span>
+                                    <% } %>
+                                </div>
+                                <p style="font-size: 0.9rem; color: #666; margin: 5px 0;">Stock: <%= stockQty %> available</p>
+                                <button class="btn btn-primary btn-block" onclick="addToCartFromGrid(<%= product.id %>)">Add to Cart</button>
                             </div>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
                         </div>
-                    </a>
-                    <div class="product-info">
-                        <h3 class="product-name"><a href="/product/1">Organic Tomatoes</a></h3>
-                        <p class="product-origin">Grown by <a href="/farmers" class="farmer-link">Ahmed Khan</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳45/kg</span>
-                            <span class="market-price">৳70/kg</span>
-                            <span class="savings">Save 36%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
+                    <% }); %>
+                <% } else { %>
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                        <p style="font-size: 1.2rem; color: #666;">No products available yet.</p>
+                        <p>Check back soon for fresh farm products!</p>
                     </div>
-                </div>
-
-                <!-- Product Card 2 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&h=200&fit=crop" alt="Fresh Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff3e0%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23ff9800%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥭 Mangoes%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Himsagar Mangoes</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Rahim Uddin</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳120/kg</span>
-                            <span class="market-price">৳180/kg</span>
-                            <span class="savings">Save 33%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 3 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=300&h=200&fit=crop" alt="Fresh Potatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23efebe9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%238d6e63%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥔 Potatoes%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Diamond Potatoes</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Karim Mia</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳25/kg</span>
-                            <span class="market-price">৳40/kg</span>
-                            <span class="savings">Save 38%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 4 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&h=200&fit=crop" alt="Fresh Onions" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fce4ec%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23c2185b%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🧅 Onions%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Red Onions</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Jamal Hossain</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳35/kg</span>
-                            <span class="market-price">৳55/kg</span>
-                            <span class="savings">Save 36%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 5 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=300&h=200&fit=crop" alt="Fresh Pineapple" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff8e1%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23f9a825%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍍 Pineapple%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Sylhet Pineapple</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Sumon Rahman</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳60/piece</span>
-                            <span class="market-price">৳90/piece</span>
-                            <span class="savings">Save 33%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 6 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=300&h=200&fit=crop" alt="Fresh Milk" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e3f2fd%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%231976d2%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥛 Fresh Milk%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Farm Fresh Milk</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Rafiq Ahmed</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳65/L</span>
-                            <span class="market-price">৳90/L</span>
-                            <span class="savings">Save 28%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 7 - New Product -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&h=200&fit=crop" alt="Fresh Carrots" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23ffcc80%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23e65100%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥕 Carrots%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Organic Carrots</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Ahmed Khan</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳40/kg</span>
-                            <span class="market-price">৳60/kg</span>
-                            <span class="savings">Save 33%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 8 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=200&fit=crop" alt="Fresh Spinach" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23c8e6c9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%232e7d32%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥬 Spinach%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Spinach</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Ahmed Khan</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳30/bunch</span>
-                            <span class="market-price">৳45/bunch</span>
-                            <span class="savings">Save 33%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 9 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=200&fit=crop" alt="Fresh Cauliflower" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23f5f5f5%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23616161%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥦 Cauliflower%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Cauliflower</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Karim Mia</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳35/piece</span>
-                            <span class="market-price">৳55/piece</span>
-                            <span class="savings">Save 36%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 10 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1552944150-6dd1180e5999?w=300&h=200&fit=crop" alt="Fresh Cucumber" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23388e3c%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥒 Cucumber%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Cucumber</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Rahim Uddin</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳20/kg</span>
-                            <span class="market-price">৳35/kg</span>
-                            <span class="savings">Save 43%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 11 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=300&h=200&fit=crop" alt="Fresh Bananas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff8e1%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23f57f17%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍌 Bananas%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Ripe Bananas</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Sumon Rahman</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳50/dozen</span>
-                            <span class="market-price">৳75/dozen</span>
-                            <span class="savings">Save 33%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 12 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=300&h=200&fit=crop" alt="Fresh Oranges" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff3e0%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23ff6f00%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍊 Oranges%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Malta Oranges</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Jamal Hossain</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳80/kg</span>
-                            <span class="market-price">৳120/kg</span>
-                            <span class="savings">Save 33%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 13 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1594282486756-576b93f4c866?w=300&h=200&fit=crop" alt="Basmati Rice" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23f5f5dc%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%238b4513%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾 Rice%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Miniket Rice</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Rafiq Ahmed</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳60/kg</span>
-                            <span class="market-price">৳85/kg</span>
-                            <span class="savings">Save 29%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 14 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=300&h=200&fit=crop" alt="Fresh Eggs" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff9e6%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23d4a600%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥚 Eggs%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Farm Fresh Eggs</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Ahmed Khan</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳140/dozen</span>
-                            <span class="market-price">৳180/dozen</span>
-                            <span class="savings">Save 22%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 15 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1589621316382-008455b857cd?w=300&h=200&fit=crop" alt="Fresh Lemon" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fffde7%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23f9a825%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍋 Lemon%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Lemons</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Rahim Uddin</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳100/kg</span>
-                            <span class="market-price">৳150/kg</span>
-                            <span class="savings">Save 33%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 16 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1556801712-76c8eb07bbc9?w=300&h=200&fit=crop" alt="Fresh Brinjal" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23e1bee7%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%236a1b9a%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍆 Brinjal%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Brinjal</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Karim Mia</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳30/kg</span>
-                            <span class="market-price">৳50/kg</span>
-                            <span class="savings">Save 40%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 17 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1583663848850-46af132dc08e?w=300&h=200&fit=crop" alt="Fresh Papaya" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23ffe0b2%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23e65100%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍈 Papaya%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Papaya</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Sumon Rahman</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳35/kg</span>
-                            <span class="market-price">৳55/kg</span>
-                            <span class="savings">Save 36%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 18 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=300&h=200&fit=crop" alt="Fresh Yogurt" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27200%27%3E%3Crect fill=%27%23fff9c4%27 width=%27300%27 height=%27200%27/%3E%3Ctext fill=%27%23f57f17%27 font-family=%27Arial%27 font-size=%2716%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥛 Yogurt%3C/text%3E%3C/svg%3E'">
-                        <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                            <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                        </div>
-                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Yogurt</h3>
-                        <p class="product-origin">Grown by <a href="index.html#farmers" class="farmer-link">Rafiq Ahmed</a></p>
-                        <div class="product-pricing">
-                            <span class="farm-price">৳70/L</span>
-                            <span class="market-price">৳95/L</span>
-                            <span class="savings">Save 26%</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Add to Cart</button>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
     </section>
@@ -434,31 +97,35 @@
         });
     }
 
-    // Filter functionality
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const productCards = document.querySelectorAll('.product-card');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Remove active class from all buttons
-            filterBtns.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-
-            // Get filter type
-            const filterType = this.getAttribute('data-filter');
-
-            // Filter products
-            productCards.forEach(card => {
-                if (filterType === 'all') {
-                    card.style.display = 'block';
-                } else {
-                    // In a real app, check card's category
-                    card.style.display = 'block';
-                }
+    // Category filter functionality (works for all users)
+    (function() {
+        const tabs = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.product-card');
+        function normalize(str){ return (str || '').toString().trim().toLowerCase(); }
+        function setActive(tab){
+            tabs.forEach(t => t.classList.toggle('active', t === tab));
+        }
+        function applyFilter(cat){
+            const target = normalize(cat);
+            cards.forEach(card => {
+                const c = normalize(card.getAttribute('data-category'));
+                const show = target === 'all' || c === target;
+                card.style.display = show ? '' : 'none';
+            });
+        }
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const label = tab.textContent || 'All';
+                setActive(tab);
+                applyFilter(label);
             });
         });
-    });
+        // Initialize to currently active tab
+        const initial = Array.from(tabs).find(t => t.classList.contains('active')) || tabs[0];
+        if (initial) {
+            applyFilter(initial.textContent || 'All');
+        }
+    })();
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -472,6 +139,60 @@
             }
         });
     });
+
+    // Add to Cart from grid
+    async function addToCartFromGrid(productId) {
+        try {
+            const response = await fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId: productId,
+                    quantity: 1
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Product added to cart successfully; update cart badge
+                updateCartBadge();
+                // Optionally redirect to cart or refresh
+                // window.location.href = '/cart';
+            } else {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                } else {
+                    alert(data.message || 'Failed to add to cart');
+                }
+            }
+        } catch (err) {
+            console.error('Error adding to cart:', err);
+            alert('Error adding to cart');
+        }
+    }
+
+    // Increment cart badge without reload
+    function updateCartBadge() {
+        const cartBtn = document.querySelector('.btn.btn-icon[aria-label="Cart"]');
+        if (!cartBtn) return;
+
+        let badge = cartBtn.querySelector('.cart-count');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'cart-count';
+            badge.textContent = '1';
+            cartBtn.appendChild(badge);
+            return;
+        }
+
+        const current = parseInt(badge.textContent || '0', 10);
+        const next = isNaN(current) ? 1 : current + 1;
+        badge.textContent = next;
+    }
+
 </script>
 
 <%- include("partials/footer.ejs") %>  <!-- Include footer from partials -->

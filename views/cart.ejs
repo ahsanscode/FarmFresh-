@@ -19,64 +19,36 @@
             <div class="cart-layout">
                 <!-- Cart Items -->
                 <div class="cart-items-section">
-                    <h2 class="section-title">Cart Items (3)</h2>
+                    <h2 class="section-title">Cart Items (<%= cartItems.length %>)</h2>
                     
-                    <div class="cart-item">
-                        <img src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=120&h=120&fit=crop" alt="Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27120%27 height=%27120%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍅%3C/text%3E%3C/svg%3E'">
-                        <div class="cart-item-details">
-                            <h3>Organic Tomatoes</h3>
-                            <p class="item-farmer">by Ahmed Khan</p>
-                            <p class="item-price">৳45/kg</p>
-                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Cold Hub Verified</span>
+                    <% if (!cartItems || cartItems.length === 0) { %>
+                        <div style="text-align:center; padding:60px 20px;">
+                            <i class="fas fa-shopping-cart" style="font-size:60px; color:#ddd; margin-bottom:20px; display:block;"></i>
+                            <p style="font-size:1.2rem; color:#666;">Your cart is empty</p>
+                            <p style="color:#999; margin-bottom:20px;">Start shopping to add items to your cart</p>
+                            <a href="/products" class="btn btn-primary">Continue Shopping</a>
                         </div>
-                        <div class="cart-item-actions">
-                            <div class="quantity-control">
-                                <button class="qty-btn" onclick="updateQuantity(1, -1)"><i class="fas fa-minus"></i></button>
-                                <input type="number" class="qty-input" value="2" min="1" id="qty-1">
-                                <button class="qty-btn" onclick="updateQuantity(1, 1)"><i class="fas fa-plus"></i></button>
+                    <% } else { %>
+                        <% cartItems.forEach(item => { %>
+                            <div class="cart-item" data-cart-id="<%= item.id %>">
+                                <img src="<%= item.image_url || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27120%27 height=%27120%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E📦%3C/text%3E%3C/svg%3E' %>" alt="<%= item.name %>" style="max-width:100%; max-height:100%;">
+                                <div class="cart-item-details">
+                                    <h3><a href="/product/<%= item.product_id %>" style="text-decoration:none; color:inherit;"><%= item.name %></a></h3>
+                                    <p class="item-farmer">by <a href="/farmer/<%= item.farmer_id %>" style="text-decoration:none; color:inherit;"><%= item.farm_name %></a></p>
+                                    <p class="item-price">৳<%= item.price %>/<%= item.unit || 'kg' %></p>
+                                </div>
+                                <div class="cart-item-actions">
+                                    <div class="quantity-control">
+                                        <button class="qty-btn" onclick="updateQuantity(<%= item.id %>, -1)"><i class="fas fa-minus"></i></button>
+                                        <input type="number" class="qty-input" value="<%= item.quantity %>" min="1" id="qty-<%= item.id %>" data-cart-id="<%= item.id %>">
+                                        <button class="qty-btn" onclick="updateQuantity(<%= item.id %>, 1)"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <div class="item-total">৳<%= item.subtotal %></div>
+                                    <button class="btn-remove" onclick="removeItem(<%= item.id %>)"><i class="fas fa-trash"></i></button>
+                                </div>
                             </div>
-                            <div class="item-total">৳90</div>
-                            <button class="btn-remove" onclick="removeItem(1)"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=120&h=120&fit=crop" alt="Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Crect fill=%27%23fff3e0%27 width=%27120%27 height=%27120%27/%3E%3Ctext fill=%27%23ff9800%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥭%3C/text%3E%3C/svg%3E'">
-                        <div class="cart-item-details">
-                            <h3>Himsagar Mangoes</h3>
-                            <p class="item-farmer">by Rahim Uddin</p>
-                            <p class="item-price">৳120/kg</p>
-                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Cold Hub Verified</span>
-                        </div>
-                        <div class="cart-item-actions">
-                            <div class="quantity-control">
-                                <button class="qty-btn" onclick="updateQuantity(2, -1)"><i class="fas fa-minus"></i></button>
-                                <input type="number" class="qty-input" value="1" min="1" id="qty-2">
-                                <button class="qty-btn" onclick="updateQuantity(2, 1)"><i class="fas fa-plus"></i></button>
-                            </div>
-                            <div class="item-total">৳120</div>
-                            <button class="btn-remove" onclick="removeItem(2)"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=120&h=120&fit=crop" alt="Milk" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Crect fill=%27%23e1f5fe%27 width=%27120%27 height=%27120%27/%3E%3Ctext fill=%27%230288d1%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🥛%3C/text%3E%3C/svg%3E'">
-                        <div class="cart-item-details">
-                            <h3>Farm Fresh Milk</h3>
-                            <p class="item-farmer">by Rafiq Ahmed</p>
-                            <p class="item-price">৳65/L</p>
-                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Cold Hub Verified</span>
-                        </div>
-                        <div class="cart-item-actions">
-                            <div class="quantity-control">
-                                <button class="qty-btn" onclick="updateQuantity(3, -1)"><i class="fas fa-minus"></i></button>
-                                <input type="number" class="qty-input" value="2" min="1" id="qty-3">
-                                <button class="qty-btn" onclick="updateQuantity(3, 1)"><i class="fas fa-plus"></i></button>
-                            </div>
-                            <div class="item-total">৳130</div>
-                            <button class="btn-remove" onclick="removeItem(3)"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
+                        <% }) %>
+                    <% } %>
                 </div>
 
                 <!-- Order Summary & Checkout -->
@@ -84,21 +56,21 @@
                     <div class="order-summary">
                         <h3>Order Summary</h3>
                         <div class="summary-row">
-                            <span>Subtotal (3 items)</span>
-                            <span>৳340</span>
+                            <span>Subtotal (<%= cartItems.length %> <%= cartItems.length === 1 ? 'item' : 'items' %>)</span>
+                            <span>৳<%= totalPrice %></span>
                         </div>
                         <div class="summary-row">
                             <span>Delivery Fee</span>
                             <span>৳50</span>
                         </div>
                         <div class="summary-row">
-                            <span>Cold Hub Verification</span>
+                            <span>Quality Assurance</span>
                             <span class="free-badge">FREE</span>
                         </div>
                         <div class="summary-divider"></div>
                         <div class="summary-row total">
                             <span>Total</span>
-                            <span>৳390</span>
+                            <span>৳<%= totalPrice + 50 %></span>
                         </div>
 
                         <!-- Payment Options -->
@@ -161,9 +133,11 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary btn-block btn-checkout">
-                            <i class="fas fa-lock"></i> Proceed to Checkout
-                        </button>
+                        <% if (cartItems.length > 0) { %>
+                            <button class="btn btn-primary btn-block btn-checkout">
+                                <i class="fas fa-lock"></i> Proceed to Checkout
+                            </button>
+                        <% } %>
 
                         <div class="secure-checkout">
                             <i class="fas fa-shield-alt"></i> Secure checkout with SSL encryption
@@ -197,19 +171,63 @@
     }
 
     // Update quantity
-    function updateQuantity(itemId, change) {
-        const qtyInput = document.getElementById('qty-' + itemId);
+    async function updateQuantity(cartId, change) {
+        const qtyInput = document.getElementById('qty-' + cartId);
         let currentQty = parseInt(qtyInput.value);
-        currentQty = Math.max(1, currentQty + change);
-        qtyInput.value = currentQty;
-        // In a real app, update the totals here
+        const newQty = Math.max(1, currentQty + change);
+        
+        try {
+            const response = await fetch('/cart/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cartId: cartId,
+                    quantity: newQty
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                qtyInput.value = newQty;
+                location.reload(); // Reload to update totals
+            } else {
+                alert(data.message || 'Failed to update quantity');
+                qtyInput.value = currentQty;
+            }
+        } catch (err) {
+            console.error('Error updating quantity:', err);
+            alert('Error updating quantity');
+            qtyInput.value = currentQty;
+        }
     }
 
     // Remove item
-    function removeItem(itemId) {
+    async function removeItem(cartId) {
         if (confirm('Remove this item from cart?')) {
-            // In a real app, remove the item from cart
-            alert('Item removed from cart');
+            try {
+                const response = await fetch('/cart/remove/' + cartId, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Remove the cart item element
+                    const cartItem = document.querySelector(`[data-cart-id="${cartId}"]`);
+                    if (cartItem) {
+                        cartItem.remove();
+                    }
+                    location.reload(); // Reload to update totals
+                } else {
+                    alert(data.message || 'Failed to remove item');
+                }
+            } catch (err) {
+                console.error('Error removing item:', err);
+                alert('Error removing item from cart');
+            }
         }
     }
 </script>

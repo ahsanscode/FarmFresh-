@@ -8,7 +8,7 @@
                 <span class="breadcrumb-separator">/</span>
                 <a href="/products" class="breadcrumb-link">Products</a>
                 <span class="breadcrumb-separator">/</span>
-                <span class="breadcrumb-current">Organic Tomatoes</span>
+                <span class="breadcrumb-current"><%= product.name %></span>
             </nav>
         </div>
     </section>
@@ -20,85 +20,74 @@
                 <!-- Product Images -->
                 <div class="product-images">
                     <div class="main-image">
-                        <img id="mainProductImage" src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=600&h=600&fit=crop" alt="Organic Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27600%27 height=%27600%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27600%27 height=%27600%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2724%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🍅 Organic Tomatoes%3C/text%3E%3C/svg%3E'">
+                        <img id="mainProductImage" src="<%= product.image_url || 'https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=600&h=600&fit=crop' %>" alt="<%= product.name %>" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27600%27 height=%27600%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27600%27 height=%27600%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2724%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E<%= product.name %>%3C/text%3E%3C/svg%3E'">
                         <div class="product-badges">
-                            <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
+                            <% if (product.is_verified) { %>
+                                <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Verified</span>
+                            <% } %>
                             <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
                         </div>
                         <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                    </div>
-                    <div class="thumbnail-images">
-                        <img class="thumbnail active" src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=150&h=150&fit=crop" alt="Tomatoes View 1" onclick="changeMainImage(this.src.replace('150', '600'))">
-                        <img class="thumbnail" src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=150&h=150&fit=crop" alt="Tomatoes View 2" onclick="changeMainImage(this.src.replace('150', '600'))">
-                        <img class="thumbnail" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=150&h=150&fit=crop" alt="Tomatoes View 3" onclick="changeMainImage(this.src.replace('150', '600'))">
-                        <img class="thumbnail" src="https://images.unsplash.com/photo-1606666792160-1series288?w=150&h=150&fit=crop" alt="Tomatoes View 4" onclick="changeMainImage(this.src.replace('150', '600'))">
                     </div>
                 </div>
 
                 <!-- Product Information -->
                 <div class="product-info-detail">
-                    <h1 class="product-title">Organic Tomatoes</h1>
+                    <h1 class="product-title"><%= product.name %></h1>
                     
                     <div class="product-rating">
                         <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
+                            <% for (let i = 0; i < Math.floor(parseFloat(product.rating) || 4); i++) { %>
+                                <i class="fas fa-star"></i>
+                            <% } %>
+                            <% if ((parseFloat(product.rating) || 4) % 1 >= 0.5) { %>
+                                <i class="fas fa-star-half-alt"></i>
+                            <% } %>
                         </div>
-                        <span class="rating-text">(4.5 out of 5 | 127 reviews)</span>
+                        <span class="rating-text">(<%= (parseFloat(product.rating) || 4).toFixed(1) %> out of 5 | <%= product.total_reviews || 0 %> reviews)</span>
                     </div>
 
                     <div class="product-pricing-detail">
                         <div class="price-row">
-                            <span class="farm-price-large">৳45</span>
-                            <span class="price-unit">/kg</span>
+                            <span class="farm-price-large">৳<%= product.price %></span>
+                            <span class="price-unit">/<%= product.unit || 'kg' %></span>
                         </div>
-                        <div class="price-comparison">
-                            <span class="market-price">Market Price: ৳70/kg</span>
-                            <span class="savings-badge">You Save 36% (৳25/kg)</span>
-                        </div>
+                        <% if (product.market_price) { %>
+                            <% const savings = Math.round((1 - product.price / product.market_price) * 100); %>
+                            <div class="price-comparison">
+                                <span class="market-price">Market Price: ৳<%= product.market_price %>/<%= product.unit || 'kg' %></span>
+                                <span class="savings-badge">You Save <%= savings %>% (৳<%= product.market_price - product.price %>/<%= product.unit || 'kg' %>)</span>
+                            </div>
+                        <% } %>
                     </div>
 
                     <div class="farmer-info-card">
                         <div class="farmer-avatar">
-                            <img src="https://ui-avatars.com/api/?name=Ahmed+Khan&background=2ecc71&color=fff&size=60" alt="Ahmed Khan">
+                            <img src="https://ui-avatars.com/api/?name=<%= product.farm_name %>&background=2ecc71&color=fff&size=60" alt="<%= product.farm_name %>">
                         </div>
                         <div class="farmer-details">
                             <p class="farmer-label">Grown by</p>
-                            <h3 class="farmer-name"><a href="/farmers">Ahmed Khan</a></h3>
-                            <p class="farmer-location"><i class="fas fa-map-marker-alt"></i> Jessore, Bangladesh</p>
+                            <h3 class="farmer-name"><a href="/farmer/<%= product.farmer_id %>"><%= product.farm_name || 'Local Farm' %></a></h3>
+                            <p class="farmer-location"><i class="fas fa-map-marker-alt"></i> <%= product.district || 'Bangladesh' %></p>
                         </div>
                         <div class="farmer-verified">
                             <i class="fas fa-check-circle"></i>
-                            <span>Verified Farmer</span>
+                            <span><%= product.is_verified ? 'Verified Farmer' : 'Seller' %></span>
                         </div>
-                    </div>
-
-                    <div class="product-description">
-                        <h3>About This Product</h3>
-                        <p>Premium quality organic tomatoes, handpicked from certified organic farms. These tomatoes are grown without synthetic pesticides or fertilizers, ensuring you get the healthiest and most flavorful produce.</p>
-                        <ul class="product-features">
-                            <li><i class="fas fa-check"></i> 100% Organic - No chemical pesticides</li>
-                            <li><i class="fas fa-check"></i> Freshly harvested within 24 hours</li>
-                            <li><i class="fas fa-check"></i> Rich in vitamins and antioxidants</li>
-                            <li><i class="fas fa-check"></i> Cold chain maintained for freshness</li>
-                        </ul>
                     </div>
 
                     <div class="quantity-selector">
-                        <label for="quantity">Quantity (kg)</label>
+                        <label for="quantity">Quantity (<%= product.unit || 'kg' %>)</label>
                         <div class="quantity-controls">
                             <button class="qty-btn" onclick="decrementQuantity()"><i class="fas fa-minus"></i></button>
-                            <input type="number" id="quantity" value="1" min="1" max="50">
+                            <input type="number" id="quantity" value="1" min="1" max="<%= product.stock_quantity || 50 %>">
                             <button class="qty-btn" onclick="incrementQuantity()"><i class="fas fa-plus"></i></button>
                         </div>
-                        <span class="min-order">Minimum order: 1 kg</span>
+                        <span class="min-order">Available: <%= product.stock_quantity %> <strong><%= product.unit || 'kg' %></strong></span>
                     </div>
 
                     <div class="product-actions">
-                        <button class="btn btn-primary btn-large">
+                        <button class="btn btn-primary btn-large" onclick="addToCart(<%= product.id %>)">
                             <i class="fas fa-shopping-cart"></i>
                             Add to Cart
                         </button>
@@ -108,12 +97,23 @@
                         </button>
                     </div>
 
+                    <div class="product-description">
+                        <h3>About This Product</h3>
+                        <p><%= product.description || 'Premium quality fresh produce, handpicked and delivered fresh to your door.' %></p>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> Fresh and high-quality produce</li>
+                            <li><i class="fas fa-check"></i> Freshly harvested</li>
+                            <li><i class="fas fa-check"></i> Directly from farmers</li>
+                            <li><i class="fas fa-check"></i> Cold chain maintained for freshness</li>
+                        </ul>
+                    </div>
+
                     <div class="delivery-info">
                         <div class="delivery-item">
                             <i class="fas fa-truck"></i>
                             <div>
-                                <strong>Free Delivery</strong>
-                                <p>On orders above ৳500</p>
+                                <strong>Fast Delivery</strong>
+                                <p>Direct from farmer</p>
                             </div>
                         </div>
                         <div class="delivery-item">
@@ -138,316 +138,187 @@
             <div class="product-tabs">
                 <div class="tab-buttons">
                     <button class="tab-btn active" onclick="openTab(event, 'description')">Description</button>
-                    <button class="tab-btn" onclick="openTab(event, 'nutritional')">Nutritional Info</button>
-                    <button class="tab-btn" onclick="openTab(event, 'reviews')">Reviews (127)</button>
+                    <button class="tab-btn" onclick="openTab(event, 'reviews')">Reviews (<%= product.total_reviews || 0 %>)</button>
                     <button class="tab-btn" onclick="openTab(event, 'farmer')">About the Farmer</button>
                 </div>
 
                 <div id="description" class="tab-content active">
                     <h3>Product Description</h3>
-                    <p>Our organic tomatoes are carefully cultivated using traditional farming methods combined with modern organic practices. Grown in nutrient-rich soil under optimal conditions, these tomatoes develop a perfect balance of sweetness and acidity.</p>
-                    <p>Each tomato is hand-selected at peak ripeness to ensure maximum flavor and nutritional value. The cold chain is maintained from harvest to delivery, preserving the freshness and extending shelf life naturally.</p>
+                    <p><%= product.description || 'Fresh and high-quality produce, carefully cultivated and harvested.' %></p>
                     
                     <h4>Storage Instructions</h4>
                     <ul>
-                        <li>Store at room temperature until ripe</li>
-                        <li>Once ripe, refrigerate to extend freshness</li>
-                        <li>Best consumed within 5-7 days</li>
+                        <li>Store properly to maintain freshness</li>
+                        <li>Keep in cool, dry place when needed</li>
+                        <li>Best consumed within recommended timeframe</li>
                         <li>Keep away from direct sunlight</li>
                     </ul>
 
                     <h4>Usage Suggestions</h4>
-                    <p>Perfect for salads, curries, pasta sauces, soups, and fresh juices. Can also be enjoyed raw with a pinch of salt and pepper.</p>
-                </div>
-
-                <div id="nutritional" class="tab-content">
-                    <h3>Nutritional Information</h3>
-                    <p>Per 100g serving</p>
-                    <table class="nutrition-table">
-                        <tr>
-                            <td>Calories</td>
-                            <td>18 kcal</td>
-                        </tr>
-                        <tr>
-                            <td>Carbohydrates</td>
-                            <td>3.9g</td>
-                        </tr>
-                        <tr>
-                            <td>Protein</td>
-                            <td>0.9g</td>
-                        </tr>
-                        <tr>
-                            <td>Fat</td>
-                            <td>0.2g</td>
-                        </tr>
-                        <tr>
-                            <td>Fiber</td>
-                            <td>1.2g</td>
-                        </tr>
-                        <tr>
-                            <td>Vitamin C</td>
-                            <td>13.7mg (23% DV)</td>
-                        </tr>
-                        <tr>
-                            <td>Vitamin K</td>
-                            <td>7.9μg (10% DV)</td>
-                        </tr>
-                        <tr>
-                            <td>Potassium</td>
-                            <td>237mg (7% DV)</td>
-                        </tr>
-                    </table>
-                    <p class="nutrition-note"><strong>Note:</strong> Percent Daily Values are based on a 2,000 calorie diet.</p>
+                    <p>This product can be used in various culinary preparations. Follow standard cooking instructions for best results.</p>
                 </div>
 
                 <div id="reviews" class="tab-content">
                     <h3>Customer Reviews</h3>
                     <div class="reviews-summary">
                         <div class="rating-overview">
-                            <div class="rating-score">4.5</div>
+                            <div class="rating-score"><%= (parseFloat(product.rating) || 4).toFixed(1) %></div>
                             <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+                                <% for (let i = 0; i < Math.floor(parseFloat(product.rating) || 4); i++) { %>
+                                    <i class="fas fa-star"></i>
+                                <% } %>
+                                <% if ((parseFloat(product.rating) || 4) % 1 >= 0.5) { %>
+                                    <i class="fas fa-star-half-alt"></i>
+                                <% } %>
                             </div>
-                            <p>Based on 127 reviews</p>
-                        </div>
-                        <div class="rating-breakdown">
-                            <div class="rating-bar">
-                                <span>5 <i class="fas fa-star"></i></span>
-                                <div class="bar"><div class="fill" style="width: 75%"></div></div>
-                                <span>95</span>
-                            </div>
-                            <div class="rating-bar">
-                                <span>4 <i class="fas fa-star"></i></span>
-                                <div class="bar"><div class="fill" style="width: 15%"></div></div>
-                                <span>19</span>
-                            </div>
-                            <div class="rating-bar">
-                                <span>3 <i class="fas fa-star"></i></span>
-                                <div class="bar"><div class="fill" style="width: 6%"></div></div>
-                                <span>8</span>
-                            </div>
-                            <div class="rating-bar">
-                                <span>2 <i class="fas fa-star"></i></span>
-                                <div class="bar"><div class="fill" style="width: 3%"></div></div>
-                                <span>4</span>
-                            </div>
-                            <div class="rating-bar">
-                                <span>1 <i class="fas fa-star"></i></span>
-                                <div class="bar"><div class="fill" style="width: 1%"></div></div>
-                                <span>1</span>
-                            </div>
+                            <p>Based on <%= product.total_reviews || 0 %> reviews</p>
                         </div>
                     </div>
 
-                    <div class="reviews-list">
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="https://ui-avatars.com/api/?name=Ayesha+Rahman&background=3498db&color=fff&size=50" alt="Ayesha Rahman">
-                                    <div>
-                                        <h4>Ayesha Rahman</h4>
-                                        <div class="review-stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="review-date">2 days ago</span>
-                            </div>
-                            <p class="review-text">Absolutely fresh and delicious! The tomatoes arrived in perfect condition. You can really taste the difference with organic produce. Will definitely order again!</p>
-                            <div class="review-helpful">
-                                <button><i class="far fa-thumbs-up"></i> Helpful (24)</button>
+                    <% if (user) { %>
+                    <% if (userRating) { %>
+                    <div class="rating-form-card" style="padding:20px; background:#f0fdf4; border-radius:8px; margin:20px 0; border:1px solid #86efac;">
+                        <h3 style="margin-top:0;">Your Rating</h3>
+                        <div style="margin:15px 0;">
+                            <label style="display:block; margin-bottom:8px; font-weight:500;">Rating</label>
+                            <div class="star-rating-display" style="display:flex; gap:8px; font-size:28px;">
+                                <% for (let i = 0; i < userRating.rating; i++) { %>
+                                    <i class="fas fa-star" style="color:#f59e0b;"></i>
+                                <% } %>
                             </div>
                         </div>
+                        <button type="button" class="btn btn-outline" onclick="toggleEditRating()" style="margin-top:12px;">Edit Rating</button>
+                        <div id="edit-rating-form" style="display:none; margin-top:15px; padding-top:15px; border-top:1px solid #e5e7eb;">
+                            <form id="rate-form" onsubmit="submitRating(event, <%= product.id %>)">
+                                <label style="display:block; margin-bottom:8px; font-weight:500;">Your rating</label>
+                                <div class="star-rating-input" style="display:flex; gap:8px; font-size:32px; margin:12px 0; cursor:pointer;">
+                                    <i class="far fa-star" data-rating="1" onclick="setRating(1)" onmouseover="hoverRating(1)" onmouseout="resetHover()"></i>
+                                    <i class="far fa-star" data-rating="2" onclick="setRating(2)" onmouseover="hoverRating(2)" onmouseout="resetHover()"></i>
+                                    <i class="far fa-star" data-rating="3" onclick="setRating(3)" onmouseover="hoverRating(3)" onmouseout="resetHover()"></i>
+                                    <i class="far fa-star" data-rating="4" onclick="setRating(4)" onmouseover="hoverRating(4)" onmouseout="resetHover()"></i>
+                                    <i class="far fa-star" data-rating="5" onclick="setRating(5)" onmouseover="hoverRating(5)" onmouseout="resetHover()"></i>
+                                </div>
+                                <input type="hidden" id="rating" name="rating" value="" required>
+                                <button type="submit" class="btn btn-primary" style="margin-top:12px;">Update Rating</button>
+                                <button type="button" class="btn btn-outline" onclick="toggleEditRating()" style="margin-top:12px; margin-left:8px;">Cancel</button>
+                                <div id="rate-message" style="margin-top:8px; display:none; padding:10px; border-radius:6px;"></div>
+                            </form>
+                        </div>
+                    </div>
 
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="https://ui-avatars.com/api/?name=Kamal+Hossain&background=e74c3c&color=fff&size=50" alt="Kamal Hossain">
-                                    <div>
-                                        <h4>Kamal Hossain</h4>
-                                        <div class="review-stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="review-date">1 week ago</span>
-                            </div>
-                            <p class="review-text">Great quality tomatoes. Very fresh and juicy. The cold chain really makes a difference. Only minor issue was one tomato was slightly bruised, but overall excellent!</p>
-                            <div class="review-helpful">
-                                <button><i class="far fa-thumbs-up"></i> Helpful (18)</button>
+                    <div class="rating-form-card" style="padding:20px; background:#f9fafb; border-radius:8px; margin:20px 0; border:1px solid #e5e7eb;">
+                        <h3 style="margin-top:0;">Your Comment</h3>
+                        <% if (userRating.comment) { %>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+                            <p style="flex:1; margin:0; padding:10px; background:white; border:1px solid #e5e7eb; border-radius:6px;"><%= userRating.comment %></p>
+                            <div style="display:flex; gap:8px;">
+                                <button id="comment-edit-toggle" type="button" class="btn btn-outline" onclick="showCommentForm()" style="white-space:nowrap;">Edit Comment</button>
+                                <button type="button" class="btn btn-outline" onclick="deleteComment(<%= product.id %>)" style="white-space:nowrap; color:#dc2626; border-color:#dc2626;" title="Delete comment"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
+                        <% } else { %>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+                            <p style="margin:0; color:#6b7280;">No comment yet.</p>
+                            <button id="comment-edit-toggle" type="button" class="btn btn-outline" onclick="showCommentForm()" style="white-space:nowrap;">Add Comment</button>
+                        </div>
+                        <% } %>
+                        <div id="comment-edit-form" style="display:none;">
+                            <form id="comment-form" onsubmit="submitComment(event, <%= product.id %>)">
+                                <label for="commentInput" style="display:block; margin-bottom:8px; font-weight:500;">Add / update comment</label>
+                                <textarea id="commentInput" name="comment" rows="4" placeholder="Share your experience with this product..." style="width:100%; padding:10px; border:1px solid #e5e7eb; border-radius:6px; font-family:inherit;"><%= userRating.comment || '' %></textarea>
+                                <button type="submit" class="btn btn-primary" style="margin-top:12px;">Save Comment</button>
+                                <div id="comment-message" style="margin-top:8px; display:none; padding:10px; border-radius:6px;"></div>
+                            </form>
+                        </div>
+                    </div>
+                    <% } else { %>
+                    <div class="rating-form-card" style="padding:20px; background:#f9fafb; border-radius:8px; margin:20px 0; border:1px solid #e5e7eb;">
+                        <h3 style="margin-top:0;">Rate this product</h3>
+                        <form id="rate-form" onsubmit="submitRating(event, <%= product.id %>)">
+                            <label style="display:block; margin-bottom:8px; font-weight:500;">Your rating</label>
+                            <div class="star-rating-input" style="display:flex; gap:8px; font-size:32px; margin:12px 0; cursor:pointer;">
+                                <i class="far fa-star" data-rating="1" onclick="setRating(1)" onmouseover="hoverRating(1)" onmouseout="resetHover()"></i>
+                                <i class="far fa-star" data-rating="2" onclick="setRating(2)" onmouseover="hoverRating(2)" onmouseout="resetHover()"></i>
+                                <i class="far fa-star" data-rating="3" onclick="setRating(3)" onmouseover="hoverRating(3)" onmouseout="resetHover()"></i>
+                                <i class="far fa-star" data-rating="4" onclick="setRating(4)" onmouseover="hoverRating(4)" onmouseout="resetHover()"></i>
+                                <i class="far fa-star" data-rating="5" onclick="setRating(5)" onmouseover="hoverRating(5)" onmouseout="resetHover()"></i>
+                            </div>
+                            <input type="hidden" id="rating" name="rating" value="" required>
+                            <button type="submit" class="btn btn-primary" style="margin-top:12px;">Submit Rating</button>
+                            <div id="rate-message" style="margin-top:8px; display:none; padding:10px; border-radius:6px;"></div>
+                        </form>
+                        <p style="margin-top:12px; color:#6b7280; font-size:0.95rem;">Rate first to unlock commenting.</p>
+                    </div>
+                    <% } %>
+                    <% } else { %>
+                    <div style="padding:20px; background:#f0f9ff; border:1px solid #0ea5e9; border-radius:8px; margin:20px 0; text-align:center;">
+                        <p style="margin:0;">Want to share your review? <a href="/login" style="color:#0ea5e9; text-decoration:none; font-weight:500;">Login</a> to rate and comment.</p>
+                    </div>
+                    <% } %>
 
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="https://ui-avatars.com/api/?name=Fatima+Begum&background=9b59b6&color=fff&size=50" alt="Fatima Begum">
-                                    <div>
-                                        <h4>Fatima Begum</h4>
-                                        <div class="review-stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
+                    <!-- All Reviews Section (Visible to Everyone) -->
+                    <div style="margin-top:30px; border-top:2px solid #e5e7eb; padding-top:20px;">
+                        <h3 style="margin-bottom:15px;">All Reviews</h3>
+                        <% if (allReviews && allReviews.length > 0) { %>
+                            <% allReviews.forEach(review => { %>
+                                <div style="padding:15px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; margin-bottom:15px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                                        <div>
+                                            <strong style="font-size:1rem; color:#111827;"><%= review.user_name || 'Anonymous' %></strong>
+                                            <div style="display:flex; gap:4px; margin:5px 0;">
+                                                <% for (let i = 0; i < review.rating; i++) { %>
+                                                    <i class="fas fa-star" style="color:#f59e0b; font-size:14px;"></i>
+                                                <% } %>
+                                                <% for (let i = review.rating; i < 5; i++) { %>
+                                                    <i class="far fa-star" style="color:#d1d5db; font-size:14px;"></i>
+                                                <% } %>
+                                            </div>
                                         </div>
+                                        <span style="font-size:0.85rem; color:#6b7280;">
+                                            <%= new Date(review.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                        </span>
                                     </div>
+                                    <% if (review.comment) { %>
+                                        <p style="margin:0; color:#374151; line-height:1.6;"><%= review.comment %></p>
+                                    <% } else { %>
+                                        <p style="margin:0; color:#9ca3af; font-style:italic;">No comment provided.</p>
+                                    <% } %>
                                 </div>
-                                <span class="review-date">2 weeks ago</span>
-                            </div>
-                            <p class="review-text">Best tomatoes I've bought online! Supporting local farmers and getting better quality at lower prices - win-win. The packaging was also eco-friendly which I appreciate.</p>
-                            <div class="review-helpful">
-                                <button><i class="far fa-thumbs-up"></i> Helpful (31)</button>
-                            </div>
-                        </div>
+                            <% }); %>
+                        <% } else { %>
+                            <p style="text-align:center; padding:20px; color:#9ca3af;">No reviews yet. Be the first to review!</p>
+                        <% } %>
                     </div>
                 </div>
 
                 <div id="farmer" class="tab-content">
-                    <h3>About Ahmed Khan</h3>
+                    <h3>About <%= product.farm_name %></h3>
                     <div class="farmer-profile">
-                        <img src="https://ui-avatars.com/api/?name=Ahmed+Khan&background=2ecc71&color=fff&size=120" alt="Ahmed Khan">
+                        <img src="https://ui-avatars.com/api/?name=<%= product.farm_name %>&background=2ecc71&color=fff&size=120" alt="<%= product.farm_name %>">
                         <div class="farmer-bio">
-                            <h4>Ahmed Khan</h4>
-                            <p class="farmer-title">Organic Vegetable Farmer</p>
-                            <p class="farmer-location"><i class="fas fa-map-marker-alt"></i> Jessore, Bangladesh</p>
+                            <h4><%= product.farm_name %></h4>
+                            <p class="farmer-title">Farm Producer</p>
+                            <p class="farmer-location"><i class="fas fa-map-marker-alt"></i> <%= product.district || 'Bangladesh' %></p>
                             <div class="farmer-stats">
                                 <div class="stat">
-                                    <strong>12 years</strong>
-                                    <span>Experience</span>
-                                </div>
-                                <div class="stat">
-                                    <strong>15 acres</strong>
-                                    <span>Farm Size</span>
-                                </div>
-                                <div class="stat">
-                                    <strong>4.8/5</strong>
+                                    <strong><%= (parseFloat(product.rating) || 4).toFixed(1) %>/5</strong>
                                     <span>Rating</span>
                                 </div>
+                                <div class="stat">
+                                    <strong><%= product.total_reviews || 0 %></strong>
+                                    <span>Reviews</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p>Ahmed Khan has been practicing organic farming for over a decade. His farm specializes in growing vegetables using sustainable methods that preserve soil health and biodiversity. Ahmed is certified by the Bangladesh Organic Products Manufacturers Association (BOPMA) and maintains strict quality standards.</p>
-                    <p>His commitment to quality and sustainability has made him one of the most trusted suppliers on FarmFresh Marketplace. Ahmed believes in transparent farming practices and welcomes customers to visit his farm to see the growing process firsthand.</p>
-                    <a href="/farmers" class="btn btn-outline">View All Products from Ahmed Khan</a>
-                </div>
-            </div>
-
-            <!-- Related Products -->
-            <div class="related-products">
-                <h2 class="section-title">Similar Products</h2>
-                <div class="product-grid">
-                    <!-- Product Card 1 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300&h=200&fit=crop" alt="Cherry Tomatoes">
-                            <div class="product-badges">
-                                <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                            </div>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name">Cherry Tomatoes</h3>
-                            <p class="product-origin">Grown by <a href="/farmers" class="farmer-link">Ahmed Khan</a></p>
-                            <div class="product-pricing">
-                                <span class="farm-price">৳65/kg</span>
-                                <span class="market-price">৳95/kg</span>
-                                <span class="savings">Save 32%</span>
-                            </div>
-                            <button class="btn btn-primary btn-block">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <!-- Product Card 2 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=300&h=200&fit=crop" alt="Fresh Cucumbers">
-                            <div class="product-badges">
-                                <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                            </div>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name">Fresh Cucumbers</h3>
-                            <p class="product-origin">Grown by <a href="/farmers" class="farmer-link">Rahim Uddin</a></p>
-                            <div class="product-pricing">
-                                <span class="farm-price">৳30/kg</span>
-                                <span class="market-price">৳50/kg</span>
-                                <span class="savings">Save 40%</span>
-                            </div>
-                            <button class="btn btn-primary btn-block">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <!-- Product Card 3 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=300&h=200&fit=crop" alt="Bell Peppers">
-                            <div class="product-badges">
-                                <span class="badge badge-verified"><i class="fas fa-snowflake"></i> Cold Hub Verified</span>
-                            </div>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name">Bell Peppers (Mix)</h3>
-                            <p class="product-origin">Grown by <a href="/farmers" class="farmer-link">Karim Mia</a></p>
-                            <div class="product-pricing">
-                                <span class="farm-price">৳80/kg</span>
-                                <span class="market-price">৳120/kg</span>
-                                <span class="savings">Save 33%</span>
-                            </div>
-                            <button class="btn btn-primary btn-block">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <!-- Product Card 4 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1587735243615-c03f25aaff15?w=300&h=200&fit=crop" alt="Green Lettuce">
-                            <div class="product-badges">
-                                <span class="badge badge-fresh"><i class="fas fa-leaf"></i> Fresh Arrival</span>
-                            </div>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name">Organic Lettuce</h3>
-                            <p class="product-origin">Grown by <a href="/farmers" class="farmer-link">Ahmed Khan</a></p>
-                            <div class="product-pricing">
-                                <span class="farm-price">৳55/kg</span>
-                                <span class="market-price">৳85/kg</span>
-                                <span class="savings">Save 35%</span>
-                            </div>
-                            <button class="btn btn-primary btn-block">Add to Cart</button>
-                        </div>
-                    </div>
+                    <p>This farmer is dedicated to providing high-quality, fresh produce directly to consumers. They maintain strict quality standards and believe in transparent farming practices.</p>
+                    <a href="/farmer/<%= product.farmer_id %>" class="btn btn-outline">View All Products from <%= product.farm_name %></a>
                 </div>
             </div>
         </div>
     </section>
 
     <script>
-        // Image Gallery
-        function changeMainImage(src) {
-            document.getElementById('mainProductImage').src = src;
-            
-            // Update active thumbnail
-            const thumbnails = document.querySelectorAll('.thumbnail');
-            thumbnails.forEach(thumb => thumb.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
         // Quantity Controls
         function incrementQuantity() {
             const input = document.getElementById('quantity');
@@ -484,6 +355,219 @@
             // Show the current tab and add active class to button
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
+        }
+
+        // Toggle edit rating form
+        function toggleEditRating() {
+            const editForm = document.getElementById('edit-rating-form');
+            if (editForm.style.display === 'none') {
+                editForm.style.display = 'block';
+                <% if (userRating) { %>
+                    setRating(<%= userRating.rating %>);
+                <% } %>
+            } else {
+                editForm.style.display = 'none';
+            }
+        }
+
+        // Star rating interaction
+        let selectedRating = 0;
+        
+        function setRating(rating) {
+            selectedRating = rating;
+            document.getElementById('rating').value = rating;
+            updateStars(rating);
+        }
+        
+        function hoverRating(rating) {
+            updateStars(rating);
+        }
+        
+        function resetHover() {
+            updateStars(selectedRating);
+        }
+        
+        function updateStars(rating) {
+            const stars = document.querySelectorAll('.star-rating-input i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                    star.style.color = '#f59e0b';
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                    star.style.color = '#d1d5db';
+                }
+            });
+        }
+
+        // Submit rating
+        async function submitRating(evt, productId) {
+            evt.preventDefault();
+            const form = document.getElementById('rate-form');
+            const rating = Number(form.rating.value);
+            const msg = document.getElementById('rate-message');
+            msg.style.display = 'none';
+
+            if (!rating || rating < 1 || rating > 5) {
+                msg.textContent = 'Please select a rating between 1 and 5.';
+                msg.style.color = '#dc2626';
+                msg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/product/${productId}/rate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rating })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    msg.textContent = 'Thanks for your rating!';
+                    msg.style.color = '#16a34a';
+                    msg.style.display = 'block';
+                    setTimeout(() => window.location.reload(), 600);
+                } else {
+                    if (response.status === 401) {
+                        window.location.href = '/login';
+                    } else {
+                        msg.textContent = data.message || 'Failed to save rating.';
+                        msg.style.color = '#dc2626';
+                        msg.style.display = 'block';
+                    }
+                }
+            } catch (err) {
+                console.error('Rating error', err);
+                msg.textContent = 'Error submitting rating.';
+                msg.style.color = '#dc2626';
+                msg.style.display = 'block';
+            }
+        }
+
+        // Submit comment (only when rating exists)
+        async function submitComment(evt, productId) {
+            evt.preventDefault();
+            const form = document.getElementById('comment-form');
+            const comment = form.comment.value.trim();
+            const msg = document.getElementById('comment-message');
+            msg.style.display = 'none';
+
+            if (!comment) {
+                msg.textContent = 'Comment cannot be empty.';
+                msg.style.color = '#dc2626';
+                msg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/product/${productId}/comment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ comment })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    msg.textContent = 'Comment saved.';
+                    msg.style.color = '#16a34a';
+                    msg.style.display = 'block';
+                    setTimeout(() => window.location.reload(), 600);
+                } else {
+                    if (response.status === 401) {
+                        window.location.href = '/login';
+                    } else {
+                        msg.textContent = data.message || 'Failed to save comment.';
+                        msg.style.color = '#dc2626';
+                        msg.style.display = 'block';
+                    }
+                }
+            } catch (err) {
+                console.error('Comment error', err);
+                msg.textContent = 'Error submitting comment.';
+                msg.style.color = '#dc2626';
+                msg.style.display = 'block';
+            }
+        }
+
+        function showCommentForm() {
+            const formWrap = document.getElementById('comment-edit-form');
+            if (formWrap) {
+                formWrap.style.display = 'block';
+            }
+            const toggleBtn = document.getElementById('comment-edit-toggle');
+            if (toggleBtn) {
+                toggleBtn.style.display = 'none';
+            }
+            const area = document.getElementById('commentInput');
+            if (area) {
+                area.focus();
+                area.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Delete comment
+        async function deleteComment(productId) {
+            if (!confirm('Are you sure you want to delete your comment?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/product/${productId}/comment`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Comment deleted successfully.');
+                    window.location.reload();
+                } else {
+                    if (response.status === 401) {
+                        window.location.href = '/login';
+                    } else {
+                        alert(data.message || 'Failed to delete comment.');
+                    }
+                }
+            } catch (err) {
+                console.error('Delete comment error', err);
+                alert('Error deleting comment.');
+            }
+        }
+
+        // Add to Cart
+        async function addToCart(productId) {
+            try {
+                const quantity = parseInt(document.getElementById('quantity').value) || 1;
+                
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        quantity: quantity
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Product added to cart successfully!');
+                    // Optionally redirect to cart
+                    // window.location.href = '/cart';
+                } else {
+                    if (response.status === 401) {
+                        window.location.href = '/login';
+                    } else {
+                        alert(data.message || 'Failed to add to cart');
+                    }
+                }
+            } catch (err) {
+                console.error('Error adding to cart:', err);
+                alert('Error adding to cart');
+            }
         }
     </script>
 

@@ -18,283 +18,112 @@
         <div class="container">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title">Verified Farmer Stores</h2>
+                    <h2 class="section-title">All Registered Farmers</h2>
                     <p class="section-subtitle">Browse through our network of trusted farmers</p>
                 </div>
             </div>
 
-            <!-- Farmer Store 1 -->
-            <div class="store-profile">
-                <div class="store-header">
-                    <div class="store-avatar">
-                        <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=150&h=150&fit=crop" alt="Farmer" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%232ecc71%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27white%27 font-family=%27Arial%27 font-size=%2760%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E👨‍🌾%3C/text%3E%3C/svg%3E'">
-                        <span class="verified-seller"><i class="fas fa-check-circle"></i></span>
-                    </div>
-                    <div class="store-info">
-                        <h3 class="store-name">Ahmed's Organic Farm</h3>
-                        <p class="store-location"><i class="fas fa-map-marker-alt"></i> Rangpur, Bangladesh</p>
-                        <p class="store-member"><i class="fas fa-calendar-alt"></i> Member since 2021</p>
-                        <div class="store-rating">
-                            <div class="stars">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+            <% if (!farmers || farmers.length === 0) { %>
+                <div style="text-align:center; padding:60px 20px;">
+                    <p style="font-size:1.2rem; color:#666;">No farmers registered yet.</p>
+                    <p>Check back soon to see our farmer network grow!</p>
+                </div>
+            <% } else { %>
+                <% farmers.forEach((farmer, index) => { %>
+                    <div class="store-profile" style="margin-top: <%= index > 0 ? '40px' : '0' %>;">
+                        <div class="store-header">
+                            <div class="store-avatar">
+                                <img src="https://ui-avatars.com/api/?name=<%= farmer.farm_name %>&background=2ecc71&color=fff&size=150" alt="<%= farmer.farm_name %>" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%232ecc71%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27white%27 font-family=%27Arial%27 font-size=%2760%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E👨‍🌾%3C/text%3E%3C/svg%3E'">
+                                <% if (farmer.is_verified) { %>
+                                    <span class="verified-seller"><i class="fas fa-check-circle"></i></span>
+                                <% } %>
                             </div>
-                            <span class="rating-text">4.8 (324 reviews)</span>
-                        </div>
-                    </div>
-                    <div class="store-actions">
-                        <button class="btn btn-outline"><i class="fas fa-heart"></i> Follow</button>
-                        <button class="btn btn-primary"><i class="fas fa-comment"></i> Contact</button>
-                    </div>
-                </div>
-
-                <div class="store-metrics">
-                    <div class="metric">
-                        <i class="fas fa-box"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">1,234</span>
-                            <span class="metric-label">Products Sold</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-reply"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">98%</span>
-                            <span class="metric-label">Response Rate</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-truck"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">24hrs</span>
-                            <span class="metric-label">Avg. Ship Time</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-redo"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">2%</span>
-                            <span class="metric-label">Return Rate</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="store-inventory">
-                    <h4>Products from this Farmer</h4>
-                    <div class="inventory-grid">
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=150&h=150&fit=crop" alt="Carrots" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Carrots</span>
-                            <span class="item-price">৳40/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1518977676601-b53f82be27a0?w=150&h=150&fit=crop" alt="Tomatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Tomatoes</span>
-                            <span class="item-price">৳45/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=150&h=150&fit=crop" alt="Onions" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Onions</span>
-                            <span class="item-price">৳35/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=150&h=150&fit=crop" alt="Spinach" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Spinach</span>
-                            <span class="item-price">৳30/bunch</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=150&h=150&fit=crop" alt="Milk" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Milk</span>
-                            <span class="item-price">৳65/L</span>
-                        </div>
-                        <div class="inventory-item view-all">
-                            <span class="view-all-text">View All<br>Products</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Farmer Store 2 -->
-            <div class="store-profile" style="margin-top: 40px;">
-                <div class="store-header">
-                    <div class="store-avatar">
-                        <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=150&h=150&fit=crop" alt="Farmer" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%232ecc71%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27white%27 font-family=%27Arial%27 font-size=%2760%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E👨‍🌾%3C/text%3E%3C/svg%3E'">
-                        <span class="verified-seller"><i class="fas fa-check-circle"></i></span>
-                    </div>
-                    <div class="store-info">
-                        <h3 class="store-name">Rahim's Fresh Produce</h3>
-                        <p class="store-location"><i class="fas fa-map-marker-alt"></i> Dinajpur, Bangladesh</p>
-                        <p class="store-member"><i class="fas fa-calendar-alt"></i> Member since 2020</p>
-                        <div class="store-rating">
-                            <div class="stars">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <div class="store-info">
+                                <a href="/farmer/<%= farmer.id %>" style="text-decoration: none; color: inherit;">
+                                    <h3 class="store-name"><%= farmer.farm_name %></h3>
+                                </a>
+                                <p class="store-location"><i class="fas fa-map-marker-alt"></i> <%= farmer.district || farmer.location || 'Bangladesh' %></p>
+                                <p class="store-member"><i class="fas fa-calendar-alt"></i> Member since <%= new Date(farmer.created_at).getFullYear() %></p>
+                                <div class="store-rating">
+                                    <div class="stars">
+                                        <% for (let i = 0; i < Math.floor(parseFloat(farmer.rating) || 4); i++) { %>
+                                            <i class="fas fa-star"></i>
+                                        <% } %>
+                                        <% if ((parseFloat(farmer.rating) || 4) % 1 >= 0.5) { %>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        <% } %>
+                                    </div>
+                                    <span class="rating-text"><%= (parseFloat(farmer.rating) || 4).toFixed(1) %> (<%= farmer.total_reviews || 0 %> reviews)</span>
+                                </div>
                             </div>
-                            <span class="rating-text">5.0 (189 reviews)</span>
-                        </div>
-                    </div>
-                    <div class="store-actions">
-                        <button class="btn btn-outline"><i class="fas fa-heart"></i> Follow</button>
-                        <button class="btn btn-primary"><i class="fas fa-comment"></i> Contact</button>
-                    </div>
-                </div>
-
-                <div class="store-metrics">
-                    <div class="metric">
-                        <i class="fas fa-box"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">856</span>
-                            <span class="metric-label">Products Sold</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-reply"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">100%</span>
-                            <span class="metric-label">Response Rate</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-truck"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">18hrs</span>
-                            <span class="metric-label">Avg. Ship Time</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-redo"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">1%</span>
-                            <span class="metric-label">Return Rate</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="store-inventory">
-                    <h4>Products from this Farmer</h4>
-                    <div class="inventory-grid">
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=150&h=150&fit=crop" alt="Mangoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Mangoes</span>
-                            <span class="item-price">৳120/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1552944150-6dd1180e5999?w=150&h=150&fit=crop" alt="Cucumber" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Cucumber</span>
-                            <span class="item-price">৳20/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1589621316382-008455b857cd?w=150&h=150&fit=crop" alt="Lemons" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Lemons</span>
-                            <span class="item-price">৳100/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=150&h=150&fit=crop" alt="Bananas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Bananas</span>
-                            <span class="item-price">৳50/dozen</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1594282486756-576b93f4c866?w=150&h=150&fit=crop" alt="Rice" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Rice</span>
-                            <span class="item-price">৳60/kg</span>
-                        </div>
-                        <div class="inventory-item view-all">
-                            <span class="view-all-text">View All<br>Products</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Farmer Store 3 -->
-            <div class="store-profile" style="margin-top: 40px;">
-                <div class="store-header">
-                    <div class="store-avatar">
-                        <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=150&h=150&fit=crop" alt="Farmer" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%232ecc71%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27white%27 font-family=%27Arial%27 font-size=%2760%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E👨‍🌾%3C/text%3E%3C/svg%3E'">
-                        <span class="verified-seller"><i class="fas fa-check-circle"></i></span>
-                    </div>
-                    <div class="store-info">
-                        <h3 class="store-name">Karim's Vegetable Garden</h3>
-                        <p class="store-location"><i class="fas fa-map-marker-alt"></i> Bogra, Bangladesh</p>
-                        <p class="store-member"><i class="fas fa-calendar-alt"></i> Member since 2022</p>
-                        <div class="store-rating">
-                            <div class="stars">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <div class="store-actions">
+                                <button class="btn btn-outline"><i class="fas fa-heart"></i> Follow</button>
+                                <a href="/farmer/<%= farmer.id %>/contact" class="btn btn-primary" style="text-decoration: none;"><i class="fas fa-comment"></i> Contact</a>
                             </div>
-                            <span class="rating-text">4.9 (267 reviews)</span>
                         </div>
-                    </div>
-                    <div class="store-actions">
-                        <button class="btn btn-outline"><i class="fas fa-heart"></i> Follow</button>
-                        <button class="btn btn-primary"><i class="fas fa-comment"></i> Contact</button>
-                    </div>
-                </div>
 
-                <div class="store-metrics">
-                    <div class="metric">
-                        <i class="fas fa-box"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">1,567</span>
-                            <span class="metric-label">Products Sold</span>
+                        <div class="store-metrics">
+                            <div class="metric">
+                                <i class="fas fa-box"></i>
+                                <div class="metric-info">
+                                    <span class="metric-value"><%= farmer.product_count || 0 %></span>
+                                    <span class="metric-label">Products</span>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <i class="fas fa-star"></i>
+                                <div class="metric-info">
+                                    <span class="metric-value"><%= (parseFloat(farmer.rating) || 4).toFixed(1) %>/5</span>
+                                    <span class="metric-label">Rating</span>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <i class="fas fa-check-circle"></i>
+                                <div class="metric-info">
+                                    <span class="metric-value"><%= farmer.is_verified ? 'Verified' : 'Active' %></span>
+                                    <span class="metric-label">Status</span>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div class="metric-info">
+                                    <span class="metric-value"><%= farmer.district || 'Bangladesh' %></span>
+                                    <span class="metric-label">Location</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-reply"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">95%</span>
-                            <span class="metric-label">Response Rate</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-truck"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">20hrs</span>
-                            <span class="metric-label">Avg. Ship Time</span>
-                        </div>
-                    </div>
-                    <div class="metric">
-                        <i class="fas fa-redo"></i>
-                        <div class="metric-info">
-                            <span class="metric-value">3%</span>
-                            <span class="metric-label">Return Rate</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="store-inventory">
-                    <h4>Products from this Farmer</h4>
-                    <div class="inventory-grid">
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=150&h=150&fit=crop" alt="Potatoes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Potatoes</span>
-                            <span class="item-price">৳25/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=150&h=150&fit=crop" alt="Cauliflower" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Cauliflower</span>
-                            <span class="item-price">৳35/piece</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1556801712-76c8eb07bbc9?w=150&h=150&fit=crop" alt="Brinjal" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Brinjal</span>
-                            <span class="item-price">৳30/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=150&h=150&fit=crop" alt="Cabbage" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Cabbage</span>
-                            <span class="item-price">৳28/kg</span>
-                        </div>
-                        <div class="inventory-item">
-                            <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=150&h=150&fit=crop" alt="Onions" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27150%27 height=%27150%27%3E%3Crect fill=%27%23e8f5e9%27 width=%27150%27 height=%27150%27/%3E%3Ctext fill=%27%232ecc71%27 font-family=%27Arial%27 font-size=%2740%27 x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27%3E🌾%3C/text%3E%3C/svg%3E'">
-                            <span class="item-name">Onions</span>
-                            <span class="item-price">৳35/kg</span>
-                        </div>
-                        <div class="inventory-item view-all">
-                            <span class="view-all-text">View All<br>Products</span>
-                            <i class="fas fa-arrow-right"></i>
+                        <div class="store-inventory">
+                            <h4>Products from <%= farmer.farm_name %></h4>
+                            <% if (!farmer.products || farmer.products.length === 0) { %>
+                                <div style="text-align:center; padding:40px; color:#999;">
+                                    <p>No products yet from this farmer</p>
+                                </div>
+                            <% } else { %>
+                                <div class="inventory-grid">
+                                    <% farmer.products.forEach(product => { %>
+                                        <a href="/product/<%= product.id %>" class="inventory-item" style="text-decoration:none; color:inherit;">
+                                            <div style="height:120px; background:#f8fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:8px;">
+                                                <% if (product.image_url) { %>
+                                                    <img src="<%= product.image_url %>" alt="<%= product.name %>" style="max-height:120px; max-width:100%; object-fit:cover;">
+                                                <% } else { %>
+                                                    <i class="fas fa-image" style="color:#cbd5e0; font-size:32px;"></i>
+                                                <% } %>
+                                            </div>
+                                            <span class="item-name"><%= product.name %></span>
+                                            <span class="item-price">৳<%= product.price %>/<%= product.unit || 'kg' %></span>
+                                        </a>
+                                    <% }) %>
+                                    <a href="/farmer/<%= farmer.id %>" class="inventory-item" style="text-decoration:none; color:inherit; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+                                        <span class="view-all-text">View All<br>Products</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
-                </div>
-            </div>
+                <% }) %>
+            <% } %>
         </div>
     </section>
 

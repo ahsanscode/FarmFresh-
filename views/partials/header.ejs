@@ -17,10 +17,10 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="/" class="nav-link">Home</a></li>
-                <li><a href="#marketplace" class="nav-link">Marketplace</a></li>
-                <li><a href="#auctions" class="nav-link hot-feature">Live Auctions <span class="badge-hot">Hot</span></a></li>
-                <li><a href="#farmers" class="nav-link">Farmers</a></li>
-                <li><a href="#track" class="nav-link">Track Order</a></li>
+                <li><a href="#marketplace" class="nav-link" onclick="handleNavClick(event, '#marketplace', '/products')">Marketplace</a></li>
+                <li><a href="#auctions" class="nav-link hot-feature" onclick="handleNavClick(event, '#auctions', '/auction')">Live Auctions <span class="badge-hot">Hot</span></a></li>
+                <li><a href="#farmers" class="nav-link" onclick="handleNavClick(event, '#farmers', '/farmers')">Farmers</a></li>
+                <li><a href="#track" class="nav-link" onclick="handleNavClick(event, '#track', '/track')">Track Order</a></li>
             </ul>
             <div class="nav-actions">
                 <% if (!user) { %>
@@ -42,6 +42,10 @@
                                 </a>
                             <% } %>
                             <a href="/profile" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Profile</a>
+                            <% if (user.role === 'seller') { %>
+                                <a href="/my-farm" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Farm</a>
+                                <a href="/edit-farm" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">Edit Farm</a>
+                            <% } %>
                             <a href="/profile/edit" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">Edit Profile</a>
                             <a href="/my-orders" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Orders</a>
                             <a href="/logout" class="dropdown-item" style="display:block; padding:10px 12px; color:#c00; text-decoration:none;">Logout</a>
@@ -50,7 +54,9 @@
                 <% } %>
                 <a href="/cart" class="btn btn-icon" aria-label="Cart">
                     <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">3</span>
+                    <% if (cartCount && cartCount > 0) { %>
+                        <span class="cart-count"><%= cartCount %></span>
+                    <% } %>
                 </a>
             </div>
             <button class="nav-toggle" aria-label="Toggle navigation">
@@ -58,3 +64,20 @@
             </button>
         </nav>
     </header>
+    <script>
+        function handleNavClick(event, sectionId, pageUrl) {
+            // Check if we're on the home page
+            if (window.location.pathname === '/') {
+                // We're on home page: scroll to section
+                event.preventDefault();
+                const section = document.querySelector(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // We're on another page: navigate to dedicated page
+                event.preventDefault();
+                window.location.href = pageUrl;
+            }
+        }
+    </script>
