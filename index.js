@@ -743,7 +743,7 @@ app.get("/profile", async (req, res) => {
         let farmer = null;
         if (fullUser && fullUser.role === 'seller') {
             const farmerRes = await pool.query(
-                'SELECT farm_name, district, address, farm_size, is_verified, rating, total_reviews, updated_at FROM farmers WHERE user_id = $1',
+                'SELECT id, farm_name, district, address, farm_size, is_verified, rating, total_reviews, updated_at FROM farmers WHERE user_id = $1',
                 [fullUser.id]
             );
             farmer = farmerRes.rowCount ? farmerRes.rows[0] : null;

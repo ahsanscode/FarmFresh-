@@ -171,7 +171,6 @@
             const data = await response.json();
             if (data.success) {
                 updateCartBadge();
-                alert('Product added to cart!');
             } else {
                 if (response.status === 401) {
                     window.location.href = '/login';

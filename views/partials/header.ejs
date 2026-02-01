@@ -20,7 +20,17 @@
                 <li><a href="#marketplace" class="nav-link" onclick="handleNavClick(event, '#marketplace', '/products')">Marketplace</a></li>
                 <li><a href="#auctions" class="nav-link hot-feature" onclick="handleNavClick(event, '#auctions', '/auction')">Live Auctions <span class="badge-hot">Hot</span></a></li>
                 <li><a href="#farmers" class="nav-link" onclick="handleNavClick(event, '#farmers', '/farmers')">Farmers</a></li>
-                <li><a href="#track" class="nav-link" onclick="handleNavClick(event, '#track', '/track')">Track Order</a></li>
+                <li style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+                    <button class="btn btn-icon nav-search-toggle" aria-label="Search" id="navSearchToggle" style="display:none;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <a href="/cart" class="btn btn-icon" aria-label="Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <% if (cartCount && cartCount > 0) { %>
+                            <span class="cart-count" style="background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; position: absolute; top: -5px; right: -5px;"><%= cartCount %></span>
+                        <% } %>
+                    </a>
+                </li>
             </ul>
             <div class="nav-actions">
                 <% if (!user) { %>
@@ -28,9 +38,6 @@
                     <a href="/register" class="btn btn-outline">Register</a>
                     <a href="/register?userType=seller" class="btn btn-primary">Become a Seller</a>
                 <% } else { %>
-                    <% if (user.role === 'seller') { %>
-                        <a href="/add-product" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</a>
-                    <% } %>
                     <details class="profile-dropdown" style="position:relative; display:inline-block;">
                         <summary class="btn btn-outline" style="list-style:none; cursor:pointer;">
                             <i class="fas fa-user"></i> <%= user.name %> <i class="fas fa-caret-down" style="margin-left:6px;"></i>
@@ -47,22 +54,34 @@
                                 <a href="/edit-farm" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">Edit Farm</a>
                             <% } %>
                             <a href="/profile/edit" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">Edit Profile</a>
+                            <% if (user.role === 'seller') { %>
+                                <a href="/add-product" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;"><i class="fas fa-plus" style="margin-right:6px;"></i> Add Product</a>
+                            <% } %>
                             <a href="/my-orders" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">My Orders</a>
+                            <a href="/track" class="dropdown-item" style="display:block; padding:10px 12px; color:#111; text-decoration:none;">Track Order</a>
                             <a href="/logout" class="dropdown-item" style="display:block; padding:10px 12px; color:#c00; text-decoration:none;">Logout</a>
                         </div>
                     </details>
                 <% } %>
-                <a href="/cart" class="btn btn-icon" aria-label="Cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <% if (cartCount && cartCount > 0) { %>
-                        <span class="cart-count"><%= cartCount %></span>
-                    <% } %>
-                </a>
             </div>
             <button class="nav-toggle" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
         </nav>
+        <!-- Search Dropdown (shown when search icon clicked) -->
+        <div id="navSearchBox" class="nav-search-dropdown" style="display:none; position:absolute; top:100%; left:0; right:0; background:white; border-bottom:3px solid #2ecc71; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:999;">
+            <div class="container" style="padding:20px 0;">
+                <form onsubmit="handleNavSearch(event)" style="display:flex; gap:10px; align-items:center;">
+                    <div style="flex:1; position:relative;">
+                        <i class="fas fa-search" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); color:#999;"></i>
+                        <input type="text" id="navSearchInput" placeholder="Search for products, farms, categories..." 
+                               style="width:100%; padding:12px 15px 12px 45px; border:1px solid #ddd; border-radius:8px; font-size:1rem;">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="button" class="btn btn-outline" onclick="closeNavSearch()">Cancel</button>
+                </form>
+            </div>
+        </div>
     </header>
     <script>
         function handleNavClick(event, sectionId, pageUrl) {
@@ -80,4 +99,61 @@
                 window.location.href = pageUrl;
             }
         }
+
+        // Show/hide search icon based on current page
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchToggle = document.getElementById('navSearchToggle');
+            const searchBox = document.getElementById('navSearchBox');
+            const profileDropdown = document.querySelector('.profile-dropdown');
+            
+            // Show search icon only if NOT on home page
+            if (window.location.pathname !== '/') {
+                searchToggle.style.display = 'inline-flex';
+            }
+
+            // Toggle search box visibility
+            searchToggle.addEventListener('click', function() {
+                if (searchBox.style.display === 'none') {
+                    searchBox.style.display = 'block';
+                    document.getElementById('navSearchInput').focus();
+                } else {
+                    searchBox.style.display = 'none';
+                }
+            });
+
+            // Close profile dropdown when clicking outside
+            if (profileDropdown) {
+                document.addEventListener('click', function(event) {
+                    if (!profileDropdown.contains(event.target)) {
+                        profileDropdown.removeAttribute('open');
+                    }
+                });
+            }
+        });
+
+        function handleNavSearch(event) {
+            event.preventDefault();
+            const query = document.getElementById('navSearchInput').value.trim();
+            if (query) {
+                window.location.href = `/search?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        function closeNavSearch() {
+            document.getElementById('navSearchBox').style.display = 'none';
+            document.getElementById('navSearchInput').value = '';
+        }
+
+        // Close search box when clicking outside
+        document.addEventListener('click', function(event) {
+            const searchBox = document.getElementById('navSearchBox');
+            const searchToggle = document.getElementById('navSearchToggle');
+            
+            if (searchBox && searchToggle && 
+                searchBox.style.display !== 'none' && 
+                !searchBox.contains(event.target) && 
+                !searchToggle.contains(event.target)) {
+                closeNavSearch();
+            }
+        });
     </script>
