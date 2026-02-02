@@ -1,0 +1,100 @@
+<%- include("partials/header.ejs") %>
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-inbox"></i> Placed Orders</h1>
+    <p class="page-subtitle">View all orders placed to your products by customers</p>
+    <nav class="breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Placed Orders</span>
+    </nav>
+  </div>
+</section>
+
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-card" style="max-width: 960px;">
+        <% if (!orders || !orders.length) { %>
+          <div style="text-align:center; padding:60px 20px;">
+            <i class="fas fa-inbox" style="font-size:60px; color:#ddd; margin-bottom:20px; display:block;"></i>
+            <p style="font-size:1.2rem; color:#666;">No orders placed yet</p>
+            <p style="color:#999; margin-bottom:20px;">Once customers place orders for your products, they will appear here</p>
+            <a href="/add-product" class="btn btn-primary"><i class="fas fa-plus"></i> Add Products</a>
+          </div>
+        <% } else { %>
+          <div class="orders-list">
+            <% orders.forEach(order => { %>
+              <div class="order-card" style="border:1px solid #e5e7eb; border-radius:12px; padding:16px; margin-bottom:16px; background:#fff;">
+                <div class="order-header" style="display:flex; justify-content:space-between; align-items:flex-start; gap:20px;">
+                  <div style="flex:1;">
+                    <strong style="font-size:1.1rem;">Order #<%= order.id %></strong>
+                    <div style="color:#666; font-size:0.9rem; margin-top:6px;">
+                      <p style="margin:4px 0;"><i class="fas fa-user"></i> Customer: <%= order.buyer_name %></p>
+                      <p style="margin:4px 0;"><i class="fas fa-phone"></i> Phone: <%= order.buyer_phone || 'N/A' %></p>
+                      <p style="margin:4px 0;"><i class="fas fa-map-marker-alt"></i> Delivery: <%= order.delivery_address %></p>
+                    </div>
+                    <div style="color:#666; font-size:0.85rem; margin-top:8px;">
+                      <p style="margin:4px 0;">Placed: <%= new Date(order.order_date).toLocaleString() %></p>
+                      <% if (order.delivery_date) { %>
+                        <p style="margin:4px 0;">Delivered: <%= new Date(order.delivery_date).toLocaleString() %></p>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="margin-bottom:8px;">
+                      <span class="badge" style="background:#e8f5e9; color:#2ecc71; padding:8px 12px; border-radius:6px; font-weight:600;">
+                        <%= order.status %>
+                      </span>
+                    </div>
+                    <div style="font-weight:600; font-size:1.1rem; color:#2ecc71;">৳<%= Number(order.total_price).toFixed(2) %></div>
+                  </div>
+                </div>
+                <div class="order-body" style="margin-top:16px;">
+                  <h4 style="margin:0 0 12px; font-size:0.95rem; color:#333;">Items from Your Products:</h4>
+                  <table class="bid-history-table" style="width:100%; border-collapse:collapse;">
+                    <thead>
+                      <tr style="border-bottom:2px solid #e5e7eb;">
+                        <th style="text-align:left; padding:8px; color:#666; font-weight:600; font-size:0.85rem;">Product</th>
+                        <th style="text-align:center; padding:8px; color:#666; font-weight:600; font-size:0.85rem;">Qty</th>
+                        <th style="text-align:center; padding:8px; color:#666; font-weight:600; font-size:0.85rem;">Unit</th>
+                        <th style="text-align:right; padding:8px; color:#666; font-weight:600; font-size:0.85rem;">Price</th>
+                        <th style="text-align:right; padding:8px; color:#666; font-weight:600; font-size:0.85rem;">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% (itemsByOrder[order.id] || []).forEach(item => { %>
+                        <tr style="border-bottom:1px solid #f0f0f0;">
+                          <td style="text-align:left; padding:10px 8px;">
+                            <a href="/product/<%= item.product_id %>" style="color:#2ecc71; text-decoration:none; font-weight:500;">
+                              <%= item.product_name || 'Product #' + item.product_id %>
+                            </a>
+                          </td>
+                          <td style="text-align:center; padding:10px 8px;"><%= item.quantity %></td>
+                          <td style="text-align:center; padding:10px 8px;"><%= item.unit || '-' %></td>
+                          <td style="text-align:right; padding:10px 8px;">৳<%= Number(item.price).toFixed(2) %></td>
+                          <td style="text-align:right; padding:10px 8px; font-weight:600;">৳<%= Number(item.subtotal).toFixed(2) %></td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="order-footer" style="margin-top:16px; display:flex; gap:10px; border-top:1px solid #e5e7eb; padding-top:16px;">
+                  <button class="btn btn-outline" style="cursor:pointer;" onclick="alert('Mark as shipped functionality coming soon')">
+                    <i class="fas fa-check"></i> Mark as Shipped
+                  </button>
+                  <button class="btn btn-text" style="cursor:pointer;" onclick="alert('View details functionality coming soon')">
+                    <i class="fas fa-eye"></i> View Details
+                  </button>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include("partials/footer.ejs") %>

@@ -1081,6 +1081,61 @@ app.post('/add-product', requireSeller, upload.single('image_file'), async (req,
     }
 });
 
+// Seller Orders (orders placed to seller's products)
+app.get('/seller/orders', requireAuth, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    
+    // Check if user is a seller
+    const sellerRes = await pool.query(
+      'SELECT id FROM farmers WHERE user_id = $1',
+      [userId]
+    );
+    
+    if (sellerRes.rowCount === 0) {
+      return res.status(403).send('Only sellers can view placed orders');
+    }
+    
+    const farmerId = sellerRes.rows[0].id;
+    
+    // Get all orders for products from this seller
+    const ordersRes = await pool.query(
+      `SELECT DISTINCT o.id, o.order_date, o.delivery_date, o.total_price, o.delivery_address, o.status, u.name as buyer_name, u.phone as buyer_phone
+       FROM orders o
+       JOIN order_items oi ON o.id = oi.order_id
+       JOIN products p ON oi.product_id = p.id
+       JOIN users u ON o.user_id = u.id
+       WHERE p.farmer_id = $1
+       ORDER BY o.order_date DESC`,
+      [farmerId]
+    );
+    
+    const orders = ordersRes.rows;
+    let itemsByOrder = {};
+    
+    if (orders.length) {
+      const orderIds = orders.map(o => o.id);
+      const itemsRes = await pool.query(
+        `SELECT oi.order_id, oi.product_id, oi.quantity, oi.price, oi.subtotal, p.name as product_name, p.unit
+         FROM order_items oi
+         LEFT JOIN products p ON p.id = oi.product_id
+         JOIN farmers f ON p.farmer_id = f.id
+         WHERE oi.order_id = ANY($1::int[]) AND f.id = $2`,
+        [orderIds, farmerId]
+      );
+      for (const row of itemsRes.rows) {
+        if (!itemsByOrder[row.order_id]) itemsByOrder[row.order_id] = [];
+        itemsByOrder[row.order_id].push(row);
+      }
+    }
+    
+    res.render('seller-orders.ejs', { orders, itemsByOrder });
+  } catch (err) {
+    console.error('Seller orders error', err);
+    res.status(500).send('Failed to load orders');
+  }
+});
+
 // My Orders (buyers and sellers as customers)
 app.get('/my-orders', requireAuth, async (req, res) => {
   try {
