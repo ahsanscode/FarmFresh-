@@ -1,5 +1,74 @@
 <%- include('partials/header') %> <!-- Include the header partial -->
 
+    <style>
+        /* Simple toast for stock limit messages */
+        .toast-notice {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2ecc71;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 3000;
+            pointer-events: none;
+            font-size: 14px;
+        }
+        .toast-notice.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Stock modal */
+        .stock-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+        }
+        .stock-modal-backdrop.show { display: flex; }
+        .stock-modal {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 24px;
+            width: min(90%, 360px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            text-align: center;
+        }
+        .stock-modal h4 { margin: 0 0 10px; font-size: 18px; color: #2c3e50; }
+        .stock-modal p { margin: 0 0 16px; color: #555; font-size: 14px; }
+        .stock-modal button {
+            background: #2ecc71;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .stock-modal button:hover { background: #27ae60; }
+    </style>
+
+    <div id="maxStockToast" class="toast-notice" role="status" aria-live="polite">
+        <span class="toast-message">Maximum stock reached</span>
+    </div>
+
+    <div id="stockModal" class="stock-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="stockModalTitle">
+        <div class="stock-modal">
+            <h4 id="stockModalTitle">Maximum stock reached</h4>
+            <p id="stockModalMessage">You have reached the maximum available quantity.</p>
+            <button type="button" onclick="closeStockModal()">OK</button>
+        </div>
+    </div>
+
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
@@ -206,6 +275,32 @@
     </div>
 
 <script>
+    let maxStockToastTimer = null;
+
+    function showStockModal(message) {
+        const modal = document.getElementById('stockModal');
+        const msg = document.getElementById('stockModalMessage');
+        if (msg) msg.textContent = message;
+        if (modal) modal.classList.add('show');
+    }
+
+    function closeStockModal() {
+        const modal = document.getElementById('stockModal');
+        if (modal) modal.classList.remove('show');
+    }
+
+    function showMaxStockToast(message) {
+        const toast = document.getElementById('maxStockToast');
+        if (!toast) return;
+        const msgEl = toast.querySelector('.toast-message');
+        if (msgEl) msgEl.textContent = message;
+        toast.classList.add('show');
+        if (maxStockToastTimer) clearTimeout(maxStockToastTimer);
+        maxStockToastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2200);
+    }
+
     function openCheckoutModal() {
         document.getElementById('checkoutModal').style.display = 'flex';
     }
@@ -278,7 +373,7 @@
         
         // Check if trying to increment beyond max stock
         if (change > 0 && currentQty >= maxStock) {
-            alert(`Maximum quantity is ${maxStock}`);
+            showStockModal(`Maximum quantity is ${maxStock}`);
             return;
         }
         
@@ -325,13 +420,13 @@
         
         if (value < 1) {
             qtyInput.value = 1;
-            alert('Quantity must be at least 1');
+            showStockModal('Quantity must be at least 1');
             return;
         }
         
         if (value > maxStock) {
             qtyInput.value = maxStock;
-            alert(`Maximum quantity is ${maxStock}`);
+            showStockModal(`Maximum quantity is ${maxStock}`);
             return;
         }
         
@@ -371,31 +466,45 @@
             event.preventDefault();
             const qtyInput = document.getElementById('qty-' + cartId);
             const maxStock = parseInt(qtyInput.dataset.maxStock) || 999;
-            let value = parseInt(qtyInput.value) || 1;
+            const originalValue = parseInt(qtyInput.value) || 1;
+            let value = originalValue;
+            let adjusted = false;
             
-            // Validate the value
+            // Validate the value and notify when clamped
             if (value < 1) {
                 value = 1;
+                showStockModal('Quantity must be at least 1');
+                adjusted = true;
             } else if (value > maxStock) {
                 value = maxStock;
+                showStockModal(`Maximum quantity is ${maxStock}`);
+                adjusted = true;
             }
-            
-            // Calculate the change needed
-            const currentQty = parseInt(qtyInput.dataset.cartId ? 
-                                       document.querySelector(`[data-cart-id="${cartId}"]`)?.querySelector('.qty-input')?.defaultValue : 1);
-            
-            // Update quantity via the updateQuantity function with calculated change
-            const tempInput = qtyInput;
-            const originalValue = parseInt(tempInput.value);
-            tempInput.value = value;
-            
-            // Trigger update for the new value
+
+            qtyInput.value = value;
+            if (adjusted) {
+                return; // Keep modal until user dismisses, avoid auto reload
+            }
             updateQuantityByValue(cartId, value);
         }
     }
 
     // Update quantity by direct value (used when Enter is pressed)
     async function updateQuantityByValue(cartId, newQty) {
+        const qtyInput = document.getElementById('qty-' + cartId);
+        const maxStock = parseInt(qtyInput?.dataset.maxStock) || 999;
+        if (newQty < 1) {
+            newQty = 1;
+            if (qtyInput) qtyInput.value = 1;
+            showStockModal('Quantity must be at least 1');
+            return;
+        }
+        if (newQty > maxStock) {
+            newQty = maxStock;
+            if (qtyInput) qtyInput.value = maxStock;
+            showStockModal(`Maximum quantity is ${maxStock}`);
+            return;
+        }
         try {
             const response = await fetch('/cart/update', {
                 method: 'POST',

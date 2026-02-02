@@ -61,30 +61,6 @@
                             <span class="price-separator">-</span>
                             <input type="number" class="price-input" id="maxPrice" placeholder="Max" min="0">
                         </div>
-                        <button class="btn-apply-price" onclick="applyPriceFilter()">Apply</button>
-                    </div>
-                </div>
-
-                <!-- Rating Filter -->
-                <div class="filter-section">
-                    <h4 class="filter-title">Rating</h4>
-                    <div class="filter-options">
-                        <label class="filter-checkbox">
-                            <input type="checkbox" class="rating-filter" value="5">
-                            <span>★★★★★ 5 Stars</span>
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" class="rating-filter" value="4">
-                            <span>★★★★☆ 4+ Stars</span>
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" class="rating-filter" value="3">
-                            <span>★★★☆☆ 3+ Stars</span>
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" class="rating-filter" value="2">
-                            <span>★★☆☆☆ 2+ Stars</span>
-                        </label>
                     </div>
                 </div>
 
@@ -107,21 +83,10 @@
                     </div>
                 </div>
 
-                <!-- Verified Seller Filter -->
-                <div class="filter-section">
-                    <h4 class="filter-title">Seller Status</h4>
-                    <div class="filter-options">
-                        <label class="filter-checkbox">
-                            <input type="checkbox" class="verified-filter" value="verified">
-                            <span>Verified Sellers Only</span>
-                        </label>
-                    </div>
-                </div>
-
                 <!-- Sort Options -->
                 <div class="filter-section">
                     <h4 class="filter-title">Sort By</h4>
-                    <select class="sort-select" id="sortSelect" onchange="applySorting()">
+                    <select class="sort-select" id="sortSelect">
                         <option value="newest">Newest Arrivals</option>
                         <option value="price-low">Price: Low to High</option>
                         <option value="price-high">Price: High to Low</option>
@@ -129,6 +94,9 @@
                         <option value="best-selling">Best Selling</option>
                     </select>
                 </div>
+
+                <!-- Apply Button at Bottom -->
+                <button class="btn-apply-price btn-apply-bottom" onclick="applyPriceFilter()">Apply Filters</button>
             </aside>
 
             <!-- Products Section -->
@@ -159,7 +127,7 @@
                             const firstLetter = (product.name || 'P').toString().charAt(0).toUpperCase();
                             const category = (product.category || 'Other').toString();
                         %>
-                        <div class="product-card" data-category="<%= category %>">
+                        <div class="product-card" data-category="<%= category %>" data-stock="<%= stockQty %>">
                             <a href="/product/<%= product.id %>">
                                 <div class="product-image">
                                      <img src="<%= product.image_url ? product.image_url : '/uploads/default-product.png' %>" 
@@ -184,7 +152,11 @@
                                         <span class="savings">Save <%= savings %>%</span>
                                     <% } %>
                                 </div>
-                                <p style="font-size: 0.9rem; color: #666; margin: 5px 0;">Stock: <%= stockQty %> available</p>
+                                <% if (stockQty === 0) { %>
+                                    <p style="font-size: 0.9rem; color: #e74c3c; font-weight: 600; margin: 5px 0;">Stock Out</p>
+                                <% } else { %>
+                                    <p style="font-size: 0.9rem; color: #666; margin: 5px 0;">Stock: <%= stockQty %> available</p>
+                                <% } %>
                                 <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
                                     <span style="font-size: 0.9rem; color: #666;">Quantity:</span>
                                     <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
@@ -221,14 +193,27 @@
 
     // Initialize products array from DOM
     function initializeProducts() {
-        allProducts = Array.from(document.querySelectorAll('.product-card')).map(card => ({
-            element: card,
-            category: (card.getAttribute('data-category') || '').toLowerCase(),
-            price: parseFloat(card.querySelector('.farm-price')?.textContent.match(/\d+/)?.[0] || 0),
-            stock: parseInt(card.querySelector('p:contains("Stock:")') || 0),
-            rating: parseFloat(card.querySelector('.rating-stars')?.getAttribute('data-rating') || 0),
-            verified: card.querySelector('.badge-verified') !== null
-        }));
+        allProducts = Array.from(document.querySelectorAll('.product-card')).map(card => {
+            // Extract price from the farm-price span
+            const farmPriceText = card.querySelector('.farm-price')?.textContent || '0';
+            const price = parseFloat(farmPriceText.match(/\d+(\.\d+)?/)?.[0] || 0);
+            
+            // Extract stock quantity from data attribute
+            const stock = parseInt(card.getAttribute('data-stock') || 0);
+            
+            // Extract category from data attribute
+            const category = (card.getAttribute('data-category') || 'other').toLowerCase().trim();
+            
+            return {
+                element: card,
+                category: category,
+                price: price,
+                stock: stock,
+                verified: card.querySelector('.badge-verified') !== null,
+                name: card.querySelector('.product-name')?.textContent || '',
+                farmName: card.querySelector('.farm-name')?.textContent || ''
+            };
+        });
         filteredProducts = [...allProducts];
     }
 
@@ -236,28 +221,22 @@
     function applyAllFilters() {
         initializeProducts();
         filteredProducts = allProducts.filter(product => {
-            // Category filter
+            // Category filter logic
             const categoryCheckboxes = document.querySelectorAll('.category-filter:checked');
-            const allCatChecked = Array.from(categoryCheckboxes).some(cb => cb.value === 'all');
-            const selectedCategories = Array.from(categoryCheckboxes)
-                .filter(cb => cb.value !== 'all')
-                .map(cb => cb.value.toLowerCase());
+            const selectedValues = Array.from(categoryCheckboxes).map(cb => cb.value.toLowerCase());
             
-            if (!allCatChecked && selectedCategories.length > 0) {
-                if (!selectedCategories.includes(product.category)) return false;
+            // If 'all' is selected OR no category filters are selected, show all categories
+            const showAllCategories = selectedValues.includes('all') || selectedValues.length === 0;
+            
+            if (!showAllCategories) {
+                // Only show products that match selected categories
+                if (!selectedValues.includes(product.category)) return false;
             }
 
             // Price range filter
             const minPrice = parseFloat(document.getElementById('minPrice')?.value || 0);
             const maxPrice = parseFloat(document.getElementById('maxPrice')?.value || Infinity);
-            if (product.price < minPrice || product.price > maxPrice) return false;
-
-            // Rating filter
-            const ratingCheckboxes = document.querySelectorAll('.rating-filter:checked');
-            if (ratingCheckboxes.length > 0) {
-                const minRating = Math.min(...Array.from(ratingCheckboxes).map(cb => parseInt(cb.value)));
-                if (product.rating < minRating) return false;
-            }
+            if (product.price < minPrice || (maxPrice && product.price > maxPrice)) return false;
 
             // Stock filter
             const stockCheckboxes = document.querySelectorAll('.stock-filter:checked');
@@ -266,16 +245,11 @@
                 let matches = false;
                 
                 for (const stock of selectedStocks) {
-                    if (stock === 'in-stock' && product.stock > 10) matches = true;
+                    if (stock === 'in-stock' && product.stock > 0) matches = true;
                     if (stock === 'low-stock' && product.stock > 0 && product.stock <= 10) matches = true;
                     if (stock === 'out-of-stock' && product.stock === 0) matches = true;
                 }
                 if (!matches) return false;
-            }
-
-            // Verified filter
-            if (document.querySelector('.verified-filter:checked')) {
-                if (!product.verified) return false;
             }
 
             return true;
@@ -296,12 +270,8 @@
             case 'price-high':
                 filteredProducts.sort((a, b) => b.price - a.price);
                 break;
-            case 'rating':
-                filteredProducts.sort((a, b) => b.rating - a.rating);
-                break;
             case 'best-selling':
-                // Can be enhanced with sales data
-                filteredProducts.sort(() => Math.random() - 0.5);
+                // Keep original order for best-selling
                 break;
             case 'newest':
             default:
@@ -313,16 +283,30 @@
 
     // Update product display based on filtered results
     function updateProductDisplay() {
-        const cards = document.querySelectorAll('.product-card');
-        cards.forEach(card => {
-            const isVisible = filteredProducts.some(p => p.element === card);
-            card.style.display = isVisible ? '' : 'none';
+        const grid = document.querySelector('.product-grid');
+        if (!grid) return;
+
+        // Re-order DOM elements according to filteredProducts array so sorting is reflected
+        const allCards = Array.from(document.querySelectorAll('.product-card'));
+        const filteredSet = new Set(filteredProducts.map(p => p.element));
+
+        // Append filtered products in order
+        filteredProducts.forEach(p => {
+            const el = p.element;
+            el.style.display = '';
+            // appendChild moves element if already present, preserving order
+            grid.appendChild(el);
+        });
+
+        // Hide non-filtered cards
+        allCards.forEach(card => {
+            if (!filteredSet.has(card)) {
+                card.style.display = 'none';
+            }
         });
 
         // Show "no results" message if needed
-        const grid = document.querySelector('.product-grid');
-        const visibleCount = Array.from(cards).filter(c => c.style.display !== 'none').length;
-        
+        const visibleCount = filteredProducts.length;
         let noResultsMsg = document.querySelector('.no-results-message');
         if (visibleCount === 0) {
             if (!noResultsMsg) {
@@ -339,47 +323,41 @@
 
     // Apply price filter
     function applyPriceFilter() {
+        console.log('Apply button clicked');
+        console.log('Min Price:', document.getElementById('minPrice')?.value);
+        console.log('Max Price:', document.getElementById('maxPrice')?.value);
         applyAllFilters();
     }
 
     // Clear all filters
     function clearAllFilters() {
-        document.querySelectorAll('.category-filter, .rating-filter, .stock-filter, .verified-filter').forEach(input => {
-            input.checked = (input.classList.contains('category-filter') || input.classList.contains('stock-filter')) && input.value === 'all' ? true : input.classList.contains('stock-filter') && input.value === 'in-stock' ? true : false;
+        // Reset category filters
+        document.querySelectorAll('.category-filter').forEach(input => {
+            input.checked = input.value === 'all';
         });
+        
+        // Reset stock filters
+        document.querySelectorAll('.stock-filter').forEach(input => {
+            input.checked = input.value === 'in-stock';
+        });
+        
+        // Reset price inputs
         document.getElementById('minPrice').value = '';
         document.getElementById('maxPrice').value = '';
+        
+        // Reset sort
         document.getElementById('sortSelect').value = 'newest';
+        
         applyAllFilters();
     }
 
     // Event listeners for filters
     document.addEventListener('DOMContentLoaded', function() {
         initializeProducts();
+        updateProductDisplay();
 
-        // Category filters
-        document.querySelectorAll('.category-filter').forEach(checkbox => {
-            checkbox.addEventListener('change', applyAllFilters);
-        });
-
-        // Rating filters
-        document.querySelectorAll('.rating-filter').forEach(checkbox => {
-            checkbox.addEventListener('change', applyAllFilters);
-        });
-
-        // Stock filters
-        document.querySelectorAll('.stock-filter').forEach(checkbox => {
-            checkbox.addEventListener('change', applyAllFilters);
-        });
-
-        // Verified filter
-        document.querySelectorAll('.verified-filter').forEach(checkbox => {
-            checkbox.addEventListener('change', applyAllFilters);
-        });
-
-        // Price inputs (real-time filtering)
-        document.getElementById('minPrice')?.addEventListener('input', applyAllFilters);
-        document.getElementById('maxPrice')?.addEventListener('input', applyAllFilters);
+        // Filters will only apply when "Apply Filters" button is clicked
+        // No automatic filtering on checkbox/input change
     });
 
     // Mobile navigation toggle

@@ -139,3 +139,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Deployment & Security Reports
+DEPLOYMENT_READINESS_REPORT.md
+SECURITY_DEEP_DIVE.md
