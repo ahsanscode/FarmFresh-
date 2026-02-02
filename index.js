@@ -232,6 +232,90 @@ app.post("/cart/add", async (req, res) => {
     }
 });
 
+// Checkout - Create order
+app.post("/checkout", requireAuth, async (req, res) => {
+    try {
+        const { deliveryAddress, phoneNumber, paymentMethod } = req.body;
+        const userId = req.session.user.id;
+        
+        if (!deliveryAddress || !phoneNumber || !paymentMethod) {
+            return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
+        
+        // Get cart items
+        const cartRes = await pool.query(
+            `SELECT c.id, c.quantity, p.id as product_id, p.price, p.stock_quantity
+             FROM cart c
+             JOIN products p ON c.product_id = p.id
+             WHERE c.user_id = $1`,
+            [userId]
+        );
+        
+        if (cartRes.rowCount === 0) {
+            return res.status(400).json({ success: false, message: "Cart is empty" });
+        }
+        
+        const cartItems = cartRes.rows;
+        
+        // Validate stock for all items
+        for (const item of cartItems) {
+            if (item.quantity > item.stock_quantity) {
+                return res.status(400).json({ 
+                    success: false, 
+                    message: `Insufficient stock for product ID ${item.product_id}` 
+                });
+            }
+        }
+        
+        // Calculate total price
+        let totalPrice = 0;
+        for (const item of cartItems) {
+            totalPrice += item.price * item.quantity;
+        }
+        
+        const totalWithDelivery = totalPrice + 50; // Add delivery fee
+        
+        // Create order
+        const orderRes = await pool.query(
+            `INSERT INTO orders (user_id, total_price, delivery_address, status, farmer_id, order_date)
+             VALUES ($1, $2, $3, $4, NULL, NOW())
+             RETURNING id`,
+            [userId, totalWithDelivery, deliveryAddress, 'Pending']
+        );
+        
+        const orderId = orderRes.rows[0].id;
+        
+        // Add order items and update stock
+        for (const item of cartItems) {
+            await pool.query(
+                `INSERT INTO order_items (order_id, product_id, quantity, price, subtotal)
+                 VALUES ($1, $2, $3, $4, $5)`,
+                [orderId, item.product_id, item.quantity, item.price, item.price * item.quantity]
+            );
+            
+            // Update product stock
+            await pool.query(
+                `UPDATE products SET stock_quantity = stock_quantity - $1 WHERE id = $2`,
+                [item.quantity, item.product_id]
+            );
+        }
+        
+        // Update user phone in users table if provided
+        await pool.query(
+            `UPDATE users SET phone = $1 WHERE id = $2`,
+            [phoneNumber, userId]
+        );
+        
+        // Clear cart
+        await pool.query('DELETE FROM cart WHERE user_id = $1', [userId]);
+        
+        res.json({ success: true, message: "Order placed successfully", orderId });
+    } catch (err) {
+        console.error('Checkout error:', err);
+        res.status(500).json({ success: false, message: "Failed to place order: " + err.message });
+    }
+});
+
 // Update cart item quantity
 app.post("/cart/update", async (req, res) => {
     try {

@@ -17,21 +17,136 @@
 
     <!-- All Products Section -->
     <section id="all-products" class="marketplace">
-        <div class="container">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">Fresh Marketplace</h2>
-                    <p class="section-subtitle">Farm-fresh produce at honest prices</p>
+        <div class="container products-container">
+            <!-- Filter Sidebar -->
+            <aside class="filter-sidebar">
+                <div class="filter-header">
+                    <h3>Filters</h3>
+                    <button class="clear-filters-btn" onclick="clearAllFilters()">Clear All</button>
                 </div>
-                <div class="filter-tabs">
-                    <button class="filter-btn active">All</button>
-                    <button class="filter-btn">Vegetables</button>
-                    <button class="filter-btn">Fruits</button>
-                    <button class="filter-btn">Dairy</button>
-                    <button class="filter-btn">Grains</button>
+
+                <!-- Category Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Categories</h4>
+                    <div class="filter-options">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="category-filter" value="all" checked>
+                            <span>All Categories</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="category-filter" value="vegetables">
+                            <span>Vegetables</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="category-filter" value="fruits">
+                            <span>Fruits</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="category-filter" value="dairy">
+                            <span>Dairy Products</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="category-filter" value="grains">
+                            <span>Grains & Cereals</span>
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div class="product-grid">
+
+                <!-- Price Range Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Price Range</h4>
+                    <div class="price-range-container">
+                        <div class="price-inputs">
+                            <input type="number" class="price-input" id="minPrice" placeholder="Min" min="0">
+                            <span class="price-separator">-</span>
+                            <input type="number" class="price-input" id="maxPrice" placeholder="Max" min="0">
+                        </div>
+                        <button class="btn-apply-price" onclick="applyPriceFilter()">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Rating Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Rating</h4>
+                    <div class="filter-options">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="rating-filter" value="5">
+                            <span>★★★★★ 5 Stars</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="rating-filter" value="4">
+                            <span>★★★★☆ 4+ Stars</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="rating-filter" value="3">
+                            <span>★★★☆☆ 3+ Stars</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="rating-filter" value="2">
+                            <span>★★☆☆☆ 2+ Stars</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Stock Status Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Availability</h4>
+                    <div class="filter-options">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="stock-filter" value="in-stock" checked>
+                            <span>In Stock</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="stock-filter" value="low-stock">
+                            <span>Low Stock</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="stock-filter" value="out-of-stock">
+                            <span>Out of Stock</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Verified Seller Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Seller Status</h4>
+                    <div class="filter-options">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="verified-filter" value="verified">
+                            <span>Verified Sellers Only</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Sort Options -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Sort By</h4>
+                    <select class="sort-select" id="sortSelect" onchange="applySorting()">
+                        <option value="newest">Newest Arrivals</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="best-selling">Best Selling</option>
+                    </select>
+                </div>
+            </aside>
+
+            <!-- Products Section -->
+            <div class="products-main">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Fresh Marketplace</h2>
+                        <p class="section-subtitle">Farm-fresh produce at honest prices</p>
+                    </div>
+                    <div class="filter-tabs">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Vegetables</button>
+                        <button class="filter-btn">Fruits</button>
+                        <button class="filter-btn">Dairy</button>
+                        <button class="filter-btn">Grains</button>
+                    </div>
+                </div>
+                <div class="product-grid">
                 <% if (products && products.length > 0) { %>
                     <% products.forEach(product => { %>
                         <% 
@@ -95,10 +210,178 @@
                     </div>
                 <% } %>
             </div>
+            </div>
         </div>
     </section>
 
 <script>
+    // Store all products data for filtering
+    let allProducts = [];
+    let filteredProducts = [];
+
+    // Initialize products array from DOM
+    function initializeProducts() {
+        allProducts = Array.from(document.querySelectorAll('.product-card')).map(card => ({
+            element: card,
+            category: (card.getAttribute('data-category') || '').toLowerCase(),
+            price: parseFloat(card.querySelector('.farm-price')?.textContent.match(/\d+/)?.[0] || 0),
+            stock: parseInt(card.querySelector('p:contains("Stock:")') || 0),
+            rating: parseFloat(card.querySelector('.rating-stars')?.getAttribute('data-rating') || 0),
+            verified: card.querySelector('.badge-verified') !== null
+        }));
+        filteredProducts = [...allProducts];
+    }
+
+    // Apply all active filters
+    function applyAllFilters() {
+        initializeProducts();
+        filteredProducts = allProducts.filter(product => {
+            // Category filter
+            const categoryCheckboxes = document.querySelectorAll('.category-filter:checked');
+            const allCatChecked = Array.from(categoryCheckboxes).some(cb => cb.value === 'all');
+            const selectedCategories = Array.from(categoryCheckboxes)
+                .filter(cb => cb.value !== 'all')
+                .map(cb => cb.value.toLowerCase());
+            
+            if (!allCatChecked && selectedCategories.length > 0) {
+                if (!selectedCategories.includes(product.category)) return false;
+            }
+
+            // Price range filter
+            const minPrice = parseFloat(document.getElementById('minPrice')?.value || 0);
+            const maxPrice = parseFloat(document.getElementById('maxPrice')?.value || Infinity);
+            if (product.price < minPrice || product.price > maxPrice) return false;
+
+            // Rating filter
+            const ratingCheckboxes = document.querySelectorAll('.rating-filter:checked');
+            if (ratingCheckboxes.length > 0) {
+                const minRating = Math.min(...Array.from(ratingCheckboxes).map(cb => parseInt(cb.value)));
+                if (product.rating < minRating) return false;
+            }
+
+            // Stock filter
+            const stockCheckboxes = document.querySelectorAll('.stock-filter:checked');
+            if (stockCheckboxes.length > 0) {
+                const selectedStocks = Array.from(stockCheckboxes).map(cb => cb.value);
+                let matches = false;
+                
+                for (const stock of selectedStocks) {
+                    if (stock === 'in-stock' && product.stock > 10) matches = true;
+                    if (stock === 'low-stock' && product.stock > 0 && product.stock <= 10) matches = true;
+                    if (stock === 'out-of-stock' && product.stock === 0) matches = true;
+                }
+                if (!matches) return false;
+            }
+
+            // Verified filter
+            if (document.querySelector('.verified-filter:checked')) {
+                if (!product.verified) return false;
+            }
+
+            return true;
+        });
+
+        applySorting();
+        updateProductDisplay();
+    }
+
+    // Apply sorting
+    function applySorting() {
+        const sortValue = document.getElementById('sortSelect')?.value || 'newest';
+
+        switch(sortValue) {
+            case 'price-low':
+                filteredProducts.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-high':
+                filteredProducts.sort((a, b) => b.price - a.price);
+                break;
+            case 'rating':
+                filteredProducts.sort((a, b) => b.rating - a.rating);
+                break;
+            case 'best-selling':
+                // Can be enhanced with sales data
+                filteredProducts.sort(() => Math.random() - 0.5);
+                break;
+            case 'newest':
+            default:
+                // Keep original order
+                break;
+        }
+        updateProductDisplay();
+    }
+
+    // Update product display based on filtered results
+    function updateProductDisplay() {
+        const cards = document.querySelectorAll('.product-card');
+        cards.forEach(card => {
+            const isVisible = filteredProducts.some(p => p.element === card);
+            card.style.display = isVisible ? '' : 'none';
+        });
+
+        // Show "no results" message if needed
+        const grid = document.querySelector('.product-grid');
+        const visibleCount = Array.from(cards).filter(c => c.style.display !== 'none').length;
+        
+        let noResultsMsg = document.querySelector('.no-results-message');
+        if (visibleCount === 0) {
+            if (!noResultsMsg) {
+                noResultsMsg = document.createElement('div');
+                noResultsMsg.className = 'no-results-message';
+                noResultsMsg.style.cssText = 'grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-size: 1.1rem;';
+                noResultsMsg.textContent = 'No products match your filters. Try adjusting your criteria.';
+                grid.appendChild(noResultsMsg);
+            }
+        } else if (noResultsMsg) {
+            noResultsMsg.remove();
+        }
+    }
+
+    // Apply price filter
+    function applyPriceFilter() {
+        applyAllFilters();
+    }
+
+    // Clear all filters
+    function clearAllFilters() {
+        document.querySelectorAll('.category-filter, .rating-filter, .stock-filter, .verified-filter').forEach(input => {
+            input.checked = (input.classList.contains('category-filter') || input.classList.contains('stock-filter')) && input.value === 'all' ? true : input.classList.contains('stock-filter') && input.value === 'in-stock' ? true : false;
+        });
+        document.getElementById('minPrice').value = '';
+        document.getElementById('maxPrice').value = '';
+        document.getElementById('sortSelect').value = 'newest';
+        applyAllFilters();
+    }
+
+    // Event listeners for filters
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeProducts();
+
+        // Category filters
+        document.querySelectorAll('.category-filter').forEach(checkbox => {
+            checkbox.addEventListener('change', applyAllFilters);
+        });
+
+        // Rating filters
+        document.querySelectorAll('.rating-filter').forEach(checkbox => {
+            checkbox.addEventListener('change', applyAllFilters);
+        });
+
+        // Stock filters
+        document.querySelectorAll('.stock-filter').forEach(checkbox => {
+            checkbox.addEventListener('change', applyAllFilters);
+        });
+
+        // Verified filter
+        document.querySelectorAll('.verified-filter').forEach(checkbox => {
+            checkbox.addEventListener('change', applyAllFilters);
+        });
+
+        // Price inputs (real-time filtering)
+        document.getElementById('minPrice')?.addEventListener('input', applyAllFilters);
+        document.getElementById('maxPrice')?.addEventListener('input', applyAllFilters);
+    });
+
     // Mobile navigation toggle
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
@@ -119,7 +402,7 @@
         function setActive(tab){
             tabs.forEach(t => t.classList.toggle('active', t === tab));
         }
-        function applyFilter(cat){
+        function applyTabFilter(cat){
             const target = normalize(cat);
             cards.forEach(card => {
                 const c = normalize(card.getAttribute('data-category'));
@@ -131,13 +414,13 @@
             tab.addEventListener('click', () => {
                 const label = tab.textContent || 'All';
                 setActive(tab);
-                applyFilter(label);
+                applyTabFilter(label);
             });
         });
         // Initialize to currently active tab
         const initial = Array.from(tabs).find(t => t.classList.contains('active')) || tabs[0];
         if (initial) {
-            applyFilter(initial.textContent || 'All');
+            applyTabFilter(initial.textContent || 'All');
         }
     })();
 
