@@ -70,6 +70,20 @@
                                     <% } %>
                                 </div>
                                 <p style="font-size: 0.9rem; color: #666; margin: 5px 0;">Stock: <%= stockQty %> available</p>
+                                <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+                                    <span style="font-size: 0.9rem; color: #666;">Quantity:</span>
+                                    <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+                                        <button type="button" onclick="decrementQty(<%= product.id %>)" style="background: #f5f5f5; border: none; padding: 8px 12px; cursor: pointer; font-size: 16px; color: #666;">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input type="number" id="qty-<%= product.id %>" value="1" min="1" max="<%= stockQty %>" 
+                                               onchange="validateQty(<%= product.id %>, <%= stockQty %>)"
+                                               style="width: 50px; border: none; text-align: center; padding: 8px 4px; font-size: 14px;">
+                                        <button type="button" onclick="incrementQty(<%= product.id %>, <%= stockQty %>)" style="background: #f5f5f5; border: none; padding: 8px 12px; cursor: pointer; font-size: 16px; color: #666;">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 <button class="btn btn-primary btn-block" onclick="addToCartFromGrid(<%= product.id %>)">Add to Cart</button>
                             </div>
                         </div>
@@ -143,6 +157,9 @@
     // Add to Cart from grid
     async function addToCartFromGrid(productId) {
         try {
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+            
             const response = await fetch('/cart/add', {
                 method: 'POST',
                 headers: {
@@ -150,17 +167,19 @@
                 },
                 body: JSON.stringify({
                     productId: productId,
-                    quantity: 1
+                    quantity: quantity
                 })
             });
             
             const data = await response.json();
             
             if (data.success) {
-                // Product added to cart successfully; update cart badge
-                updateCartBadge();
-                // Optionally redirect to cart or refresh
-                // window.location.href = '/cart';
+                // Product added to cart successfully; update cart badge only if new item
+                if (data.isNewItem) {
+                    updateCartBadge(1);
+                }
+                // Reset quantity to 1 after adding
+                if (qtyInput) qtyInput.value = 1;
             } else {
                 if (response.status === 401) {
                     window.location.href = '/login';
@@ -174,8 +193,46 @@
         }
     }
 
+    // Increment quantity
+    function incrementQty(productId, maxStock) {
+        const input = document.getElementById(`qty-${productId}`);
+        if (input) {
+            const current = parseInt(input.value) || 1;
+            if (current < maxStock) {
+                input.value = current + 1;
+            }
+        }
+    }
+
+    // Decrement quantity
+    function decrementQty(productId) {
+        const input = document.getElementById(`qty-${productId}`);
+        if (input) {
+            const current = parseInt(input.value) || 1;
+            if (current > 1) {
+                input.value = current - 1;
+            }
+        }
+    }
+
+    // Validate quantity input
+    function validateQty(productId, maxStock) {
+        const input = document.getElementById(`qty-${productId}`);
+        if (input) {
+            let value = parseInt(input.value) || 1;
+            if (value < 1) {
+                input.value = 1;
+            } else if (value > maxStock) {
+                input.value = maxStock;
+                alert(`Maximum available stock is ${maxStock}`);
+            } else {
+                input.value = value;
+            }
+        }
+    }
+
     // Increment cart badge without reload
-    function updateCartBadge() {
+    function updateCartBadge(increment = 1) {
         const cartBtn = document.querySelector('.btn.btn-icon[aria-label="Cart"]');
         if (!cartBtn) return;
 
@@ -183,14 +240,14 @@
         if (!badge) {
             badge = document.createElement('span');
             badge.className = 'cart-count';
-            badge.textContent = '1';
+            badge.textContent = String(increment);
             cartBtn.appendChild(badge);
             return;
         }
 
         const current = parseInt(badge.textContent || '0', 10);
-        const next = isNaN(current) ? 1 : current + 1;
-        badge.textContent = next;
+        const next = isNaN(current) ? increment : current + increment;
+        badge.textContent = String(next);
     }
 
 </script>

@@ -121,7 +121,7 @@ app.get("/", async (req, res) => {
         const result = await pool.query(
             `SELECT p.id, p.name, p.price, p.market_price, p.unit, p.image_url, p.is_verified,
                             p.total_reviews, p.rating,
-                            p.category,
+                            p.category, p.stock_quantity,
                             f.farm_name, f.id AS farmer_id
              FROM products p
              LEFT JOIN farmers f ON p.farmer_id = f.id
@@ -147,7 +147,7 @@ app.get("/cart", async (req, res) => {
         }
         
         const cartRes = await pool.query(
-            `SELECT c.id, c.quantity, p.id as product_id, p.name, p.price, p.unit, p.image_url, 
+            `SELECT c.id, c.quantity, p.id as product_id, p.name, p.price, p.unit, p.image_url, p.stock_quantity,
                     f.farm_name, f.id as farmer_id
              FROM cart c
              JOIN products p ON c.product_id = p.id
@@ -203,6 +203,8 @@ app.post("/cart/add", async (req, res) => {
             [userId, productId]
         );
         
+        let isNewItem = false;
+        
         if (existingRes.rowCount > 0) {
             // Update quantity
             const newQty = existingRes.rows[0].quantity + qty;
@@ -213,15 +215,17 @@ app.post("/cart/add", async (req, res) => {
                 'UPDATE cart SET quantity = $1 WHERE id = $2',
                 [newQty, existingRes.rows[0].id]
             );
+            isNewItem = false;
         } else {
             // Insert new cart item
             await pool.query(
                 'INSERT INTO cart (user_id, product_id, quantity) VALUES ($1, $2, $3)',
                 [userId, productId, qty]
             );
+            isNewItem = true;
         }
         
-        res.json({ success: true, message: "Product added to cart" });
+        res.json({ success: true, message: "Product added to cart", isNewItem });
     } catch (err) {
         console.error('Add to cart error', err);
         res.status(500).json({ success: false, message: "Failed to add to cart" });

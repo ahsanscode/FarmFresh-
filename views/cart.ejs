@@ -36,11 +36,14 @@
                                     <h3><a href="/product/<%= item.product_id %>" style="text-decoration:none; color:inherit;"><%= item.name %></a></h3>
                                     <p class="item-farmer">by <a href="/farmer/<%= item.farmer_id %>" style="text-decoration:none; color:inherit;"><%= item.farm_name %></a></p>
                                     <p class="item-price">৳<%= item.price %>/<%= item.unit || 'kg' %></p>
+                                    <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Stock: <%= item.stock_quantity %> available</p>
                                 </div>
                                 <div class="cart-item-actions">
                                     <div class="quantity-control">
                                         <button class="qty-btn" onclick="updateQuantity(<%= item.id %>, -1)"><i class="fas fa-minus"></i></button>
-                                        <input type="number" class="qty-input" value="<%= item.quantity %>" min="1" id="qty-<%= item.id %>" data-cart-id="<%= item.id %>">
+                                        <input type="number" class="qty-input" value="<%= item.quantity %>" min="1" max="<%= item.stock_quantity %>" 
+                                               id="qty-<%= item.id %>" data-cart-id="<%= item.id %>" data-max-stock="<%= item.stock_quantity %>"
+                                               onchange="validateQuantityInput(<%= item.id %>)">
                                         <button class="qty-btn" onclick="updateQuantity(<%= item.id %>, 1)"><i class="fas fa-plus"></i></button>
                                     </div>
                                     <div class="item-total">৳<%= item.subtotal %></div>
@@ -174,7 +177,20 @@
     async function updateQuantity(cartId, change) {
         const qtyInput = document.getElementById('qty-' + cartId);
         let currentQty = parseInt(qtyInput.value);
-        const newQty = Math.max(1, currentQty + change);
+        const maxStock = parseInt(qtyInput.dataset.maxStock) || 999;
+        
+        // Check if trying to increment beyond max stock
+        if (change > 0 && currentQty >= maxStock) {
+            alert(`Maximum quantity is ${maxStock}`);
+            return;
+        }
+        
+        // Check if trying to decrement below 1
+        if (change < 0 && currentQty <= 1) {
+            return;
+        }
+        
+        const newQty = Math.max(1, Math.min(maxStock, currentQty + change));
         
         try {
             const response = await fetch('/cart/update', {
@@ -202,6 +218,27 @@
             alert('Error updating quantity');
             qtyInput.value = currentQty;
         }
+    }
+
+    // Validate manual quantity input
+    function validateQuantityInput(cartId) {
+        const qtyInput = document.getElementById('qty-' + cartId);
+        const maxStock = parseInt(qtyInput.dataset.maxStock) || 999;
+        let value = parseInt(qtyInput.value) || 1;
+        
+        if (value < 1) {
+            qtyInput.value = 1;
+            alert('Quantity must be at least 1');
+            return;
+        }
+        
+        if (value > maxStock) {
+            qtyInput.value = maxStock;
+            alert(`Maximum quantity is ${maxStock}`);
+            return;
+        }
+        
+        qtyInput.value = value;
     }
 
     // Remove item

@@ -93,6 +93,7 @@
                     const marketPrice = Number(product.market_price) || null;
                     const savings = marketPrice && price ? Math.round((1 - price / marketPrice) * 100) : 0;
                     const category = (product.category || 'Other').toString();
+                    const stockQty = Number(product.stock_quantity) || 0;
                 %>
                 <div class="product-card" data-category="<%= category %>">
                     <div class="product-image">
@@ -115,6 +116,21 @@
                                 <span class="market-price">৳<%= marketPrice %>/<%= product.unit || 'kg' %></span>
                                 <span class="savings">Save <%= savings %>%</span>
                             <% } %>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #666; margin: 8px 0;">Stock: <%= stockQty %> available</p>
+                        <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+                            <span style="font-size: 0.9rem; color: #666;">Quantity:</span>
+                            <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+                                <button type="button" onclick="decrementQty(<%= product.id %>)" style="background: #f5f5f5; border: none; padding: 8px 12px; cursor: pointer; font-size: 16px; color: #666;">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" id="qty-<%= product.id %>" value="1" min="1" max="<%= stockQty %>" 
+                                       onchange="validateQty(<%= product.id %>, <%= stockQty %>)"
+                                       style="width: 50px; border: none; text-align: center; padding: 8px 4px; font-size: 14px;">
+                                <button type="button" onclick="incrementQty(<%= product.id %>, <%= stockQty %>)" style="background: #f5f5f5; border: none; padding: 8px 12px; cursor: pointer; font-size: 16px; color: #666;">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
                         <button class="btn btn-primary btn-block" onclick="addToCartFromGrid(<%= product.id %>)">Add to Cart</button>
                     </div>
@@ -495,14 +511,20 @@
 <script>
     async function addToCartFromGrid(productId) {
         try {
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+
             const response = await fetch('/cart/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ productId, quantity: 1 })
+                body: JSON.stringify({ productId, quantity })
             });
             const data = await response.json();
             if (data.success) {
-                updateCartBadge();
+                if (data.isNewItem) {
+                    updateCartBadge();
+                }
+                if (qtyInput) qtyInput.value = 1;
             } else {
                 if (response.status === 401) {
                     window.location.href = '/login';
@@ -513,6 +535,41 @@
         } catch (err) {
             console.error('Error adding to cart:', err);
             alert('Error adding to cart');
+        }
+    }
+
+    function incrementQty(productId, maxStock) {
+        const input = document.getElementById(`qty-${productId}`);
+        if (input) {
+            const current = parseInt(input.value) || 1;
+            if (current < maxStock) {
+                input.value = current + 1;
+            }
+        }
+    }
+
+    function decrementQty(productId) {
+        const input = document.getElementById(`qty-${productId}`);
+        if (input) {
+            const current = parseInt(input.value) || 1;
+            if (current > 1) {
+                input.value = current - 1;
+            }
+        }
+    }
+
+    function validateQty(productId, maxStock) {
+        const input = document.getElementById(`qty-${productId}`);
+        if (input) {
+            let value = parseInt(input.value) || 1;
+            if (value < 1) {
+                input.value = 1;
+            } else if (value > maxStock) {
+                input.value = maxStock;
+                alert(`Maximum available stock is ${maxStock}`);
+            } else {
+                input.value = value;
+            }
         }
     }
 
@@ -528,7 +585,7 @@
             return;
         }
         const current = parseInt(badge.textContent || '0', 10);
-        badge.textContent = isNaN(current) ? '1' : String(current + 1);
+        badge.textContent = String(isNaN(current) ? 1 : current + 1);
     }
 
     function handleSearch() {
